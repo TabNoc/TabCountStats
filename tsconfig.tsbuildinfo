@@ -109,6 +109,14 @@
         "version": "9d3bd31e90f6b60d3905e7d02a36b348c49e478498650e875c7dfccb2bc7cf24",
         "signature": "f761c91419d0a89422a0004ef1a92929dd4d2d5e5c16758654d8b0467d1998c6"
       },
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/sites/addonbutton/tabs.ts": {
+        "version": "cebb67ee980c9bfe9258f73df050814c17064b697990c18d164a6ef8451c7880",
+        "signature": "05be0fff467f901fcb2333149616ef32bc7c99399b78b1a1831b952abcc03a15"
+      },
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/sites/settings/settings.ts": {
+        "version": "d6a51dbd52a16a95992f5fa764274b028d1f9d34e204d130e979662ea2aefd8c",
+        "signature": "26114ab247c6f87ba5cd8f6dbda144bb4aa1f0f3929eacc60e23d830c48cc529"
+      },
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/web-ext-types/global/index.d.ts": {
         "version": "99458874da9eda874bfbdc931782d42a17ca8185cc696d461ac8e4e63c807d2d",
         "signature": "99458874da9eda874bfbdc931782d42a17ca8185cc696d461ac8e4e63c807d2d"
@@ -170,8 +178,10 @@
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2017.full.d.ts",
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/storage/badgeprovider.ts",
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/storage/tabstorage.ts",
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/web-ext-types/global/index.d.ts",
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/main.ts"
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/main.ts",
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/sites/addonbutton/tabs.ts",
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/sites/settings/settings.ts",
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/web-ext-types/global/index.d.ts"
     ]
   },
   "version": "3.5.1"

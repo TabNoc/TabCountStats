@@ -1,5 +1,4 @@
-
-function firstUnpinnedTab(tabs) {
+function firstUnpinnedTab(tabs: browser.tabs.Tab[]) {
   for (var tab of tabs) {
     if (!tab.pinned) {
       return tab.index;
@@ -18,11 +17,17 @@ function listTabs() {
 document.addEventListener("DOMContentLoaded", listTabs);
 
 function getCurrentWindowTabs() {
-  return browser.tabs.query({currentWindow: true});
+  return browser.tabs.query({ currentWindow: true });
 }
 
-document.addEventListener("click", (e) => {
-  function callOnActiveTab(callback) {
+document.addEventListener("click", (e: MouseEvent) => {
+
+  if (e == null || e.target == null || e.target as HTMLElement == null || (<HTMLElement>e.target).id == null) {
+    throw new Error("e.target.id not defined!");
+  }
+  let target = e.target as HTMLElement;
+
+  function callOnActiveTab(callback: any) {
     getCurrentWindowTabs().then((tabs) => {
       for (var tab of tabs) {
         if (tab.active) {
@@ -32,38 +37,38 @@ document.addEventListener("click", (e) => {
     });
   }
 
-  if (e.target.id === "tabs-reload") {
-    callOnActiveTab((tab) => {
+  if (target.id === "tabs-reload") {
+    callOnActiveTab((tab: browser.tabs.Tab) => {
       browser.tabs.reload(tab.id);
     });
   }
 
-  else if (e.target.id === "tabs-cleardata") {
+  else if (target.id === "tabs-cleardata") {
     browser.storage.sync.clear();
     console.log("ClearedData!");
-    browser.storage.sync.get().then((data)=>{console.log(data);});
+    browser.storage.sync.get().then((data) => { console.log(data); });
   }
-  else if (e.target.id === "tabs-readdata") {
-    browser.storage.sync.get().then((data)=>{console.log(data);});
+  else if (target.id === "tabs-readdata") {
+    browser.storage.sync.get().then((data) => { console.log(data); });
   }
 
-  else if (e.target.id === "tabs-alertinfo") {
-    callOnActiveTab((tab) => {
+  else if (target.id === "tabs-alertinfo") {
+    callOnActiveTab((tab: any) => {
       let props = "";
       for (let item in tab) {
-        props += `${ item } = ${ tab[item] } \n`;
+        props += `${item} = ${tab[item]} \n`;
       }
       alert(props);
     });
   }
 
-  else if (e.target.id === "tabs-activate-random-activewindow") {
-    browser.tabs.query({currentWindow: true}).then((tabs) => {
+  else if (target.id === "tabs-activate-random-activewindow") {
+    browser.tabs.query({ currentWindow: true }).then((tabs) => {
       OpenRandomTabFromQuery(tabs);
     });
   }
 
-  else if (e.target.id === "tabs-activate-random-anywhere") {
+  else if (target.id === "tabs-activate-random-anywhere") {
     browser.tabs.query({}).then((tabs) => {
       OpenRandomTabFromQuery(tabs);
     });
@@ -72,8 +77,8 @@ document.addEventListener("click", (e) => {
   e.preventDefault();
 });
 
-function OpenRandomTabFromQuery(tabs){
-  const tabid = tabs[Math.floor(Math.random()*tabs.length)].id;
+function OpenRandomTabFromQuery(tabs: browser.tabs.Tab[]) {
+  const tabid = tabs[Math.floor(Math.random() * tabs.length)].id;
   browser.tabs.update(tabid, {
     active: true
   });
@@ -83,7 +88,7 @@ function OpenRandomTabFromQuery(tabs){
 browser.tabs.onRemoved.addListener((tabId, removeInfo) => {
   console.log(`The tab with id: ${tabId}, is closing`);
 
-  if(removeInfo.isWindowClosing) {
+  if (removeInfo.isWindowClosing) {
     console.log(`Its window is also closing.`);
   } else {
     console.log(`Its window is not closing`);
