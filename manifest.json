@@ -1,0 +1,27 @@
+{
+  "applications": {
+    "gecko": {
+      "strict_min_version": "58.0a1",
+      "id": "TabStats@tabnoc.com"
+    }
+  },
+  "background": {
+      "scripts": ["TabAddon_background.js"]
+  },
+  "browser_action": {
+    "browser_style": true,
+    "default_title": "TabAddonPage",
+    "default_popup": "tabs.html"
+  },
+  "description": "Collects simple stats from the opend tabs.",
+  "manifest_version": 2,
+  "name": "TabStats",
+  "options_ui": {
+    "page": "settings/options.html"
+  },
+  "permissions": [
+    "tabs",
+    "storage"
+  ],
+  "version": "0.3"
+}

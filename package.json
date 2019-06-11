@@ -1,0 +1,12 @@
+{
+  "name": "FirefoxAddonTab",
+  "version": "0.0.0",
+  "description": "FirefoxAddonTab",
+  "author": {
+    "name": ""
+  },
+  "devDependencies": {
+    "typescript": "^3.5.1",
+    "web-ext-types": "github:kelseasy/web-ext-types"
+  }
+}
