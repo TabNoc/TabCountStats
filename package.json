@@ -9,5 +9,8 @@
     "typescript": "^3.5.1",
     "web-ext-types": "github:kelseasy/web-ext-types"
   },
+  "scripts": {
+    "build": ".\\AppendJSExtensionToTypescriptImports.lnk"
+  },
   "dependencies": {}
 }
