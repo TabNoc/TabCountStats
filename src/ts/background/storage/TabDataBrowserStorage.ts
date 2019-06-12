@@ -1,7 +1,8 @@
-import { TabStorage } from "./TabStorage";
-import { BadgeProvider } from "./BadgeProvider";
+import { TabStorage } from "../worker/TabStorage";
+import { BadgeProvider } from "../worker/BadgeProvider";
 export class TabDataBrowserStorage {
     private static readonly CurrentVersion: number = 1;
+    
     constructor(data: browser.storage.StorageValue) {
         let anyData = (<any>data) || {};
         this.Version = anyData.Version || TabDataBrowserStorage.CurrentVersion;
@@ -9,6 +10,6 @@ export class TabDataBrowserStorage {
         this.BadgeProvider = new BadgeProvider(anyData.BadgeProvider);
     }
     public Version: number;
-    public storage: TabStorage;
+    public storage: TabStorage;     //TODO: Rename to TabHistory
     public BadgeProvider: BadgeProvider;
 }

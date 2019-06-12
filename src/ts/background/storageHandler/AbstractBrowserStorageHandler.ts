@@ -1,7 +1,7 @@
 import { WriteError, WriteLog } from "../../stuff/General";
 import { Disposer } from "../../stuff/Disposer";
 
-export abstract class BrowserStorageHandler extends Disposer {
+export abstract class AbstractBrowserStorageHandler extends Disposer {
     constructor(private storageNodeName: string, private verboseLogging: boolean = true) {
         super();
     }

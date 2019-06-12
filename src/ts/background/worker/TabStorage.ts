@@ -15,6 +15,7 @@
 		this.tabCount[id] = tabCount;
 	}
 
+	//TODO: date.getMonth() is one number to short (e.g. May is 4)
 	getDate(date: Date) {
 		const addzero = (value: number): string | number => { return value < 10 ? '0' + value : value; };
 		return `${addzero(date.getDate())}.${addzero(date.getMonth())}.${date.getFullYear()}>${addzero(date.getHours())}`;

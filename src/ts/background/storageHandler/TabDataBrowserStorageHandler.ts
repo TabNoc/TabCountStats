@@ -1,7 +1,7 @@
-import { BrowserStorageHandler } from "./BrowserStorageHandler";
+import { AbstractBrowserStorageHandler } from "./AbstractBrowserStorageHandler";
 import { TabDataBrowserStorage } from "../storage/TabDataBrowserStorage";
 
-export class TabDataBrowserStorageHandler extends BrowserStorageHandler {
+export class TabDataBrowserStorageHandler extends AbstractBrowserStorageHandler {
     constructor(private tabs: browser.tabs.Tab[]) {
         super("tabData", true);
     }
@@ -10,7 +10,7 @@ export class TabDataBrowserStorageHandler extends BrowserStorageHandler {
 
         storageData.storage.addTabCount(this.tabs.length);
 
-        storageData.BadgeProvider.setBadgeColor()
+        storageData.BadgeProvider.setBadgeColor(this.tabs.length);
 
         return storageData;
     }
