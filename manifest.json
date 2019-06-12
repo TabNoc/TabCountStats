@@ -13,7 +13,7 @@
     "default_title": "TabAddonPage",
     "default_popup": "/src/html/addonButton/tabs.html"
   },
-  "description": "Collects simple stats from the opend tabs.",
+  "description": "Collects simple stats from the opend tabs, currently without any usage. Adds ability to open random Tab and hints the user to reduce Tab count.",
   "manifest_version": 2,
   "name": "TabStats",
   "options_ui": {
@@ -23,5 +23,5 @@
     "tabs",
     "storage"
   ],
-  "version": "0.5"
+  "version": "0.5.1"
 }
