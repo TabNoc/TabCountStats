@@ -8,5 +8,6 @@
   "devDependencies": {
     "typescript": "^3.5.1",
     "web-ext-types": "github:kelseasy/web-ext-types"
-  }
+  },
+  "dependencies": {}
 }

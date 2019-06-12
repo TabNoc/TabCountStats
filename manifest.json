@@ -6,22 +6,22 @@
     }
   },
   "background": {
-      "scripts": ["TabAddon_background.js"]
+      "page": "/src/html/background/background.html"
   },
   "browser_action": {
     "browser_style": true,
     "default_title": "TabAddonPage",
-    "default_popup": "tabs.html"
+    "default_popup": "/src/html/addonButton/tabs.html"
   },
   "description": "Collects simple stats from the opend tabs.",
   "manifest_version": 2,
   "name": "TabStats",
   "options_ui": {
-    "page": "settings/options.html"
+    "page": "/src/html/settings/settings.html"
   },
   "permissions": [
     "tabs",
     "storage"
   ],
-  "version": "0.3"
+  "version": "0.5"
 }

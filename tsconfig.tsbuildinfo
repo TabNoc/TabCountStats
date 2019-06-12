@@ -13,10 +13,6 @@
         "version": "5f217838d25704474d9ef93774f04164889169ca31475fe423a9de6758f058d1",
         "signature": "5f217838d25704474d9ef93774f04164889169ca31475fe423a9de6758f058d1"
       },
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2017.d.ts": {
-        "version": "459097c7bdd88fc5731367e56591e4f465f2c9de81a35427a7bd473165c34743",
-        "signature": "459097c7bdd88fc5731367e56591e4f465f2c9de81a35427a7bd473165c34743"
-      },
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.dom.d.ts": {
         "version": "973df4e41aea3780ce77073777d37dd5896f684124f4c42409f3a832133837a4",
         "signature": "973df4e41aea3780ce77073777d37dd5896f684124f4c42409f3a832133837a4"
@@ -73,45 +69,49 @@
         "version": "3f96f1e570aedbd97bf818c246727151e873125d0512e4ae904330286c721bc0",
         "signature": "3f96f1e570aedbd97bf818c246727151e873125d0512e4ae904330286c721bc0"
       },
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2017.object.d.ts": {
-        "version": "ff8ad203e83338289b0f5defc1a5b5c253fb7d251b464db497383f915a0df3f4",
-        "signature": "ff8ad203e83338289b0f5defc1a5b5c253fb7d251b464db497383f915a0df3f4"
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2016.full.d.ts": {
+        "version": "a1205f8b74ba57896ae4eb9ff19a5ffc7f210352b0b535abcd36d6b06225a3ac",
+        "signature": "a1205f8b74ba57896ae4eb9ff19a5ffc7f210352b0b535abcd36d6b06225a3ac"
       },
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts": {
-        "version": "b8667586a618c5cf64523d4e500ae39e781428abfb28f3de441fc66b56144b6f",
-        "signature": "b8667586a618c5cf64523d4e500ae39e781428abfb28f3de441fc66b56144b6f"
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/general.ts": {
+        "version": "2e0d360797c03398adaa074731fbd31f41822773b3210a9dc970fcf1c859a8ae",
+        "signature": "89e9c5a230b9692391db4d74a6f35bc61ab2f4689f2064b045b02fb195694658"
       },
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2017.string.d.ts": {
-        "version": "21df2e0059f14dcb4c3a0e125859f6b6ff01332ee24b0065a741d121250bc71c",
-        "signature": "21df2e0059f14dcb4c3a0e125859f6b6ff01332ee24b0065a741d121250bc71c"
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/disposable.ts": {
+        "version": "775c63edd11f6ac7aadfeddff2078d32a5b0f26bfeb0cac8ba47221d9df90d2d",
+        "signature": "775c63edd11f6ac7aadfeddff2078d32a5b0f26bfeb0cac8ba47221d9df90d2d"
       },
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2017.intl.d.ts": {
-        "version": "c1759cb171c7619af0d2234f2f8fb2a871ee88e956e2ed91bb61778e41f272c6",
-        "signature": "c1759cb171c7619af0d2234f2f8fb2a871ee88e956e2ed91bb61778e41f272c6"
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/disposer.ts": {
+        "version": "b616dbd54ef03be18b34f82705edeaff80e8c5604db272588a41a5ddcf86a2cc",
+        "signature": "c7a9bc35329db0a7398a40eec7aad3e6c00db68cf91d775e4fbef70ee080478a"
       },
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2017.typedarrays.d.ts": {
-        "version": "28569d59e07d4378cb3d54979c4c60f9f06305c9bb6999ffe6cab758957adc46",
-        "signature": "28569d59e07d4378cb3d54979c4c60f9f06305c9bb6999ffe6cab758957adc46"
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/browserstoragehandler.ts": {
+        "version": "27b70f2b48e59cea063ac567212929b036cdee315d0485aa6d79182aa3fe2c05",
+        "signature": "d1d068f499de92a52174dae37fd798ff8963d3080687bbfbd6cf9205d2a90b50"
       },
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2017.full.d.ts": {
-        "version": "873c09f1c309389742d98b7b67419a8e0a5fa6f10ce59fd5149ecd31a2818594",
-        "signature": "873c09f1c309389742d98b7b67419a8e0a5fa6f10ce59fd5149ecd31a2818594"
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/storage/tabstorage.ts": {
+        "version": "45e8a8f2a5fa707b83020856e1b61dc44befb5237e1e013edb9725bfae60a1c5",
+        "signature": "1f42634399e77c36de7474146edd88e967562e09c4841123ea0e64d99abfe0de"
       },
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/storage/badgeprovider.ts": {
         "version": "2517afc614f26da3b17216c9cb8dd0304de817404d38230d8a396b9898319c03",
         "signature": "5df0a8ef34b0b64522210268e1195adf8e12242242a48d5ed8f2ef312fc24e6a"
       },
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/storage/tabstorage.ts": {
-        "version": "39f8a20344c350f0d0c544bc9277b18c6f7f0518befaff0ce1c5f64a8a7093c6",
-        "signature": "ce47880a375fbfcf8f8ec6c95703874239670758847ccf4326b2734b6a4621d8"
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/tabdatabrowserstorage.ts": {
+        "version": "b6291b10275380da5b7385c5a65c2a975ffacee6cec683ba8beb990268d57c02",
+        "signature": "de6ed955d5c8848cdffbf80369632a99f6d3f6507af2f6e3aa11c5fe31bb71f5"
+      },
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/tabdatabrowserstoragehandler.ts": {
+        "version": "606e1bb80156166483b5f32efff3e46162d08d5fe3a28fb45b16f19dec53868c",
+        "signature": "cd40846880699d134762f36634cc7df46a5f33110949d74fcac630248a1c5d82"
       },
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/main.ts": {
-        "version": "9d3bd31e90f6b60d3905e7d02a36b348c49e478498650e875c7dfccb2bc7cf24",
+        "version": "5d28e0cb18c7b24deebcaae270d2f370b9892a725b8e3909075d6a4ed4a1d56b",
         "signature": "f761c91419d0a89422a0004ef1a92929dd4d2d5e5c16758654d8b0467d1998c6"
       },
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/sites/addonbutton/tabs.ts": {
-        "version": "cebb67ee980c9bfe9258f73df050814c17064b697990c18d164a6ef8451c7880",
-        "signature": "05be0fff467f901fcb2333149616ef32bc7c99399b78b1a1831b952abcc03a15"
+        "version": "1201eb8fe9909dade9925e88ca999ce5e4ed6bcd40938b3d5520e71ff23f9e24",
+        "signature": "9c63602abd1bd9870d7685cd65684dfbf9071944f731524ac86e52ca89d17672"
       },
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/sites/settings/settings.ts": {
         "version": "d6a51dbd52a16a95992f5fa764274b028d1f9d34e204d130e979662ea2aefd8c",
@@ -123,31 +123,53 @@
       }
     },
     "options": {
-      "target": 4,
-      "module": 1,
+      "target": 3,
+      "module": 5,
       "outDir": "c:/Users/Marco/Documents/Visual Studio 2019/Projects/FirefoxAddonTab/FirefoxAddonTab/src/js",
       "rootDir": "c:/Users/Marco/Documents/Visual Studio 2019/Projects/FirefoxAddonTab/FirefoxAddonTab/src/ts",
       "composite": true,
       "strict": true,
+      "noImplicitReturns": true,
       "typeRoots": [
         "c:/Users/Marco/Documents/Visual Studio 2019/Projects/FirefoxAddonTab/FirefoxAddonTab/node_modules/@types",
         "c:/Users/Marco/Documents/Visual Studio 2019/Projects/FirefoxAddonTab/FirefoxAddonTab/node_modules/web-ext-types"
       ],
       "esModuleInterop": true,
       "project": "c:\\Users\\Marco\\Documents\\Visual Studio 2019\\Projects\\FirefoxAddonTab\\FirefoxAddonTab\\tsconfig.json",
-      "watch": true,
       "configFilePath": "c:/Users/Marco/Documents/Visual Studio 2019/Projects/FirefoxAddonTab/FirefoxAddonTab/tsconfig.json"
     },
     "referencedMap": {
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/storage/tabstorage.ts": [
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/disposer.ts": [
+        "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/disposable.ts"
+      ],
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/browserstoragehandler.ts": [
+        "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/general.ts",
+        "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/disposer.ts"
+      ],
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/tabdatabrowserstorage.ts": [
+        "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/storage/tabstorage.ts",
         "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/storage/badgeprovider.ts"
       ],
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/tabdatabrowserstoragehandler.ts": [
+        "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/browserstoragehandler.ts",
+        "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/tabdatabrowserstorage.ts"
+      ],
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/main.ts": [
-        "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/storage/tabstorage.ts"
+        "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/tabdatabrowserstoragehandler.ts"
       ]
     },
     "exportedModulesMap": {
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/storage/tabstorage.ts": [
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/browserstoragehandler.ts": [
+        "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/disposer.ts"
+      ],
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/tabdatabrowserstoragehandler.ts": [
+        "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/browserstoragehandler.ts"
+      ],
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/disposer.ts": [
+        "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/disposable.ts"
+      ],
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/tabdatabrowserstorage.ts": [
+        "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/storage/tabstorage.ts",
         "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/storage/badgeprovider.ts"
       ]
     },
@@ -155,7 +177,6 @@
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es5.d.ts",
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2015.d.ts",
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2016.d.ts",
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2017.d.ts",
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.dom.d.ts",
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.dom.iterable.d.ts",
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.webworker.importscripts.d.ts",
@@ -170,14 +191,15 @@
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2015.symbol.d.ts",
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts",
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2016.array.include.d.ts",
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2017.object.d.ts",
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts",
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2017.string.d.ts",
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2017.intl.d.ts",
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2017.typedarrays.d.ts",
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2017.full.d.ts",
-      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/storage/badgeprovider.ts",
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/node_modules/typescript/lib/lib.es2016.full.d.ts",
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/general.ts",
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/disposable.ts",
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/disposer.ts",
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/browserstoragehandler.ts",
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/storage/tabstorage.ts",
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/storage/badgeprovider.ts",
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/tabdatabrowserstorage.ts",
+      "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/tabdatabrowserstoragehandler.ts",
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/background/main.ts",
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/sites/addonbutton/tabs.ts",
       "c:/users/marco/documents/visual studio 2019/projects/firefoxaddontab/firefoxaddontab/src/ts/sites/settings/settings.ts",

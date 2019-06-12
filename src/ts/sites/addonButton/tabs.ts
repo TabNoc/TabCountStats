@@ -4,6 +4,7 @@ function firstUnpinnedTab(tabs: browser.tabs.Tab[]) {
       return tab.index;
     }
   }
+  return null;
 }
 
 /**
