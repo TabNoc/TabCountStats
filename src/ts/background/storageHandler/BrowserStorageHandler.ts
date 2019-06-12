@@ -1,8 +1,7 @@
-import { WriteError, WriteLog } from "./General";
-import { Disposer } from "./Disposer";
+import { WriteError, WriteLog } from "../../stuff/General";
+import { Disposer } from "../../stuff/Disposer";
 
-export abstract class BrowserStorageHandler extends Disposer 
-{
+export abstract class BrowserStorageHandler extends Disposer {
     constructor(private storageNodeName: string, private verboseLogging: boolean = true) {
         super();
     }
@@ -11,9 +10,17 @@ export abstract class BrowserStorageHandler extends Disposer
         this.CheckOrThrowDisposed();
         const loadedData = await this.LoadDataAsync();
         const changedData = this.ProcessData(loadedData);
-        
-        if (loadedData != changedData) {
-            this.SaveData(changedData);
+
+        if (changedData[this.storageNodeName] == null) {
+            if ((<any>loadedData).toSource() != (<any>changedData).toSource() || loadedData == changedData || true) {
+                this.SaveData(changedData);
+            } else {
+                if (this.verboseLogging)
+                    WriteLog("Nothing changed, saving skipped!");
+            }
+        }
+        else {
+            throw "BrowserStorageHandler.ProcessData returned wrong datastructure";
         }
         this.dispose();
     }
@@ -25,8 +32,8 @@ export abstract class BrowserStorageHandler extends Disposer
                 .get(this.storageNodeName)
                 .then((data) => {
                     if (this.verboseLogging)
-                        WriteLog(`Loaded Data: ${this.storageNodeName}`, data);
-                    resolve(data);
+                        WriteLog(`Loaded Data: ${this.storageNodeName}`, data[this.storageNodeName]);
+                    resolve(data[this.storageNodeName]);
                 }, this.OnLoadFail);
         });
     }
@@ -43,5 +50,5 @@ export abstract class BrowserStorageHandler extends Disposer
         browser.storage.sync.set({ [this.storageNodeName]: data });
     }
 
-    protected abstract ProcessData(data: browser.storage.StorageValue): browser.storage.StorageValue;
+    protected abstract ProcessData(data: browser.storage.StorageValue): any;
 }

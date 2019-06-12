@@ -1,4 +1,4 @@
-﻿import { TabDataBrowserStorageHandler } from "./TabDataBrowserStorageHandler";
+﻿import { TabDataBrowserStorageHandler } from "./storageHandler/TabDataBrowserStorageHandler";
 
 function updateCount(tabId: number, isOnRemoved: boolean) {
     browser.tabs.query({})
