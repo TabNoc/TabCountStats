@@ -16,7 +16,7 @@ export function WriteLog(message?: any, ...optionalParams: any[]): void {
 function treatAsUTC(date:Date):number {
     var result = new Date(date);
     result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
-    return result.getMilliseconds();
+    return (<number><unknown>result);
 }
 
 export function GetDaysBetween(startDate:Date, endDate:Date) {

@@ -10,7 +10,7 @@ export class TabDataBrowserStorageHandler extends AbstractBrowserStorageHandler 
 
         storageData.storage.addTabCount(this.tabs.length);
 
-        storageData.BadgeProvider.setBadgeColor(this.tabs.length);
+        storageData.BadgeProvider.applyBadgeColor(this.tabs.length);
 
         return storageData;
     }

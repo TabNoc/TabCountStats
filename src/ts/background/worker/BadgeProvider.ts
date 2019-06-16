@@ -11,7 +11,7 @@ export class BadgeProvider {
     }
 
     //#region public Methods
-    public setBadgeColor(currentTabCount: number) {
+    public applyBadgeColor(currentTabCount: number) {
         browser.browserAction.setBadgeBackgroundColor({ 'color': this.getBadgeColor(currentTabCount) });
     }
     //#endregion public Methods
