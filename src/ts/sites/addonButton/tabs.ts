@@ -7,15 +7,19 @@ function firstUnpinnedTab(tabs: browser.tabs.Tab[]) {
   return null;
 }
 
-/**
- * listTabs to switch to
- */
-function listTabs() {
+function onLoad() {
   getCurrentWindowTabs().then((tabs) => {
+    let countDiv = document.getElementById("tabs-activeWindow-count");
+    if (countDiv != null) {
+      countDiv.innerText = tabs.length.toString();
+    }
   });
+  /**
+   * listTabs to switch to
+   */
 }
 
-document.addEventListener("DOMContentLoaded", listTabs);
+document.addEventListener("DOMContentLoaded", onLoad);
 
 function getCurrentWindowTabs() {
   return browser.tabs.query({ currentWindow: true });
