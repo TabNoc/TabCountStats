@@ -1,37 +1,47 @@
 <!DOCTYPE html>
 
-<html>
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="/src/html/addonButton/tabs.css"/>
-  </head>
+<html lang="en">
 
+<head>
+	<title>Tabs-tabs-tabs</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="/src/html/addonButton/tabs.css" />
+</head>
+<!-- moz-extension://e082d994-bf11-4da7-973b-0e73d284933c/src/html/addonButton/tabs.html -->
 <body>
-  <div class="panel">
-    <div class="panel-section panel-section-header">
-      <div class="text-section-header">Tabs-tabs-tabs</div>
-    </div>
+	<div class="panel">
+		<div class="panel-section panel-section-header">
+			<div class="text-section-header">Tabs-tabs-tabs</div>
+		</div>
 
-    <div class="panel-section-separator"></div>
-    <div>Aktuelle Tabs im Fenster: <p id="tabs-activeWindow-count"></p></div>
-    <div class="panel-section-separator"></div>
+		<div class="panel-section-separator"></div>
+		<div>
+			Aktuelle Tabs im Fenster: <p id="tabs-activeWindow-count"></p>
+		</div>
+		<div class="panel-section-separator"></div>
 
-    <a href="#" id="tabs-activate-random-activewindow">Activate a random Tab in the currentWindow</a><br>
+		<div>
+			<ul id="tabs-windowContainer"></ul>
+		</div>
 
-    <a href="#" id="tabs-activate-random-anywhere">Activate a random Tab in any Window</a><br>
+		<div class="panel-section-separator"></div>
 
-    <div class="panel-section-separator"></div>
-    <a href="#" id="tabs-cleardata">ClearData</a><br>
-    <div class="panel-section-separator"></div>
-    <a href="#" id="tabs-readdata">ReadData</a><br>
+		<a href="#" id="tabs-activate-random-activewindow">Activate a random Tab in the currentWindow</a><br>
 
-    <div class="panel-section-separator"></div>
+		<a href="#" id="tabs-activate-random-anywhere">Activate a random Tab in any Window</a><br>
 
-    <a href="#" id="tabs-reload">Reload active tab</a><br>
-    <a href="#" id="tabs-alertinfo">Alert active tab info</a><br>
-  </div>
+		<div class="panel-section-separator"></div>
+		<!--<a href="#" id="tabs-cleardata">ClearData</a><br>-->
+		<div class="panel-section-separator"></div>
+		<a href="#" id="tabs-readdata">ReadData</a><br>
 
-  <script src="/src/js/sites/addonButton/tabs.js"></script>
+		<div class="panel-section-separator"></div>
+
+		<a href="#" id="tabs-reload">Reload active tab</a><br>
+		<a href="#" id="tabs-alertinfo">Alert active tab info</a><br>
+	</div>
+
+	<script type="module" src="/src/js/sites/addonButton/tabs.js"></script>
 </body>
 
 </html>

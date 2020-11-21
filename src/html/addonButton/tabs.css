@@ -1,10 +1,16 @@
 html, body {
-  width: 350px;
+  width: 100%;
 }
 
 a {
   margin: 10px;
   display: inline-block;
+}
+
+.windowLink {
+  margin: 3px;
+  display: inline-block;
+  font-size: larger;
 }
 
 .switch-tabs {
