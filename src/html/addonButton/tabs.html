@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="/src/html/addonButton/tabs.css" />
 </head>
 <!-- moz-extension://e082d994-bf11-4da7-973b-0e73d284933c/src/html/addonButton/tabs.html -->
+
 <body>
 	<div class="panel">
 		<div class="panel-section panel-section-header">
@@ -15,8 +16,19 @@
 		</div>
 
 		<div class="panel-section-separator"></div>
-		<div>
-			Aktuelle Tabs im Fenster: <p id="tabs-activeWindow-count"></p>
+		<div class="countDisplay">
+			<div class="justifyCenter">
+				<div>
+					Aktuelle Tabs im Fenster:
+				</div>
+				<div id="tabs-currentWindowTabCount" class="justifyCenter marginTD"></div>
+			</div>
+			<div class="justifyCenter">
+				<div>
+					Aktuelle Fenster: 
+				</div>
+				<div id="tabs-windowCount" class="justifyCenter marginTD"></div>
+			</div>
 		</div>
 		<div class="panel-section-separator"></div>
 

@@ -1,6 +1,6 @@
 ﻿import { TabDataBrowserStorageHandler } from "./storageHandler/TabDataBrowserStorageHandler";
 
-function updateCount(tabId: number, isOnRemoved: boolean) {
+function updateCount(tabId: number | null, isOnRemoved: boolean) {
     browser.tabs.query({})
         .then((tabs) => {
             let length = tabs.length;
@@ -13,9 +13,55 @@ function updateCount(tabId: number, isOnRemoved: boolean) {
 
             browser.browserAction.setBadgeText({ text: length.toString() });
 
-            new TabDataBrowserStorageHandler(tabs).Process();
+            new TabDataBrowserStorageHandler(length).Process();
         });
 }
+
+async function moveStorage() {
+    await browser.storage.local
+        .get({ version: 0 })
+        .then(async (data) => {
+            if (data.version == 0) {
+                console.log("Migrating local storage from version 0 to 1");
+
+                await migrateLocal0To1();
+            }
+        });
+
+
+    async function migrateLocal0To1(): Promise<void> {
+        return new Promise(resolve => {
+            browser.storage.sync
+                .get("tabData")
+                .then((data) => {
+                    browser.storage.local.set({ ["tabData"]: data["tabData"] });
+                    console.log("data was moved!");
+
+                    browser.storage.local
+                        .get("tabData")
+                        .then((newData) => {
+                            console.log("This data was readed back:", newData);
+                            if (JSON.stringify(newData) == JSON.stringify(data)) {
+                                console.log("Data valid!");
+                                browser.storage.sync
+                                    .remove("tabData")
+                                    .catch(console.error)
+                                    .then(() => {
+                                        console.log("OK");
+                                        browser.storage.local.set({ version: 1 })
+                                            .catch(console.error)
+                                            .then(() => {
+                                                console.log("OK!");
+                                                resolve();
+                                            }, console.warn);
+                                    }, console.warn);
+                            }
+                        });
+                });
+        });
+    }
+}
+moveStorage();
 
 // Informations about browser.storage.*
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/local
@@ -29,4 +75,4 @@ browser.tabs.onCreated.addListener((tab) => {
     updateCount(tab.id!, false);
 });
 
-updateCount(1, false);
+updateCount(null, false);

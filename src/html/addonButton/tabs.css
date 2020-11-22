@@ -24,3 +24,19 @@ a {
 .panel {
   margin: 5px;
 }
+
+.marginTD {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.countDisplay {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 3px;
+}
+
+.justifyCenter {
+  justify-items: center;
+  text-align: center;
+}

@@ -12,7 +12,7 @@ export abstract class AbstractBrowserStorageHandler extends Disposer {
         const changedData = this.ProcessData(loadedData);
 
         if (changedData[this.storageNodeName] == null) {
-            if ((<any>loadedData).toSource() != (<any>changedData).toSource() || loadedData == changedData || true) {
+            if (JSON.stringify(loadedData) != JSON.stringify(changedData) || loadedData == changedData || true) {
                 this.SaveData(changedData);
             } else {
                 if (this.verboseLogging)
@@ -28,7 +28,7 @@ export abstract class AbstractBrowserStorageHandler extends Disposer {
     private LoadDataAsync(): Promise<browser.storage.StorageValue> {
         this.CheckOrThrowDisposed();
         return new Promise(resolve => {
-            browser.storage.sync
+            browser.storage.local
                 .get(this.storageNodeName)
                 .then((data) => {
                     if (this.verboseLogging)
@@ -47,7 +47,7 @@ export abstract class AbstractBrowserStorageHandler extends Disposer {
         this.CheckOrThrowDisposed();
         if (this.verboseLogging)
             WriteLog(`Save Data: ${this.storageNodeName}`, data);
-        browser.storage.sync.set({ [this.storageNodeName]: data });
+        browser.storage.local.set({ [this.storageNodeName]: data });
     }
 
     protected abstract ProcessData(data: browser.storage.StorageValue): any;

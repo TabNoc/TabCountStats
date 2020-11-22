@@ -2,27 +2,10 @@ import { WindowsHandler } from "./WindowsHander";
 
 let windowsHandler = new WindowsHandler();
 
-function firstUnpinnedTab(tabs: browser.tabs.Tab[]) {
-	for (var tab of tabs) {
-		if (!tab.pinned) {
-			return tab.index;
-		}
-	}
-	return null;
-}
-
 function onLoad() {
-	getCurrentWindowTabs().then((tabs) => {
-		let countDiv = document.getElementById("tabs-activeWindow-count");
-		if (countDiv != null) {
-			countDiv.innerText = tabs.length.toString();
-		}
-	});
-	/**
-	 * listTabs to switch to
-	 */
-
-	windowsHandler.populateHTML("tabs-windowContainer");
+	windowsHandler.populateWindowContainer("tabs-windowContainer");
+	windowsHandler.populateWindowCount("tabs-windowCount");
+	windowsHandler.populateCurrentWindowTabCount("tabs-currentWindowTabCount");
 }
 
 document.addEventListener("DOMContentLoaded", onLoad);
@@ -59,7 +42,7 @@ document.addEventListener("click", (e: MouseEvent) => {
 		browser.storage.sync.get().then((data) => { console.log(data); });
 	}
 	else if (target.id === "tabs-readdata") {
-		browser.storage.sync.get().then((data) => { console.log(data); });
+		browser.storage.local.get().then((data) => { console.log(data); });
 	}
 
 	else if (target.id === "tabs-alertinfo") {

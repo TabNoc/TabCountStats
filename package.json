@@ -10,7 +10,8 @@
     "web-ext-types": "github:kelseasy/web-ext-types"
   },
   "scripts": {
-    "build": ".\\AppendJSExtensionToTypescriptImports.lnk"
+    "build": "tsc --build --force tsconfig.json",
+    "postbuild": ".\\AppendJSExtensionToTypescriptImports.lnk"
   },
   "dependencies": {}
 }
