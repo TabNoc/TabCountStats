@@ -62,6 +62,7 @@ export class WindowsHandler {
                         const link = document.createElement("a");
                         link.setAttribute("class", "windowLink");
                         link.href = "#";
+                        link.onclick = () => this.switchToWindow(window.id!);
                         link.appendChild(this.getHighlitedHTML((window as any).title as string, searchString));
                         link.id = changeWindowId;
                         link.setAttribute(windowIdAttribute, window.id.toString());
@@ -74,7 +75,7 @@ export class WindowsHandler {
     }
     getHighlitedHTML(baseText: string, searchString: string | null): HTMLParagraphElement {
         let paragraph = document.createElement("p");
-        
+
         if (searchString != null && baseText.includes(searchString) == true) {
             baseText.split(searchString).forEach((textSegment, index, array) => {
                 if (array.length > index && index > 0) {
