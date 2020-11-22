@@ -101,7 +101,7 @@ export class WindowsHandler {
 
     private sortedWindows(windows: browser.windows.Window[], searchString: string | null): browser.windows.Window[] {
         return windows
-            .filter((window) => searchString == null || (<string>(<any>window).title).includes(searchString))
+            .filter((window) => searchString == null || (<string>(<any>window).title).toLowerCase().includes(searchString.toLowerCase()))
             .sort((firstWindow, secondWindow) => this.sortByWindowTitle(firstWindow, secondWindow));
     }
 
