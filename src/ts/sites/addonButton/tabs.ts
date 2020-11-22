@@ -3,9 +3,11 @@ import { WindowsHandler } from "./WindowsHander";
 let windowsHandler = new WindowsHandler();
 
 function onLoad() {
-	windowsHandler.populateWindowContainer("tabs-windowContainer");
+	windowsHandler.populateWindowContainer();
 	windowsHandler.populateWindowCount("tabs-windowCount");
 	windowsHandler.populateCurrentWindowTabCount("tabs-currentWindowTabCount");
+
+	windowsHandler.registerWindowSearchEvent("tab-searchWindowInput");
 }
 
 document.addEventListener("DOMContentLoaded", onLoad);
@@ -46,7 +48,7 @@ document.addEventListener("click", (e: MouseEvent) => {
 	}
 
 	else if (target.id === "tabs-alertinfo") {
-		browser.tabs.create({url:'tabs.html'});
+		browser.tabs.create({ url: 'tabs.html' });
 		callOnActiveTab((tab: any) => {
 			let props = "";
 			for (let item in tab) {
@@ -67,7 +69,7 @@ document.addEventListener("click", (e: MouseEvent) => {
 			OpenRandomTabFromQuery(tabs);
 		});
 	}
-	else if(windowsHandler.processClickEvent(target)){
+	else if (windowsHandler.processClickEvent(target)) {
 		// handled inside WindowsHandler
 	}
 

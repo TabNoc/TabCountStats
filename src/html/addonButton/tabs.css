@@ -1,4 +1,9 @@
-html, body {
+/*
+implicit usage of https://github.com/FirefoxUX/StyleGuide/tree/master/src/styles
+*/
+
+html,
+body {
   width: 100%;
 }
 
@@ -39,4 +44,25 @@ a {
 .justifyCenter {
   justify-items: center;
   text-align: center;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-text {
+  padding: 16px;
+  align-self: center;
+  font-size: 1.385em;
+  font-weight: lighter;
+}
+
+.highlited {
+  background-color: orange
+}
+
+.windowLink > p {
+  margin-top: 0px;
+  margin-bottom: 0px;
 }

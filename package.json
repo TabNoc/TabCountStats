@@ -6,7 +6,7 @@
     "name": ""
   },
   "devDependencies": {
-    "typescript": "^3.5.1",
+    "typescript": "latest",
     "web-ext-types": "github:kelseasy/web-ext-types"
   },
   "scripts": {
