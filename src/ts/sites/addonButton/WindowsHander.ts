@@ -76,19 +76,22 @@ export class WindowsHandler {
     getHighlitedHTML(baseText: string, searchString: string | null): HTMLParagraphElement {
         let paragraph = document.createElement("p");
 
-        if (searchString != null && baseText.includes(searchString) == true) {
-            baseText.split(searchString).forEach((textSegment, index, array) => {
-                if (array.length > index && index > 0) {
-                    let elementSearchText = document.createElement("span");
-                    elementSearchText.className = "highlited";
-                    elementSearchText.innerText = searchString;
-                    paragraph.appendChild(elementSearchText);
-                }
+        if (searchString != null) {
+            let matches = baseText.match(new RegExp(searchString, "gi"));
+            if (matches != null && matches.length > 0) {
+                matches.forEach((textSegment, index, array) => {
+                    if (array.length > index && index > 0) {
+                        let elementSearchText = document.createElement("span");
+                        elementSearchText.className = "highlited";
+                        elementSearchText.innerText = searchString;
+                        paragraph.appendChild(elementSearchText);
+                    }
 
-                let element = document.createElement("span");
-                element.innerText = textSegment;
-                paragraph.appendChild(element);
-            });
+                    let element = document.createElement("span");
+                    element.innerText = textSegment;
+                    paragraph.appendChild(element);
+                });
+            }
         }
         else {
             paragraph.innerText = baseText;
