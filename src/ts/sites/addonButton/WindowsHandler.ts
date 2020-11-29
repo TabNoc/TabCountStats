@@ -105,6 +105,9 @@ export class WindowsHandler {
                 let priority: number = 1;
                 try {
                     priority = parseInt(prompt("Wich priority has this window? (higher number -> higher position)", "1")!);
+                    if (Number.isNaN(priority)) {
+                        return; // do not add if no valid input
+                    }
                 } catch (error) {
                     console.warn(error);
                 }
