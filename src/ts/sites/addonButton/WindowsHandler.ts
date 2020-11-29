@@ -69,7 +69,7 @@ export class WindowsHandler {
                     if (window.id != null) {
                         const entry = document.createElement("div");
                         entry.setAttribute("class", "windowEntryWrapper");
-                        entry.appendChild(this.createStarElement(window.id, storageMap.has(window.id), searchString));
+                        entry.appendChild(this.createStarElement(window.id, storageMap, searchString));
                         entry.appendChild(this.createWindowLink(window.id, (window as any).title as string, searchString));
 
                         container.appendChild(entry);
@@ -91,11 +91,18 @@ export class WindowsHandler {
         return link;
     }
 
-    private createStarElement(windowId: number, active: boolean, searchString: string | null): HTMLDivElement {
+    private createStarElement(windowId: number, storageMap: Map<number, number>, searchString: string | null): HTMLDivElement {
         let wrapper = document.createElement("div");
         let span = document.createElement("span");
+        let active = storageMap.has(windowId);
 
-        span.setAttribute("class", "star" + (active ? " active" : ""));
+        span.setAttribute("class", "star" + (active ? " active tooltip" : ""));
+        if (active) {
+            let tooltip = document.createElement("span");
+            tooltip.setAttribute("class", "tooltiptext tooltip-bottom");
+            tooltip.textContent = storageMap.get(windowId)!.toString();
+            span.appendChild(tooltip);
+        }
         span.addEventListener("click", (ev) => {
             if (active) {
                 this.storageHandler.RemoveWindow(windowId)
