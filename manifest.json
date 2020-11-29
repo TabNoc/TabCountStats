@@ -1,7 +1,7 @@
 {
   "applications": {
     "gecko": {
-      "strict_min_version": "58.0a1",
+      "strict_min_version": "79.0a1",
       "id": "TabStats@tabnoc.com"
     }
   },
