@@ -87,7 +87,7 @@ export class WindowsHandler {
         link.id = changeWindowId;
 
         link.addEventListener("click", (ev) => this.switchToWindow(windowId));
-        link.appendChild(this.getHighlitedHTML(windowTitle, searchString));
+        link.appendChild(this.getHighlightedHTML(windowTitle, searchString));
         return link;
     }
 
@@ -118,17 +118,33 @@ export class WindowsHandler {
 
         return wrapper;
     }
-    private getHighlitedHTML(baseText: string, searchString: string | null): HTMLParagraphElement {
+    private getHighlightedHTML(baseText: string, searchString: string | null): HTMLParagraphElement {
         let paragraph = document.createElement("p");
+        let result = baseText.match(new RegExp("^(.*?)(" + searchString + ")(.*)$", "i"));
 
-        if (searchString != null) {
+        if (searchString != null && result != null) {
+            let start = document.createElement("span");
+            start.innerText = result[1];
+            paragraph.appendChild(start);
+
+            let searchText = document.createElement("span");
+            searchText.className = "highlighted";
+            searchText.innerText = result[2];
+            paragraph.appendChild(searchText);
+
+            let end = document.createElement("span");
+            end.innerText = result[3];
+            paragraph.appendChild(end);
+
+            /*
             paragraph.innerHTML = baseText.replace(new RegExp(searchString, "gi"), (match, offset, all) => {
                 let elementSearchText = document.createElement("span");
-                elementSearchText.className = "highlited";
+                elementSearchText.className = "highlighted";
                 elementSearchText.innerText = match;
 
                 return elementSearchText.outerHTML;
             });
+            */
         }
         else {
             paragraph.innerText = baseText;
