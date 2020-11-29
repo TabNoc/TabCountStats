@@ -1,4 +1,4 @@
-import { WindowsHandler } from "./WindowsHander";
+import { WindowsHandler } from "./WindowsHandler";
 
 let windowsHandler = new WindowsHandler();
 
