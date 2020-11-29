@@ -2,16 +2,22 @@ import { AbstractBrowserStorageHandler } from "./AbstractBrowserStorageHandler";
 import { TabDataBrowserStorage } from "../storage/TabDataBrowserStorage";
 
 export class TabDataBrowserStorageHandler extends AbstractBrowserStorageHandler {
-    constructor(private tabCount: number) {
+    constructor() {
         super("tabData", true);
     }
-    protected ProcessData(data: browser.storage.StorageValue): TabDataBrowserStorage {
-        const storageData = new TabDataBrowserStorage(data);
 
-        storageData.storage.addTabCount(this.tabCount);
+    /**
+     * processTabCount
+     */
+    public ProcessTabCount(tabCount: number) {
+        this.Process(data => {
+            const storageData = new TabDataBrowserStorage(data);
 
-        storageData.BadgeProvider.applyBadgeColor(this.tabCount);
+            storageData.storage.addTabCount(tabCount);
 
-        return storageData;
+            storageData.BadgeProvider.applyBadgeColor(tabCount);
+
+            return storageData;
+        });
     }
 }

@@ -1,15 +1,16 @@
 import { WriteError, WriteLog } from "../../stuff/General";
-import { Disposer } from "../../stuff/Disposer";
 
-export abstract class AbstractBrowserStorageHandler extends Disposer {
+export abstract class AbstractBrowserStorageHandler {
     constructor(private storageNodeName: string, private verboseLogging: boolean = true) {
-        super();
+
     }
 
-    public async Process() {
-        this.CheckOrThrowDisposed();
+    protected async Process(processor: ((data: browser.storage.StorageValue) => any | null)): Promise<void> {
         const loadedData = await this.LoadDataAsync();
-        const changedData = this.ProcessData(loadedData);
+        const changedData = processor(loadedData);
+        if (changedData == null) {
+            return;
+        }
 
         if (changedData[this.storageNodeName] == null) {
             if (JSON.stringify(loadedData) != JSON.stringify(changedData) || loadedData == changedData || true) {
@@ -22,11 +23,9 @@ export abstract class AbstractBrowserStorageHandler extends Disposer {
         else {
             throw "BrowserStorageHandler.ProcessData returned wrong datastructure";
         }
-        this.dispose();
     }
 
     private LoadDataAsync(): Promise<browser.storage.StorageValue> {
-        this.CheckOrThrowDisposed();
         return new Promise(resolve => {
             browser.storage.local
                 .get(this.storageNodeName)
@@ -44,11 +43,8 @@ export abstract class AbstractBrowserStorageHandler extends Disposer {
     }
 
     private SaveData(data: browser.storage.StorageValue) {
-        this.CheckOrThrowDisposed();
         if (this.verboseLogging)
             WriteLog(`Save Data: ${this.storageNodeName}`, data);
         browser.storage.local.set({ [this.storageNodeName]: data });
     }
-
-    protected abstract ProcessData(data: browser.storage.StorageValue): any;
 }

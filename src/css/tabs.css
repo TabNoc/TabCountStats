@@ -1,10 +1,51 @@
 /*
 implicit usage of https://github.com/FirefoxUX/StyleGuide/tree/master/src/styles
 */
-
+/*https://www.flaticon.com/de/kostenloses-icon/star_1828961*/
 html,
 body {
   width: 100%;
+}
+
+.star .starWrap {
+  margin: 0;
+  padding: 0;
+}
+
+.starWrap {
+  border-radius: 50%;
+  display: inline-block;
+  height: 1.5em;
+  width: 1.5em;
+  box-sizing: unset;
+  text-align: center;
+}
+
+.starWrap:hover {
+  background-color: #e5e5e5;
+}
+
+.star::before {
+  /*★*/
+  /*https://estelle.github.io/CSS-JS-Entity-Calculator/*/
+  content: '\2605';
+}
+
+.star {
+  color: #ccd6dd;
+  cursor: pointer;
+  text-align: center;
+}
+
+.star:hover,
+.star.active {
+  color: #ffac33;
+}
+
+.windowEntryWrapper {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 2em 1fr;
 }
 
 a {
@@ -62,7 +103,7 @@ a {
   background-color: orange
 }
 
-.windowLink > p {
+.windowLink>p {
   margin-top: 0px;
   margin-bottom: 0px;
 }
