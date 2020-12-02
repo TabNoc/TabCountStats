@@ -69,9 +69,6 @@ document.addEventListener("click", (e: MouseEvent) => {
 			OpenRandomTabFromQuery(tabs);
 		});
 	}
-	else if (windowsHandler.processClickEvent(target)) {
-		// handled inside WindowsHandler
-	}
 
 	e.preventDefault();
 });

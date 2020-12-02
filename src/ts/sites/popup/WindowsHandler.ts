@@ -1,11 +1,11 @@
-import { WindowFavDataStorageHandler } from "../../background/storageHandler/WindowFavDataStorageHandler";
+import { WindowFavoritePriorityRepository } from "../../background/storage/WindowFavoriteRepository";
 
 const changeWindowId = "tabs-changeWindow";
 const windowIdAttribute = "tabs-windowId";
 const windowContainerId = "tabs-windowContainer";
 
 export class WindowsHandler {
-    private storageHandler: WindowFavDataStorageHandler = new WindowFavDataStorageHandler();
+    private windowFavoriteRepository: WindowFavoritePriorityRepository = new WindowFavoritePriorityRepository();
     public registerWindowSearchEvent(targetId: string): void {
         document.getElementById(targetId)?.addEventListener("input", (ev) => {
             this.populateWindowContainer((<HTMLInputElement>ev.target).value);
@@ -33,16 +33,6 @@ export class WindowsHandler {
                 countDiv!.innerText = windows.length.toString();
             });
     }
-    public processClickEvent(target: HTMLElement): boolean {
-        if (target.id == changeWindowId) {
-            const attributeValue = target.getAttribute(windowIdAttribute);
-            if (attributeValue != null) {
-                this.switchToWindow(Number.parseInt(attributeValue));
-                return true;
-            }
-        }
-        return false;
-    }
     public switchToTab(choosenTab: browser.tabs.Tab): void {
         browser.tabs.update(choosenTab.id, {
             active: true
@@ -62,15 +52,13 @@ export class WindowsHandler {
                 container.removeChild(container.firstChild);
             }
 
-            let storageMap: Map<number, number> = await this.storageHandler.GetMap();
-
-            this.sortedWindows(windows, searchString, storageMap)
-                .forEach(window => {
-                    if (window.id != null) {
+            (await this.sortedWindows(windows, searchString))
+                .forEach(windowWrapper => {
+                    if (windowWrapper.window.id != null) {
                         const entry = document.createElement("div");
                         entry.setAttribute("class", "windowEntryWrapper");
-                        entry.appendChild(this.createStarElement(window.id, storageMap, searchString));
-                        entry.appendChild(this.createWindowLink(window.id, (window as any).title as string, searchString));
+                        entry.appendChild(this.createStarElement(windowWrapper.window.id, windowWrapper.priority, searchString));
+                        entry.appendChild(this.createWindowLink(windowWrapper.window.id, (windowWrapper as any).title as string, searchString));
 
                         container.appendChild(entry);
                     }
@@ -91,34 +79,37 @@ export class WindowsHandler {
         return link;
     }
 
-    private createStarElement(windowId: number, storageMap: Map<number, number>, searchString: string | null): HTMLDivElement {
+    private createStarElement(windowId: number, priority: number | undefined, searchString: string | null): HTMLDivElement {
         let wrapper = document.createElement("div");
         let span = document.createElement("span");
-        let active = storageMap.has(windowId);
 
-        span.setAttribute("class", "star" + (active ? " active tooltip" : ""));
-        if (active) {
+
+        if (priority != undefined) {
+            span.setAttribute("class", "star active tooltip");
             let tooltip = document.createElement("span");
             tooltip.setAttribute("class", "tooltiptext tooltip-bottom");
-            tooltip.textContent = storageMap.get(windowId)!.toString();
+            tooltip.textContent = priority.toString();
             span.appendChild(tooltip);
         }
+        else {
+            span.setAttribute("class", "star");
+        }
         span.addEventListener("click", (ev) => {
-            if (active) {
-                this.storageHandler.RemoveWindow(windowId)
+            if (priority != undefined) {
+                this.windowFavoriteRepository.removeWindowFavoritePriority(windowId)
                     .then(() => this.populateWindowContainer(searchString));
             }
             else {
-                let priority: number = 1;
+                let newPriority: number = 1;
                 try {
-                    priority = parseInt(prompt("Wich priority has this window? (higher number -> higher position)", "1")!);
-                    if (Number.isNaN(priority)) {
+                    newPriority = parseInt(prompt("Wich priority has this window? (higher number -> higher position)", "1")!);
+                    if (Number.isNaN(newPriority)) {
                         return; // do not add if no valid input
                     }
                 } catch (error) {
                     console.warn(error);
                 }
-                this.storageHandler.AddWindow(windowId, priority)
+                this.windowFavoriteRepository.saveWindowFavoritePriority(windowId, newPriority)
                     .then(() => this.populateWindowContainer(searchString));
             }
         });
@@ -145,16 +136,6 @@ export class WindowsHandler {
             let end = document.createElement("span");
             end.innerText = result[3];
             paragraph.appendChild(end);
-
-            /*
-            paragraph.innerHTML = baseText.replace(new RegExp(searchString, "gi"), (match, offset, all) => {
-                let elementSearchText = document.createElement("span");
-                elementSearchText.className = "highlighted";
-                elementSearchText.innerText = match;
-
-                return elementSearchText.outerHTML;
-            });
-            */
         }
         else {
             paragraph.innerText = baseText;
@@ -162,14 +143,22 @@ export class WindowsHandler {
         return paragraph;
     }
 
-    constructor() {
+    private async sortedWindows(windows: browser.windows.Window[], searchString: string | null): Promise<FavoriteWindowWrapper[]> {
+        let filteredWindows = windows
+            .filter((window) => window.id != null && (searchString == null || (<string>(<any>window).title).toLowerCase().includes(searchString.toLowerCase())));
 
-    }
+        let storageMap = new Map<number, number>();
 
-    private sortedWindows(windows: browser.windows.Window[], searchString: string | null, storageMap: Map<number, number>): browser.windows.Window[] {
-        return windows
-            .filter((window) => window.id != null && (searchString == null || (<string>(<any>window).title).toLowerCase().includes(searchString.toLowerCase())))
-            .sort((firstWindow, secondWindow) => this.sortWindows(firstWindow, secondWindow, storageMap));
+        await Promise.all(filteredWindows.map((window) => {
+            return new Promise(async (resolve) => {
+                storageMap.set(window.id!, await this.windowFavoriteRepository.getWindowFavoritePriority(window.id!));
+                resolve(null);
+            })
+        }));
+
+        return filteredWindows
+            .sort((firstWindow, secondWindow) => this.sortWindows(firstWindow, secondWindow, storageMap))
+            .map((window) => new FavoriteWindowWrapper(window, storageMap.get(window.id!)));
     }
 
     private sortWindows(firstWindow: browser.windows.Window, secondWindow: browser.windows.Window, storageMap: Map<number, number>): number {
@@ -205,4 +194,8 @@ export class WindowsHandler {
         }
         return 1;
     }
+}
+
+class FavoriteWindowWrapper {
+    constructor(public window: browser.windows.Window, public priority: number | undefined) { }
 }

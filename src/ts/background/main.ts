@@ -1,5 +1,4 @@
 ﻿import { TabDataBrowserStorageHandler } from "./storageHandler/TabDataBrowserStorageHandler";
-import { WindowFavDataStorageHandler } from "./storageHandler/WindowFavDataStorageHandler";
 
 function updateCount(tabId: number | null, isOnRemoved: boolean) {
     browser.tabs.query({})
@@ -71,10 +70,6 @@ moveStorage();
 
 browser.tabs.onRemoved.addListener((tabId) => {
     updateCount(tabId, true);
-    
-	browser.windows.getAll().then((windows) => {
-        new WindowFavDataStorageHandler().CleanupWindows(windows);
-    });
 });
 browser.tabs.onCreated.addListener((tab) => {
     updateCount(tab.id!, false);
