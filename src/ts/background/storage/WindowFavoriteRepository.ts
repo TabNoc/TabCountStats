@@ -3,10 +3,10 @@ const sessionStorageNames = {
 };
 
 export class WindowFavoritePriorityRepository {
-    public async getWindowFavoritePriority(windowId: number) {
+    public async getWindowFavoritePriority(windowId: number): Promise<number | undefined> {
         const favoritePriority = await browser.sessions.getWindowValue(windowId, sessionStorageNames.windowFavoritePriority);
 
-        return Number.parseInt(<string>favoritePriority);
+        return favoritePriority == undefined ? undefined : Number.parseInt(<string>favoritePriority);
     }
 
     public async saveWindowFavoritePriority(currentWindowId: number, favoritePriority: number) {

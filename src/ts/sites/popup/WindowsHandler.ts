@@ -58,7 +58,7 @@ export class WindowsHandler {
                         const entry = document.createElement("div");
                         entry.setAttribute("class", "windowEntryWrapper");
                         entry.appendChild(this.createStarElement(windowWrapper.window.id, windowWrapper.priority, searchString));
-                        entry.appendChild(this.createWindowLink(windowWrapper.window.id, (windowWrapper as any).title as string, searchString));
+                        entry.appendChild(this.createWindowLink(windowWrapper.window.id, (windowWrapper.window as any).title as string, searchString));
 
                         container.appendChild(entry);
                     }
@@ -147,7 +147,7 @@ export class WindowsHandler {
         let filteredWindows = windows
             .filter((window) => window.id != null && (searchString == null || (<string>(<any>window).title).toLowerCase().includes(searchString.toLowerCase())));
 
-        let storageMap = new Map<number, number>();
+        let storageMap = new Map<number, number | undefined>();
 
         await Promise.all(filteredWindows.map((window) => {
             return new Promise(async (resolve) => {
@@ -161,13 +161,16 @@ export class WindowsHandler {
             .map((window) => new FavoriteWindowWrapper(window, storageMap.get(window.id!)));
     }
 
-    private sortWindows(firstWindow: browser.windows.Window, secondWindow: browser.windows.Window, storageMap: Map<number, number>): number {
+    private sortWindows(firstWindow: browser.windows.Window, secondWindow: browser.windows.Window, storageMap: Map<number, number | undefined>): number {
         const firstTitle: string = (<any>firstWindow).title;
         const secondTitle: string = (<any>secondWindow).title;
 
         const firstWindowId = (firstWindow.id!);
         const secondWindowId = (secondWindow.id!);
-        if (storageMap.has(firstWindowId) && storageMap.has(secondWindowId)) {
+
+        const hasFirstWindow = storageMap.get(firstWindowId) != undefined;
+        const hasSecondWindow = storageMap.get(secondWindowId) != undefined;
+        if (hasFirstWindow && hasSecondWindow) {
             if (storageMap.get(firstWindowId)! > storageMap.get(secondWindowId)!) {
                 return -1;
             }
@@ -175,10 +178,10 @@ export class WindowsHandler {
                 return 1;
             }
         }
-        else if (storageMap.has(firstWindowId) && storageMap.has(secondWindowId) == false) {
+        else if (hasFirstWindow && hasSecondWindow == false) {
             return -1;
         }
-        else if (storageMap.has(firstWindowId) == false && storageMap.has(secondWindowId)) {
+        else if (hasFirstWindow == false && hasSecondWindow) {
             return 1;
         }
 
