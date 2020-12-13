@@ -45,25 +45,31 @@ export class WindowsHandler {
         });
     }
 
-    public populateWindowContainer(searchString: string | null = null): void {
-        browser.windows.getAll().then(async (windows) => {
-            let container = document.getElementById(windowContainerId)!;
-            while (container.firstChild != null) {
-                container.removeChild(container.firstChild);
-            }
+    public async populateWindowContainer(searchString: string | null = null): Promise<void> {
+        let windows = await browser.windows.getAll()
+        let currentWindowId = (await browser.windows.getCurrent()).id;
+        let container = document.getElementById(windowContainerId)!;
 
-            (await this.sortedWindows(windows, searchString))
-                .forEach(windowWrapper => {
-                    if (windowWrapper.window.id != null) {
-                        const entry = document.createElement("div");
-                        entry.setAttribute("class", "windowEntryWrapper");
-                        entry.appendChild(this.createStarElement(windowWrapper.window.id, windowWrapper.priority, searchString));
-                        entry.appendChild(this.createWindowLink(windowWrapper.window.id, (windowWrapper.window as any).title as string, searchString));
+        while (container.firstChild != null) {
+            container.removeChild(container.firstChild);
+        }
+        (await this.sortedWindows(windows, searchString))
+            .forEach(windowWrapper => {
+                if (windowWrapper.window.id != null) {
+                    const entry = document.createElement("div");
+                    entry.setAttribute("class", "windowEntryWrapper");
+                    entry.appendChild(this.createStarElement(windowWrapper.window.id, windowWrapper.priority, searchString));
+                    entry.appendChild(this.createWindowLink(windowWrapper.window.id, windowWrapper.getAdjustedTitle(), searchString));
 
+                    if (windowWrapper.window.id == currentWindowId) {
+                        entry.classList.add("currentWindowEntryWrapper")
+                        container.insertBefore(entry, container.firstChild);
+                    }
+                    else {
                         container.appendChild(entry);
                     }
-                });
-        });
+                }
+            });
     }
 
     private createWindowLink(windowId: number, windowTitle: string, searchString: string | null) {
@@ -201,4 +207,16 @@ export class WindowsHandler {
 
 class FavoriteWindowWrapper {
     constructor(public window: browser.windows.Window, public priority: number | undefined) { }
+
+    public getAdjustedTitle(): string {
+        let orgTitle: string = (<any>this.window).title;
+
+        if (orgTitle.substring(orgTitle.lastIndexOf(" - ")).toLowerCase().includes("firefox")) {
+            return orgTitle.slice(0, orgTitle.lastIndexOf(" - "));
+        }
+        else {
+            return orgTitle;
+        }
+
+    }
 }
