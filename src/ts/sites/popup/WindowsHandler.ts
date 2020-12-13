@@ -214,9 +214,11 @@ class FavoriteWindowWrapper {
         if (orgTitle.substring(orgTitle.lastIndexOf(" - ")).toLowerCase().includes("firefox")) {
             return orgTitle.slice(0, orgTitle.lastIndexOf(" - "));
         }
+        else if (orgTitle.substring(orgTitle.lastIndexOf(" — ")).toLowerCase().includes("firefox")) {
+            return orgTitle.slice(0, orgTitle.lastIndexOf(" — "));
+        }
         else {
             return orgTitle;
         }
-
     }
 }
