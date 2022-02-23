@@ -70,8 +70,49 @@ document.addEventListener("click", (e: MouseEvent) => {
 		});
 	}
 
+	else if (target.id === "tabs-activate-least-tabs") {
+		ActivateWindowWithLeastTabs();
+	}
+
 	e.preventDefault();
 });
+
+async function ActivateWindowWithLeastTabs(): Promise<void> {
+	let windows = await browser.windows.getAll({ populate: true });
+
+	let windowIdFromUnnamedWindows: number | null = GetWindowIdWithLeastTabs(windows.filter(window => (window as any).title[0] != "["));
+	let windowIdFromAllWindows: number | null = GetWindowIdWithLeastTabs(windows);
+
+	let windowId: number;
+	if (windowIdFromUnnamedWindows === null) {
+		windowId = windowIdFromAllWindows as number;
+	} else {
+		windowId = windowIdFromUnnamedWindows;
+	}
+
+	let tabs = await browser.tabs.query({ windowId: windowId });
+
+	console.log(windowId, JSON.parse(JSON.stringify(tabs)));
+
+	OpenRandomTabFromQuery(tabs);
+}
+
+function GetWindowIdWithLeastTabs(windows: browser.windows.Window[]): number | null {
+	let windowElements: [number, number][] = windows
+		.map((window) => [window.id, window.tabs?.length])
+		.filter(tuple => tuple[0] != null && tuple[1] != null) as [number, number][];
+
+	console.log(JSON.parse(JSON.stringify(windowElements)));
+
+	let minTabCount: number = Math.min.apply(Math, windowElements.map(tuple => tuple[1]));
+
+
+	let windowIds: number[] = windowElements
+		.filter(element => element[1] == minTabCount)
+		.map(element => element[0]);
+
+	return windowIds.length > 0 ? windowIds[0] : null;
+}
 
 function OpenRandomTabFromQuery(tabs: browser.tabs.Tab[]) {
 	const choosenTab = tabs[Math.floor(Math.random() * tabs.length)];
