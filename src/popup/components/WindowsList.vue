@@ -8,13 +8,16 @@ import { WindowFavoritePriorityRepository } from '~/old/ts/background/storage/Wi
 const props = defineProps<{
 	searchString: string
 }>();
+const emit = defineEmits<{
+	(e: 'switchToWindow', id?: number): void
+}>();
 const windows: Ref<null | WindowWrapper[]> = ref(null);
 const windowFavoriteRepository: WindowFavoritePriorityRepository = new WindowFavoritePriorityRepository();
-const sortedWindows = computed((): WindowWrapper[] => {
+const filteredWindows = computed((): WindowWrapper[] => {
 	return windows.value
 		?.filter(_ =>
 			props.searchString == null
-            || _.window.title?.toLowerCase().includes(props.searchString.toLocaleLowerCase()))
+            || _.title.toLowerCase().includes(props.searchString.toLocaleLowerCase()))
 		.sort((a, b) => a.isCurrentWindow ? -1 : 1)
         ?? [];
 });
@@ -38,19 +41,24 @@ function removePriority(windowId: number) {
 		.removeWindowFavoritePriority(windowId)
 		.then(update);
 }
+
+function switchToWindow(windowId?: number) {
+	emit('switchToWindow', windowId);
+}
 </script>
 
 <template>
   <div id="tabs-windowContainer" />
   <WindowEntry
-    v-for="aWindow in sortedWindows"
+    v-for="aWindow in filteredWindows"
     :key="aWindow.window.id"
-    :title="aWindow.window.title ?? ''"
+    :title="aWindow.title ?? ''"
     :priority="aWindow.priority"
     :window-id="aWindow.window.id ?? 0"
     :is-current-window="aWindow.isCurrentWindow"
     :search-string="searchString"
     @set-priority="setPriority"
     @remove-priority="removePriority"
+    @switch-to-window="switchToWindow"
   />
 </template>

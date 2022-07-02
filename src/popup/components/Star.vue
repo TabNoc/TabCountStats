@@ -2,17 +2,16 @@
 
 const props = defineProps<{
 	priority?: number
-	windowId: number
 }>();
 
 const emit = defineEmits<{
-	(e: 'setPriority', windowId: number, newPriority: number): void
-	(e: 'removePriority', windowId: number): void
+	(e: 'setPriority', newPriority: number): void
+	(e: 'removePriority'): void
 }>();
 
 function setNewPriority() {
 	if (props.priority !== undefined) {
-		emit('removePriority', props.windowId);
+		emit('removePriority');
 	}
 	else {
 		let newPriority = 1;
@@ -30,7 +29,7 @@ function setNewPriority() {
 		catch (error) {
 			console.warn(error);
 		}
-		emit('setPriority', props.windowId, newPriority);
+		emit('setPriority', newPriority);
 	}
 }
 </script>

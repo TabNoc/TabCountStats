@@ -22,6 +22,7 @@ export async function getWindows(windowFavoriteRepository: WindowFavoritePriorit
 	return filteredWindows
 		.map(window => ({
 			window,
+			title: adjustTitle(window.title ?? ''),
 			priority: storageMap.get(window.id!),
 			isCurrentWindow: window.id === currentWindowId,
 		}))
@@ -31,8 +32,23 @@ export async function getWindows(windowFavoriteRepository: WindowFavoritePriorit
 
 export interface WindowWrapper {
 	window: Windows.Window
+	title: string
 	priority: number | undefined
 	isCurrentWindow: boolean
+}
+
+function adjustTitle(orgTitle: string): string {
+	const delimiters = [' - ', ' — '];
+
+	for (const delimiter of delimiters) {
+		if (orgTitle.includes(delimiter)
+			&& orgTitle
+				.substring(orgTitle.lastIndexOf(delimiter))
+				.toLowerCase()
+				.includes('firefox'))
+			return orgTitle.slice(0, orgTitle.lastIndexOf(delimiter));
+	}
+	return orgTitle;
 }
 
 function sortWindows(

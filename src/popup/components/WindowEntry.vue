@@ -16,38 +16,12 @@ const emit = defineEmits<{
 	(e: 'removePriority', windowId: number): void
 }>();
 
-const adjustedTitle = computed(() => {
-	const orgTitle: string = props.title;
-
-	if (orgTitle
-		.substring(orgTitle.lastIndexOf(' - '))
-		.toLowerCase()
-		.includes('firefox')
-	)
-		return orgTitle.slice(0, orgTitle.lastIndexOf(' - '));
-	else if (orgTitle
-		.substring(orgTitle.lastIndexOf(' — '))
-		.toLowerCase()
-		.includes('firefox')
-	)
-		return orgTitle.slice(0, orgTitle.lastIndexOf(' — '));
-	else if (orgTitle
-		.substring(orgTitle.lastIndexOf(' — '))
-		.toLowerCase()
-		.includes('firefox')
-	)
-		return orgTitle.slice(0, orgTitle.lastIndexOf(' — '));
-
-	else
-		return orgTitle;
-});
-
-function setPriority(windowId: number, newPriority: number) {
-	emit('setPriority', windowId, newPriority);
+function setPriority(newPriority: number) {
+	emit('setPriority', props.windowId, newPriority);
 }
 
-function removePriority(windowId: number) {
-	emit('removePriority', windowId);
+function removePriority() {
+	emit('removePriority', props.windowId);
 }
 </script>
 
@@ -57,7 +31,6 @@ function removePriority(windowId: number) {
     :class="{ currentWindowEntryWrapper: props.isCurrentWindow }"
   >
     <Star
-      :window-id="props.windowId"
       :priority="props.priority"
       @remove-priority="removePriority"
       @set-priority="setPriority"
@@ -70,7 +43,7 @@ function removePriority(windowId: number) {
       @click="emit('switchToWindow', props.windowId)"
     >
       <HighlightedText
-        :base-text="adjustedTitle"
+        :base-text="props.title"
         :search-string="searchString"
       />
     </a>

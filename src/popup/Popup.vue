@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Tabs, Windows } from 'webextension-polyfill';
-import { WindowsHandler } from './WindowsHandler';
+import type { Ref } from 'vue';
 import WindowsList from './components/WindowsList.vue';
 import { storageDemo } from '~/logic/storage';
 
@@ -8,16 +8,32 @@ function openOptionsPage() {
 	browser.runtime.openOptionsPage();
 }
 
-const windowsHandler = new WindowsHandler();
+const searchText: Ref<string> = ref('');
 
 function onLoad() {
-	windowsHandler.populateWindowContainer();
-	windowsHandler.populateWindowCount('tabs-windowCount');
-	windowsHandler.populateCurrentWindowTabCount('tabs-currentWindowTabCount');
-
-	windowsHandler.registerWindowSearchEvent('tab-searchWindowInput');
+	populateWindowCount('tabs-windowCount');
+	populateCurrentWindowTabCount('tabs-currentWindowTabCount');
 }
 
+function populateCurrentWindowTabCount(targetId: string): void {
+	const countDiv = document.getElementById(targetId);
+	if (countDiv == null)
+		return;
+
+	browser.tabs.query({ currentWindow: true }).then((tabs) => {
+		countDiv!.innerText = tabs.length.toString();
+	});
+}
+
+function populateWindowCount(targetId: string): void {
+	const countDiv = document.getElementById(targetId);
+	if (countDiv == null)
+		return;
+
+	browser.windows.getAll().then((windows) => {
+		countDiv!.innerText = windows.length.toString();
+	});
+}
 document.addEventListener('DOMContentLoaded', onLoad);
 
 function getCurrentWindowTabs() {
@@ -130,7 +146,23 @@ function GetWindowIdWithLeastTabs(
 
 function OpenRandomTabFromQuery(tabs: Tabs.Tab[]) {
 	const choosenTab = tabs[Math.floor(Math.random() * tabs.length)];
-	windowsHandler.switchToTab(choosenTab);
+	switchToTab(choosenTab);
+}
+function switchToWindow(windowId?: number) {
+	if (windowId !== undefined) {
+		browser.windows.update(windowId, {
+			focused: true,
+		});
+	}
+}
+
+function switchToTab(choosenTab: Tabs.Tab): void {
+	if (choosenTab.windowId !== undefined) {
+		browser.tabs.update(choosenTab.id, {
+			active: true,
+		});
+		switchToWindow(choosenTab.windowId);
+	}
 }
 </script>
 
@@ -155,7 +187,13 @@ function OpenRandomTabFromQuery(tabs: Tabs.Tab[]) {
         <div>Tabs-tabs-tabs</div>
       </div>
       <div class="header-text">
-        <input id="tab-searchWindowInput" type="text" placeholder="search for window title" autofocus>
+        <input
+          id="tab-searchWindowInput"
+          v-model="searchText"
+          type="text"
+          placeholder="search for window title"
+          autofocus
+        >
       </div>
     </div>
 
@@ -176,7 +214,10 @@ function OpenRandomTabFromQuery(tabs: Tabs.Tab[]) {
     </div>
     <div class="panel-section-separator" />
 
-    <WindowsList search-string="M" />
+    <WindowsList
+      :search-string="searchText"
+      @switch-to-window="switchToWindow"
+    />
 
     <div class="panel-section-separator" />
 
