@@ -11,7 +11,7 @@ export class WindowsHandler {
 
 	public registerWindowSearchEvent(targetId: string): void {
 		document.getElementById(targetId)?.addEventListener('input', (ev) => {
-			this.populateWindowContainer((<HTMLInputElement>ev.target).value);
+			this.populateWindowContainer((ev.target as HTMLInputElement).value);
 		});
 	}
 
@@ -60,36 +60,35 @@ export class WindowsHandler {
 		while (container.firstChild != null)
 			container.removeChild(container.firstChild);
 
-		(await this.sortedWindows(windows, searchString)).forEach(
-			(windowWrapper) => {
-				if (windowWrapper.window.id != null) {
-					const entry = document.createElement('div');
-					entry.setAttribute('class', 'windowEntryWrapper');
-					entry.appendChild(
-						this.createStarElement(
-							windowWrapper.window.id,
-							windowWrapper.priority,
-							searchString,
-						),
-					);
-					entry.appendChild(
-						this.createWindowLink(
-							windowWrapper.window.id,
-							windowWrapper.getAdjustedTitle(),
-							searchString,
-						),
-					);
+		(await this.sortedWindows(windows, searchString))
+			.filter(_ => _.window.id != null)
+			.forEach((windowWrapper) => {
+				const entry = document.createElement('div');
+				entry.setAttribute('class', 'windowEntryWrapper');
+				entry.appendChild(
+					this.createStarElement(
+						windowWrapper.window.id!,
+						windowWrapper.priority,
+						searchString,
+					),
+				);
+				entry.appendChild(
+					this.createWindowLink(
+						windowWrapper.window.id!,
+						windowWrapper.getAdjustedTitle(),
+						searchString,
+					),
+				);
 
-					if (windowWrapper.window.id === currentWindowId) {
-						entry.classList.add('currentWindowEntryWrapper');
-						container.insertBefore(entry, container.firstChild);
-					}
-					else {
-						container.appendChild(entry);
-					}
+				if (windowWrapper.window.id === currentWindowId) {
+					entry.classList.add('currentWindowEntryWrapper');
+					container.insertBefore(entry, container.firstChild);
+				}
+				else {
+					container.appendChild(entry);
 				}
 			},
-		);
+			);
 	}
 
 	private createWindowLink(
