@@ -6,14 +6,10 @@ function updateCount(tabId: number | null, isOnRemoved: boolean) {
 
 		// onRemoved fires too early and the count is one too many.
 		// see https://bugzilla.mozilla.org/show_bug.cgi?id=1396758
-		if (
-			isOnRemoved
-      && tabId
-      && tabs
-      	.map((t) => {
-      		return t.id;
-      	})
-      	.includes(tabId)
+		if (isOnRemoved
+			&& tabId
+			&& tabs.map(t => t.id)
+				.includes(tabId)
 		)
 			length--;
 
@@ -25,7 +21,7 @@ function updateCount(tabId: number | null, isOnRemoved: boolean) {
 
 async function moveStorage() {
 	await browser.storage.local.get({ version: 0 }).then(async(data) => {
-		if (data.version == 0) {
+		if (data.version === 0) {
 			console.log('Migrating local storage from version 0 to 1');
 
 			await migrateLocal0To1();
@@ -40,7 +36,7 @@ async function moveStorage() {
 
 				browser.storage.local.get('tabData').then((newData) => {
 					console.log('This data was readed back:', newData);
-					if (JSON.stringify(newData) == JSON.stringify(data)) {
+					if (JSON.stringify(newData) === JSON.stringify(data)) {
 						console.log('Data valid!');
 						browser.storage.sync
 							.remove('tabData')

@@ -14,13 +14,13 @@ export function WriteLog(message?: any, ...optionalParams: any[]): void {
 	console.log('Log:', message, ...optionalParams);
 }
 
-function treatAsUTC(date: Date): number {
+function treatAsUTC(date: Date): Date {
 	const result = new Date(date);
 	result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
-	return <number>(<unknown>result);
+	return result;
 }
 
 export function GetDaysBetween(startDate: Date, endDate: Date) {
 	const millisecondsPerDay = 24 * 60 * 60 * 1000;
-	return (treatAsUTC(endDate) - treatAsUTC(startDate)) / millisecondsPerDay;
+	return (treatAsUTC(endDate).getTime() - treatAsUTC(startDate).getTime()) / millisecondsPerDay;
 }
