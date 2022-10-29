@@ -1,8 +1,11 @@
+import { exampleData } from './exampleData';
+
+// TODO: restructure Storage
 export class TabStorage {
 	tabCount: Record<string, number>;
 	ids: string[];
 	constructor(storageData: any | null) {
-		storageData = storageData || {};
+		storageData = exampleData.storage;
 		this.tabCount = storageData.tabCount || {};
 		this.ids = storageData.ids || [];
 	}
