@@ -1,4 +1,4 @@
-import { TabDataBrowserStorageHandler } from './storageHandler/TabDataBrowserStorageHandler';
+import TabCountStorage from '~/logic/TabCountStorage';
 
 function updateCount(tabId: number | null, isOnRemoved: boolean) {
 	browser.tabs.query({}).then((tabs) => {
@@ -15,7 +15,7 @@ function updateCount(tabId: number | null, isOnRemoved: boolean) {
 
 		browser.browserAction.setBadgeText({ text: length.toString() });
 
-		new TabDataBrowserStorageHandler().ProcessTabCount(length);
+		new TabCountStorage().setTabCount(length, null);
 	});
 }
 

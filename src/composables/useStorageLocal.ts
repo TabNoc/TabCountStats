@@ -4,10 +4,10 @@ import type {
 	RemovableRef,
 	StorageAsyncOptions,
 	StorageLikeAsync,
-} from '@vueuse/core';
+} from '@vueuse/core/index';
 import {
 	useStorageAsync,
-} from '@vueuse/core';
+} from '@vueuse/core/index';
 
 const storageLocal: StorageLikeAsync = {
 	removeItem(key: string) {
