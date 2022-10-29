@@ -1,11 +1,14 @@
 <script setup lang="ts">
+import Chart from './Chart.vue';
 import { storageDemo } from '~/logic/storage';
 
-const showchart = ref(true);
+const showchart = ref(false);
 </script>
 
 <template>
-  <main v-if="showchart" class="px-4 py-10 text-center text-gray-700 dark:text-gray-200 flex flex-col justify-between" />
+  <main v-if="showchart" class="px-4 py-10 text-center text-gray-700 dark:text-gray-200 flex flex-col justify-between">
+    <chart />
+  </main>
   <main v-else class="px-4 py-10 text-center text-gray-700 dark:text-gray-200 flex flex-col justify-between">
     <div>
       <img src="/assets/icon.svg" class="icon-btn mx-2 text-2xl" alt="extension icon">

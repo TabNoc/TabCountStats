@@ -4,10 +4,10 @@ export abstract class AbstractBrowserStorageHandler {
 	constructor(
 		private storageNodeName: string,
 		private verboseLogging: boolean = true,
-	) {}
+	) { }
 
 	protected async Process(
-		processor: (data: browser.storage.StorageValue) => any | null,
+		processor: (data: any) => any | null,
 	): Promise<void> {
 		const loadedData = await this.LoadDataAsync();
 		const changedData = processor(loadedData);
@@ -17,8 +17,8 @@ export abstract class AbstractBrowserStorageHandler {
 		if (changedData[this.storageNodeName] == null) {
 			if (
 				JSON.stringify(loadedData) != JSON.stringify(changedData)
-        || loadedData == changedData
-        || true
+				|| loadedData == changedData
+				|| true
 			)
 				this.SaveData(changedData);
 			else
@@ -26,11 +26,11 @@ export abstract class AbstractBrowserStorageHandler {
 				WriteLog('Nothing changed, saving skipped!');
 		}
 		else {
-			throw 'BrowserStorageHandler.ProcessData returned wrong datastructure';
+			throw new Error('BrowserStorageHandler.ProcessData returned wrong datastructure');
 		}
 	}
 
-	private LoadDataAsync(): Promise<browser.storage.StorageValue> {
+	private LoadDataAsync(): Promise<any> {
 		return new Promise((resolve) => {
 			browser.storage.local.get(this.storageNodeName).then((data) => {
 				if (this.verboseLogging) {
@@ -39,7 +39,7 @@ export abstract class AbstractBrowserStorageHandler {
 						data[this.storageNodeName],
 					);
 				}
-				resolve(data[this.storageNodeName]);
+				resolve(JSON.parse(data[this.storageNodeName] || ''));
 			}, this.OnLoadFail);
 		});
 	}
@@ -49,9 +49,9 @@ export abstract class AbstractBrowserStorageHandler {
 		throw new Error(reason);
 	}
 
-	private SaveData(data: browser.storage.StorageValue) {
+	private SaveData(data: any) {
 		if (this.verboseLogging)
 			WriteLog(`Save Data: ${this.storageNodeName}`, data);
-		browser.storage.local.set({ [this.storageNodeName]: data });
+		browser.storage.local.set({ [this.storageNodeName]: JSON.stringify(data) });
 	}
 }

@@ -3,8 +3,8 @@ import { BadgeProvider } from '../worker/BadgeProvider';
 export class TabDataBrowserStorage {
 	private static readonly CurrentVersion: number = 1;
 
-	constructor(data: browser.storage.StorageValue) {
-		const anyData = <any>data || {};
+	constructor(data: any) {
+		const anyData = data || {};
 		this.Version = anyData.Version || TabDataBrowserStorage.CurrentVersion;
 		this.storage = new TabStorage(anyData.storage || {});
 		this.BadgeProvider = new BadgeProvider(anyData.BadgeProvider);
