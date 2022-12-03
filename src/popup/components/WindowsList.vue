@@ -3,7 +3,7 @@ import type { Ref } from 'vue';
 import WindowEntry from './WindowEntry.vue';
 import type { WindowWrapper } from '~/logic/WindowsHelper';
 import { getWindows } from '~/logic/WindowsHelper';
-import { WindowFavoritePriorityRepository } from '~/old/ts/background/storage/WindowFavoriteRepository';
+import { WindowFavoritePriorityRepositoryV1 } from '~/logic/storage/WindowFavoritePriorityRepositoryV1';
 
 const props = defineProps<{
 	searchString: string
@@ -12,7 +12,7 @@ const emit = defineEmits<{
 	(e: 'switchToWindow', id?: number): void
 }>();
 const windows: Ref<null | WindowWrapper[]> = ref(null);
-const windowFavoriteRepository: WindowFavoritePriorityRepository = new WindowFavoritePriorityRepository();
+const windowFavoriteRepository: WindowFavoritePriorityRepositoryV1 = new WindowFavoritePriorityRepositoryV1();
 const filteredWindows = computed((): WindowWrapper[] => {
 	return windows.value
 		?.filter(_ =>
@@ -32,13 +32,13 @@ async function update() {
 
 function setPriority(windowId: number, newPriority: number) {
 	windowFavoriteRepository
-		.saveWindowFavoritePriority(windowId, newPriority)
+		.set(windowId, newPriority)
 		.then(update);
 }
 
 function removePriority(windowId: number) {
 	windowFavoriteRepository
-		.removeWindowFavoritePriority(windowId)
+		.remove(windowId)
 		.then(update);
 }
 

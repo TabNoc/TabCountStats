@@ -9,13 +9,14 @@ import {
 	useStorageAsync,
 } from '@vueuse/core/index';
 
-const storageLocal: StorageLikeAsync = {
+const browserStorageLocal: StorageLikeAsync = {
 	removeItem(key: string) {
 		return storage.local.remove(key);
 	},
 
-	setItem(key: string, value: string) {
-		return storage.local.set({ [key]: value });
+	async setItem(key: string, value: string) {
+		console.log('setItem', key, value);
+		return (await storage.local.set({ [key]: value }));
 	},
 
 	async getItem(key: string) {
@@ -23,8 +24,8 @@ const storageLocal: StorageLikeAsync = {
 	},
 };
 
-export const useStorageLocal = <T>(
+export const useBrowserStorageLocal = <T>(
 	key: string,
 	initialValue: MaybeRef<T>,
 	options?: StorageAsyncOptions<T>,
-): RemovableRef<T> => useStorageAsync(key, initialValue, storageLocal, options);
+): RemovableRef<T> => useStorageAsync(key, initialValue, browserStorageLocal, options);

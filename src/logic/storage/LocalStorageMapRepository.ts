@@ -1,13 +1,14 @@
-import { useLocalStorage } from '@vueuse/core/index';
+import type { ComputedRef } from 'vue';
+import { useBrowserStorageLocal } from '~/composables/useBrowserStorageLocal';
 
 export abstract class LocalStorageMapRepository {
 	private storage;
 	constructor(key: string) {
-		this.storage = useLocalStorage(key, new Map<string, number>(), { listenToStorageChanges: true });
+		this.storage = useBrowserStorageLocal(key, new Map<string, number>(), { listenToStorageChanges: true });
 	}
 
-	public getAllValues(): Array<number> {
-		return Array.from(this.storage.value.values());
+	public getAllValues(): ComputedRef<Array<number>> {
+		return computed(() => Array.from(this.storage.value.values()));
 	}
 
 	public getAllKeys(): Array<string> {

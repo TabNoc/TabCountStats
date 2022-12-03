@@ -1,7 +1,7 @@
 import type { Windows } from 'webextension-polyfill';
-import type { WindowFavoritePriorityRepository } from '~/old/ts/background/storage/WindowFavoriteRepository';
+import type { WindowFavoritePriorityRepositoryV1 } from './storage/WindowFavoritePriorityRepositoryV1';
 
-export async function getWindows(windowFavoriteRepository: WindowFavoritePriorityRepository): Promise<Array<WindowWrapper>> {
+export async function getWindows(windowFavoriteRepository: WindowFavoritePriorityRepositoryV1): Promise<Array<WindowWrapper>> {
 	const windows = await browser.windows.getAll();
 	const currentWindowId = (await browser.windows.getCurrent()).id;
 
@@ -13,7 +13,7 @@ export async function getWindows(windowFavoriteRepository: WindowFavoritePriorit
 	for (const window of filteredWindows) {
 		storageMap.set(
 			window.id!,
-			await windowFavoriteRepository.getWindowFavoritePriority(
+			await windowFavoriteRepository.get(
 				window.id!,
 			),
 		);

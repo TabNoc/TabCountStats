@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Chart from './Chart.vue';
-import { storageDemo } from '~/logic/storage';
+import { storageDemo } from '~/logic/storage/storage';
 
 const showchart = ref(false);
 </script>

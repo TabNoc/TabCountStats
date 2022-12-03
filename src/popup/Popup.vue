@@ -2,7 +2,7 @@
 import type { Tabs, Windows } from 'webextension-polyfill';
 import type { Ref } from 'vue';
 import WindowsList from './components/WindowsList.vue';
-import { storageDemo } from '~/logic/storage';
+import { storageDemo } from '~/logic/storage/storage';
 
 function openOptionsPage() {
 	browser.runtime.openOptionsPage();
