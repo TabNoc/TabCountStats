@@ -1,41 +1,12 @@
 <script setup lang="ts">
 import type { Tabs, Windows } from 'webextension-polyfill';
-import type { Ref } from 'vue';
 import WindowsList from './components/WindowsList.vue';
+import Seperator from './components/seperator.vue';
 import { storageDemo } from '~/logic/storage/storage';
 
 function openOptionsPage() {
 	browser.runtime.openOptionsPage();
 }
-
-const searchText: Ref<string> = ref('');
-
-function onLoad() {
-	populateWindowCount('tabs-windowCount');
-	populateCurrentWindowTabCount('tabs-currentWindowTabCount');
-}
-
-function populateCurrentWindowTabCount(targetId: string): void {
-	const countDiv = document.getElementById(targetId);
-	if (countDiv == null)
-		return;
-
-	browser.tabs.query({ currentWindow: true }).then((tabs) => {
-		countDiv!.innerText = tabs.length.toString();
-	});
-}
-
-function populateWindowCount(targetId: string): void {
-	const countDiv = document.getElementById(targetId);
-	if (countDiv == null)
-		return;
-
-	browser.windows.getAll().then((windows) => {
-		countDiv!.innerText = windows.length.toString();
-	});
-}
-document.addEventListener('DOMContentLoaded', onLoad);
-
 function getCurrentWindowTabs() {
 	return browser.tabs.query({ currentWindow: true });
 }
@@ -182,44 +153,9 @@ function switchToTab(choosenTab: Tabs.Tab): void {
   </main>
 
   <div class="panel">
-    <div class="header">
-      <div class="header-text">
-        <div>Tabs-tabs-tabs</div>
-      </div>
-      <div class="header-text">
-        <input
-          id="tab-searchWindowInput"
-          v-model="searchText"
-          type="text"
-          placeholder="search for window title"
-          autofocus
-        >
-      </div>
-    </div>
+    <windows-list :search-string="searchText" @switch-to-window="switchToWindow" />
 
-    <div class="panel-section-separator" />
-    <div class="countDisplay">
-      <div class="justifyCenter">
-        <div>
-          Aktuelle Tabs im Fenster:
-        </div>
-        <div id="tabs-currentWindowTabCount" class="justifyCenter marginTD" />
-      </div>
-      <div class="justifyCenter">
-        <div>
-          Aktuelle Fenster:
-        </div>
-        <div id="tabs-windowCount" class="justifyCenter marginTD" />
-      </div>
-    </div>
-    <div class="panel-section-separator" />
-
-    <WindowsList
-      :search-string="searchText"
-      @switch-to-window="switchToWindow"
-    />
-
-    <div class="panel-section-separator" />
+    <Seperator />
 
     <a id="tabs-activate-random-activewindow" href="#">Activate a random Tab in the currentWindow</a><br>
 
@@ -227,12 +163,12 @@ function switchToTab(choosenTab: Tabs.Tab): void {
 
     <a id="tabs-activate-least-tabs" href="#">Activate the window with the least amount of Tabs</a><br>
 
-    <div class="panel-section-separator" />
+    <Seperator />
     <!--<a href="#" id="tabs-cleardata">ClearData</a><br>-->
-    <div class="panel-section-separator" />
+    <Seperator />
     <a id="tabs-readdata" href="#">ReadData</a><br>
 
-    <div class="panel-section-separator" />
+    <Seperator />
 
     <a id="tabs-reload" href="#">Reload active tab</a><br>
     <a id="tabs-alertinfo" href="#">Alert active tab info</a><br>
@@ -285,27 +221,6 @@ a {
 	margin: 5px;
 }
 
-.marginTD {
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
-
-.countDisplay {
-	display: flex;
-	justify-content: space-around;
-	margin-top: 3px;
-}
-
-.justifyCenter {
-	justify-items: center;
-	text-align: center;
-}
-
-.header {
-	display: flex;
-	justify-content: space-between;
-}
-
 .header-text {
 	padding: 16px;
 	align-self: center;
@@ -317,5 +232,4 @@ a {
 	margin-top: 0px;
 	margin-bottom: 0px;
 }
-
 </style>
