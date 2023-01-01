@@ -12,7 +12,7 @@
             "autoAttachChildProcesses": false
         },
         {
-            "command": "pnpm start:firefox",
+            "command": "pnpm start:firefox --devtools --verbose",
             "name": "Run pnpm start:firefox",
             "request": "launch",
             "type": "node-terminal",

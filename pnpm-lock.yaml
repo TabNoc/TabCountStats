@@ -34,6 +34,7 @@ specifiers:
   vue: ^3.2.41
   vue-chartjs: ^4.1.2
   vue-demi: ^0.12.5
+  vue-router: ^4.1.6
   web-ext: ^7.3.1
   webext-bridge: ^5.0.5
   webextension-polyfill: ^0.9.0
@@ -72,6 +73,7 @@ devDependencies:
   vue: 3.2.41
   vue-chartjs: 4.1.2_chart.js@3.9.1+vue@3.2.41
   vue-demi: 0.12.5_vue@3.2.41
+  vue-router: 4.1.6_vue@3.2.41
   web-ext: 7.3.1
   webext-bridge: 5.0.5
   webextension-polyfill: 0.9.0
@@ -778,6 +780,10 @@ packages:
     dependencies:
       '@vue/compiler-dom': 3.2.41
       '@vue/shared': 3.2.41
+    dev: true
+
+  /@vue/devtools-api/6.4.5:
+    resolution: {integrity: sha512-JD5fcdIuFxU4fQyXUu3w2KpAJHzTVdN+p4iOX2lMWSHMOoQdMAcpFLZzm9Z/2nmsoZ1a96QEhZ26e50xLBsgOQ==}
     dev: true
 
   /@vue/reactivity-transform/3.2.41:
@@ -6442,6 +6448,15 @@ packages:
       semver: 7.3.8
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /vue-router/4.1.6_vue@3.2.41:
+    resolution: {integrity: sha512-DYWYwsG6xNPmLq/FmZn8Ip+qrhFEzA14EI12MsMgVxvHFDYvlr4NXpVF5hrRH1wVcDP8fGi5F4rxuJSl8/r+EQ==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      '@vue/devtools-api': 6.4.5
+      vue: 3.2.41
     dev: true
 
   /vue/3.2.41:
