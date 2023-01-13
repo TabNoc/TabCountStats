@@ -3,6 +3,8 @@ import type { Ref } from 'vue';
 import type { Tabs, Windows } from 'webextension-polyfill';
 
 const displayTabs: Ref<Tabs.Tab[]> = ref([]);
+const onlyCurrentWindow = ref(false);
+const tabFilter = ref('');
 
 function switchToWindow(windowId?: number) {
 	if (windowId !== undefined) {
@@ -21,15 +23,20 @@ function switchToTab(choosenTab: Tabs.Tab): void {
 	}
 }
 
-const onlyCurrentWindow = ref(false);
-
-watch(onlyCurrentWindow, (newValue) => {
+watch([onlyCurrentWindow, tabFilter], ([newOnlyCurrentWindow, newTabFilter]) => {
+	newTabFilter = newTabFilter.toLowerCase();
 	displayTabs.value = [];
-	browser.tabs.query({ currentWindow: newValue ? true : undefined }).then((tabs) => {
-		shuffleArray(tabs);
-		displayTabs.value = tabs.slice(0, Math.min(tabs.length, 25));
-		console.log(displayTabs.value);
-	});
+	browser.tabs.query({ currentWindow: newOnlyCurrentWindow ? true : undefined })
+		.then((tabs) => {
+			return tabs.filter(tab => tab.title?.toLowerCase().includes(newTabFilter));
+		})
+		.then((tabs) => {
+			shuffleArray(tabs);
+			return tabs.slice(0, Math.min(tabs.length, 25));
+		})
+		.then((tabs) => {
+			displayTabs.value = tabs;
+		});
 }, { immediate: true });
 
 function shuffleArray(array: Array<any>) {
@@ -43,15 +50,28 @@ const windowsList: Ref<Map<number, Windows.Window>> = ref(new Map());
 browser.windows.getAll().then((windows) => {
 	windowsList.value = new Map(windows.map(w => [w.id!, w]));
 });
+// using https://flowbite.com/docs/components/forms/
 </script>
 
 <template>
   <h1>Additional - Tabs</h1>
 
-  <label for="onlyCurrentWindow" class="mb-4">
-    <input id="onlyCurrentWindow" v-model="onlyCurrentWindow" type="checkbox">
-    <span> Only current window</span>
-  </label>
+  <div class="m-auto">
+    <div class="w-124">
+      <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="mb-6">
+          <label for="tabFilter" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Tab filter</label>
+          <input id="tabFilter" v-model="tabFilter" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Searchstring">
+        </div>
+        <div class="flex items-start mb-6">
+          <div class="flex items-center h-5">
+            <input id="onlyCurrentWindow" v-model="onlyCurrentWindow" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800">
+          </div>
+          <label for="onlyCurrentWindow" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Only tabs from current window</label>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <div v-for="tab in displayTabs" :key="tab.id">
     <div class=" m-1 flex flex-col rounded-3xl border-gray-500 border-2 border-dotted">
