@@ -9,6 +9,8 @@ declare module '@vue/runtime-core' {
     Logo: typeof import('./components/Logo.vue')['default']
     PixelarticonsPower: typeof import('~icons/pixelarticons/power')['default']
     PixelarticonsZap: typeof import('~icons/pixelarticons/zap')['default']
+    RouterLink: typeof import('vue-router')['RouterLink']
+    RouterView: typeof import('vue-router')['RouterView']
   }
 }
 

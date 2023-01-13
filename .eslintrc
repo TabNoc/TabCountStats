@@ -17,7 +17,8 @@
       "warn",
       "tab"
     ],
-    "no-tabs": "off"
+    "no-tabs": "off",
+    "no-console":"off"
   },
   "root": true
 }

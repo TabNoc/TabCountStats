@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Tabs, Windows } from 'webextension-polyfill';
 import WindowsList from './components/WindowsList.vue';
-import Seperator from './components/seperator.vue';
+import Seperator from './components/Seperator.vue';
 import { storageDemo } from '~/logic/storage/storage';
 
 function openOptionsPage() {
@@ -153,7 +153,7 @@ function switchToTab(choosenTab: Tabs.Tab): void {
   </main>
 
   <div class="panel">
-    <windows-list :search-string="searchText" @switch-to-window="switchToWindow" />
+    <windows-list @switch-to-window="switchToWindow" />
 
     <Seperator />
 

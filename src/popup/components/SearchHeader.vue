@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import Seperator from './seperator.vue';
+import Seperator from './Seperator.vue';
 
 const props = defineProps<{
 	modelValue: string

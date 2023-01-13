@@ -16,7 +16,7 @@ export async function getManifest() {
 		applications: {
 			gecko: {
 				strict_min_version: '79.0a1',
-				id: 'TabStats@tabnoc.com',
+				id: 'TabStats_dev@tabnoc.com',
 			},
 		},
 		browser_action: {
@@ -65,7 +65,6 @@ export async function getManifest() {
 
 		// this is required on dev for Vite script to load
 		manifest.content_security_policy = `script-src \'self\' http://localhost:${port}; object-src \'self\'`;
-		manifest.name += '_dev';
 	}
 
 	return manifest;
