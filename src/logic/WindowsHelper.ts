@@ -22,7 +22,7 @@ export async function getWindows(windowFavoriteRepository: WindowFavoritePriorit
 	return filteredWindows
 		.map(window => ({
 			window,
-			title: adjustTitle(window.title ?? ''),
+			title: adjustTitle(window.title),
 			priority: storageMap.get(window.id!),
 			isCurrentWindow: window.id === currentWindowId,
 		}))
@@ -37,8 +37,8 @@ export interface WindowWrapper {
 	isCurrentWindow: boolean
 }
 
-function adjustTitle(orgTitle: string): string {
-	const delimiters = [' - ', ' — '];
+export function adjustTitle(orgTitle = ''): string {
+	const delimiters = [' – ', ' — ', ' - '];
 
 	for (const delimiter of delimiters) {
 		if (orgTitle.includes(delimiter)

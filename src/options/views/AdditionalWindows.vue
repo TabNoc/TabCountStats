@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Ref } from 'vue';
 import type { Windows } from 'webextension-polyfill';
+import { adjustTitle } from '~/logic/WindowsHelper';
 
 const displayWindows: Ref<Windows.Window[]> = ref([]);
 
@@ -32,13 +33,13 @@ browser.tabs.query({}).then((tabs) => {
   <div v-for="window in displayWindows" :key="window.id">
     <div class=" m-1 flex flex-col rounded-3xl border-gray-500 border-2 border-dotted">
       <div class="m-1">
-        <a href="#" class="p-1 currentWindowEntryWrapper inline-block" :title="window.id?.toString()" @click.prevent="switchToWindow(window.id)">{{ window.title }}</a>
+        <a href="#" class="p-1 currentWindowEntryWrapper inline-block" :title="window.id?.toString()" @click.prevent="switchToWindow(window.id)">{{ adjustTitle(window.title) }}</a>
       </div>
 
       <div class="grid grid-rows-1 grid-cols-3 justify-center m-auto w-1/2 items-center">
         <div>Tabs: {{ windowMap.get(window.id ?? 0) }}</div>
         |
-        <div>{{ window.title }}</div>
+        <div>{{ adjustTitle(window.title) }}</div>
       </div>
     </div>
   </div>
