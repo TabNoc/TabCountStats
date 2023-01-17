@@ -7,6 +7,12 @@ import Options from './views/Options.vue';
 import Chart from './views/Chart.vue';
 const routes: Array<RouteRecordRaw> = [
 	{
+		path: '/?href=:href',
+		name: 'Home',
+		component: Options,
+		props: { href: true },
+	},
+	{
 		path: '/',
 		name: 'Home',
 		component: Options,

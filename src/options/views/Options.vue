@@ -46,7 +46,14 @@ import { storageDemo } from '~/logic/storage/storage'; </script>
   <div class="text-slate-400">
     <h4>Used Software:</h4>
     <div class="underline decoration-sky-500">
-      <a href="https://www.flaticon.com/free-icons/tab" title="tab icons">Tab icons created by Freepik - Flaticon</a>
+      <ul>
+        <li>
+          <a href="https://www.flaticon.com/free-icons/tabs" title="tabs icons">Tabs icons created by Pixel perfect - Flaticon</a>
+        </li>
+        <li>
+          <a href="https://www.flaticon.com/free-icons/new-tab" title="new tab icons">New tab icons created by Pixel perfect - Flaticon</a>
+        </li>
+      </ul>
     </div>
   </div>
 </template>

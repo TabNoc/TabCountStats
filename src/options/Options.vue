@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router';
+import { RouterView, useRoute, useRouter } from 'vue-router';
+
+const router = useRouter();
+const route = useRoute();
+router.isReady().then(() => {
+	if (route.query.href !== undefined)
+		router.push({ path: route.query.href as string });
+});
+
 </script>
 
 <template>
