@@ -1,4 +1,4 @@
-import type { Windows } from 'webextension-polyfill';
+import type { Tabs, Windows } from 'webextension-polyfill';
 import type { WindowFavoritePriorityRepositoryV1 } from './storage/WindowFavoritePriorityRepositoryV1';
 
 export async function getWindows(windowFavoriteRepository: WindowFavoritePriorityRepositoryV1): Promise<Array<WindowWrapper>> {
@@ -84,4 +84,21 @@ function sortWindows(
 		return -1;
 
 	return 1;
+}
+
+export function switchToWindow(windowId?: number) {
+	if (windowId !== undefined) {
+		browser.windows.update(windowId, {
+			focused: true,
+		});
+	}
+}
+
+export function switchToTab(choosenTab: Tabs.Tab): void {
+	if (choosenTab.windowId !== undefined) {
+		browser.tabs.update(choosenTab.id, {
+			active: true,
+		});
+		switchToWindow(choosenTab.windowId);
+	}
 }

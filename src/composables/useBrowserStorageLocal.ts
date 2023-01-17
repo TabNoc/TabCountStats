@@ -2,8 +2,8 @@ import { storage } from 'webextension-polyfill';
 import type {
 	MaybeRef,
 	RemovableRef,
-	StorageAsyncOptions,
 	StorageLikeAsync,
+	UseStorageAsyncOptions,
 } from '@vueuse/core/index';
 import {
 	useStorageAsync,
@@ -27,5 +27,5 @@ const browserStorageLocal: StorageLikeAsync = {
 export const useBrowserStorageLocal = <T>(
 	key: string,
 	initialValue: MaybeRef<T>,
-	options?: StorageAsyncOptions<T>,
+	options?: UseStorageAsyncOptions<T>,
 ): RemovableRef<T> => useStorageAsync(key, initialValue, browserStorageLocal, options);

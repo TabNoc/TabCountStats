@@ -1,5 +1,5 @@
 import TabCountStorage from './TabCountStorage';
-import { defaultData, exampleData } from '~/old/ts/background/worker/exampleData';
+import { /* defaultData, */ exampleData } from '~/old/ts/background/worker/exampleData';
 
 export class Migrator {
 	private CurrentVersion = 1;

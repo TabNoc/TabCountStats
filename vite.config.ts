@@ -51,7 +51,7 @@ export const sharedConfig: UserConfig = {
 		}),
 
 		// https://github.com/antfu/unplugin-icons
-		Icons(),
+		Icons({ compiler: 'vue3' }),
 
 		// rewrite assets to use relative path
 		{

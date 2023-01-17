@@ -1,28 +1,11 @@
 <script setup lang="ts">
 import type { Ref } from 'vue';
 import type { Tabs, Windows } from 'webextension-polyfill';
-import { adjustTitle } from '~/logic/WindowsHelper';
+import { adjustTitle, switchToTab } from '~/logic/WindowsHelper';
 
 const displayTabs: Ref<Tabs.Tab[]> = ref([]);
 const onlyCurrentWindow = ref(false);
 const tabFilter = ref('');
-
-function switchToWindow(windowId?: number) {
-	if (windowId !== undefined) {
-		browser.windows.update(windowId, {
-			focused: true,
-		});
-	}
-}
-
-function switchToTab(choosenTab: Tabs.Tab): void {
-	if (choosenTab.windowId !== undefined) {
-		browser.tabs.update(choosenTab.id, {
-			active: true,
-		});
-		switchToWindow(choosenTab.windowId);
-	}
-}
 
 watch([onlyCurrentWindow, tabFilter], ([newOnlyCurrentWindow, newTabFilter]) => {
 	newTabFilter = newTabFilter.toLowerCase();
