@@ -2,11 +2,8 @@
 import type { Tabs, Windows } from 'webextension-polyfill';
 import WindowsList from './components/WindowsList.vue';
 import Seperator from './components/Seperator.vue';
-import { storageDemo } from '~/logic/storage/storage';
+import { switchToTab, switchToWindow } from '~/logic/WindowsHelper';
 
-function openOptionsPage() {
-	browser.runtime.openOptionsPage();
-}
 function getCurrentWindowTabs() {
 	return browser.tabs.query({ currentWindow: true });
 }
@@ -119,39 +116,18 @@ function OpenRandomTabFromQuery(tabs: Tabs.Tab[]) {
 	const choosenTab = tabs[Math.floor(Math.random() * tabs.length)];
 	switchToTab(choosenTab);
 }
-function switchToWindow(windowId?: number) {
-	if (windowId !== undefined) {
-		browser.windows.update(windowId, {
-			focused: true,
-		});
-	}
+
+function openLinkInNewTab(a: MouseEvent) {
+	browser.tabs.create({ url: (a.target as any).href, active: true });
 }
 
-function switchToTab(choosenTab: Tabs.Tab): void {
-	if (choosenTab.windowId !== undefined) {
-		browser.tabs.update(choosenTab.id, {
-			active: true,
-		});
-		switchToWindow(choosenTab.windowId);
-	}
-}
 </script>
 
 <template>
-  <main class="w-[300px] px-4 py-5 text-center text-gray-700">
-    <Logo />
-    <div>Popup</div>
-    <p class="mt-2 opacity-50">
-      This is the popup page
-    </p>
-    <button class="btn mt-2" @click="openOptionsPage">
-      Open Options
-    </button>
-    <div class="mt-2">
-      <span class="opacity-50">Storage:</span> {{ storageDemo }}
-    </div>
-  </main>
-
+  <div id="header">
+    <a class="external" href="/dist/options/index.html/?href=AdditionalWindows" @click="openLinkInNewTab">Windows</a>
+    <a class="external" href="/dist/options/index.html/?href=AdditionalTabs" @click="openLinkInNewTab">Tabs</a>
+  </div>
   <div class="panel">
     <windows-list @switch-to-window="switchToWindow" />
 
@@ -181,6 +157,15 @@ implicit usage of https://github.com/FirefoxUX/StyleGuide/tree/master/src/styles
 html,
 body {
 	width: 100%;
+}
+
+/* https://en.wikipedia.org/wiki/Help:External_link_icons */
+.external {
+	background-image: url(/assets/externallink.svg);
+	background-position: center right;
+	background-repeat: no-repeat;
+	background-size: 0.857em;
+	padding-right: 1em;
 }
 
 .windowEntryWrapper {
