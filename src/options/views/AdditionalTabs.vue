@@ -6,6 +6,7 @@ import { adjustTitle, switchToTab } from '~/logic/WindowsHelper';
 const displayTabs: Ref<Tabs.Tab[]> = ref([]);
 const onlyCurrentWindow = ref(false);
 const tabFilter = ref('');
+const tabCount = ref(0);
 
 watch([onlyCurrentWindow, tabFilter], ([newOnlyCurrentWindow, newTabFilter]) => {
 	newTabFilter = newTabFilter.toLowerCase();
@@ -15,6 +16,7 @@ watch([onlyCurrentWindow, tabFilter], ([newOnlyCurrentWindow, newTabFilter]) => 
 			return tabs.filter(tab => tab.title?.toLowerCase().includes(newTabFilter));
 		})
 		.then((tabs) => {
+			tabCount.value = tabs.length;
 			shuffleArray(tabs);
 			return tabs.slice(0, Math.min(tabs.length, 25));
 		})
@@ -30,6 +32,10 @@ function shuffleArray(array: Array<any>) {
 	}
 }
 
+const filterText = computed(() => {
+	return ` (${displayTabs.value.length}/${tabCount.value})`;
+});
+
 const windowsList: Ref<Map<number, Windows.Window>> = ref(new Map());
 browser.windows.getAll().then((windows) => {
 	windowsList.value = new Map(windows.map(w => [w.id!, w]));
@@ -44,7 +50,7 @@ browser.windows.getAll().then((windows) => {
     <div class="w-124">
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div class="mb-6">
-          <label for="tabFilter" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Tab filter</label>
+          <label for="tabFilter" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Tab filter{{ filterText }}</label>
           <input id="tabFilter" v-model="tabFilter" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="search for tab title">
         </div>
         <div class="flex items-start mb-6">
