@@ -1,7 +1,7 @@
 import type { TChartData } from 'vue-chartjs/dist/types';
 import type { ChartDataset, ScatterDataPoint } from 'chart.js';
 
-export default class LineChartHelper {
+export default class LineChartBuilder {
 	private result: TChartData<'line', (number | ScatterDataPoint | null)[], unknown>;
 	constructor() {
 		this.result = {
@@ -9,20 +9,22 @@ export default class LineChartHelper {
 		};
 	}
 
-	public addDataset(label: string, data: Array<number>) {
+	public addDataset(label: string, data: Array<number>): LineChartBuilder {
 		const dataset = {
 			label,
 			data,
 		};
-		this.addDatasetDirect(dataset);
+		return this.addDatasetDirect(dataset);
 	}
 
-	public addDatasetDirect(data: ChartDataset<'line', (number | ScatterDataPoint | null)[]>) {
+	public addDatasetDirect(data: ChartDataset<'line', (number | ScatterDataPoint | null)[]>): LineChartBuilder {
 		this.result.datasets.push(data);
+		return this;
 	}
 
-	public addLabels(labels: Array<string>) {
+	public addLabels(labels: Array<string>): LineChartBuilder {
 		this.result.labels = labels;
+		return this;
 	}
 
 	public getChartData(): TChartData<'line', (number | ScatterDataPoint | null)[], unknown> {

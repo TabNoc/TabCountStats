@@ -16,9 +16,7 @@ export default class TabCountStorage {
 	}
 
 	private getDate(date: Date): string {
-		return `${this.addZero(date.getDate())}.${this.addZero(
-			date.getMonth() + 1,
-		)}.${date.getFullYear()}>${this.addZero(date.getHours())}`;
+		return `${date.getFullYear()}${this.addZero(date.getMonth() + 1)}${this.addZero(date.getDate())}_${this.addZero(date.getHours())}`;
 	}
 
 	private addZero(value: number): string {

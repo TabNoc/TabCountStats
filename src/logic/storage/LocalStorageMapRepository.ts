@@ -8,11 +8,11 @@ export abstract class LocalStorageMapRepository {
 	}
 
 	public getAllValues(): ComputedRef<Array<number>> {
-		return computed(() => Array.from(this.storage.value.values()));
+		return computed(() => Array.from(new Map([...this.storage.value].sort()).values()));
 	}
 
-	public getAllKeys(): Array<string> {
-		return Array.from(this.storage.value.keys());
+	public getAllKeys(): ComputedRef<Array<string>> {
+		return computed(() => Array.from(new Map([...this.storage.value].sort()).keys()));
 	}
 
 	public get(key: string) {
