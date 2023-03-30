@@ -23,7 +23,12 @@ export default class LineChartBuilder {
 	}
 
 	public addLabels(labels: Array<string>): LineChartBuilder {
-		this.result.labels = labels;
+		const regex = /(\d{4})(\d{2})(\d{2})_(\d{2})/;
+
+		this.result.labels = labels.map((timeString) => {
+			const [, year, month, day, hours] = regex.exec(timeString) || [];
+			return new Date(Number.parseInt(year), Number.parseInt(month) - 1, Number.parseInt(day), Number.parseInt(hours));
+		});
 		return this;
 	}
 
