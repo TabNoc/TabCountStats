@@ -1,56 +1,79 @@
 import { onMessage, sendMessage } from 'webext-bridge';
 import type { Tabs } from 'webextension-polyfill';
+import { Migrator } from '~/logic/storage/Migrator';
+import TabCountStorage from '~/logic/storage/TabCountStorage';
+import TabCountHandler from '~/old/ts/background/TabCountHandler';
 
-import '~/old/ts/background/main.ts';
+const tabCountHandler = new TabCountHandler(new TabCountStorage());
 
-// only on dev mode
-if (import.meta.hot) {
-	// @ts-expect-error for background HMR
-	import('/@vite/client');
-	// load latest content script
-	import('./contentScriptHMR');
+async function startAddonBackgroundAsync() {
+	await new Migrator().checkAndApplyMigrations();
+}
+function startAddonBackgroundSync() {
+	tabCountHandler.registerListeners();
 }
 
-browser.runtime.onInstalled.addListener((): void => {
-	// eslint-disable-next-line no-console
-	console.log('Extension installed');
-});
+function main() {
+	codeFromVueAddonDemo();
 
-let previousTabId = 0;
+	startAddonBackgroundAsync()
+		.then(startAddonBackgroundSync);
+}
 
-// communication example: send previous tab title from background page
-// see shim.d.ts for type declaration
-browser.tabs.onActivated.addListener(async({ tabId }) => {
-	if (!previousTabId) {
-		previousTabId = tabId;
-		return;
+function codeFromVueAddonDemo() {
+	// only on dev mode
+	if (import.meta.hot) {
+		// @ts-expect-error for background HMR
+		import('/@vite/client');
+		// load latest content script
+		import('./contentScriptHMR');
 	}
 
-	let tab: Tabs.Tab;
+	browser.runtime.onInstalled.addListener((): void => {
+		// eslint-disable-next-line no-console
+		console.log('Extension installed');
+	});
 
-	try {
-		tab = await browser.tabs.get(previousTabId);
-		previousTabId = tabId;
-	}
-	catch {
-		return;
-	}
+	let previousTabId = 0;
 
-	// eslint-disable-next-line no-console
-	console.log('previous tab', tab);
-	sendMessage('tab-prev', { title: tab.title }, { context: 'content-script', tabId });
-});
+	// communication example: send previous tab title from background page
+	// see shim.d.ts for type declaration
+	browser.tabs.onActivated.addListener(async({ tabId }) => {
+		if (!previousTabId) {
+			previousTabId = tabId;
+			return;
+		}
 
-onMessage('get-current-tab', async() => {
-	try {
-		const tab = await browser.tabs.get(previousTabId);
-		return {
-			title: tab?.title,
-		};
-	}
-	catch {
-		return {
-			title: undefined,
-		};
-	}
-});
+		let tab: Tabs.Tab;
+
+		try {
+			tab = await browser.tabs.get(previousTabId);
+			previousTabId = tabId;
+		}
+		catch {
+			return;
+		}
+
+		// eslint-disable-next-line no-console
+		console.log('previous tab', tab);
+		sendMessage('tab-prev', { title: tab.title }, { context: 'content-script', tabId });
+	});
+
+	onMessage('get-current-tab', async() => {
+		try {
+			const tab = await browser.tabs.get(previousTabId);
+			return {
+				title: tab?.title,
+			};
+		}
+		catch {
+			return {
+				title: undefined,
+			};
+		}
+	});
+}
+main();
+
+// Informations about browser.storage.*
+// https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/local

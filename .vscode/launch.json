@@ -24,6 +24,13 @@
             "type": "firefox",
             "request": "attach",
             "addonPath": "${workspaceFolder}/extension"
-        }
+        },
+        {
+            "command": "pnpm build",
+            "name": "Build PROD",
+            "request": "launch",
+            "type": "node-terminal",
+            "autoAttachChildProcesses": false
+        },
     ]
 }

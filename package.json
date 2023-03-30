@@ -36,7 +36,7 @@
     "@vitejs/plugin-vue": "^2.3.4",
     "@vue/compiler-sfc": "^3.2.41",
     "@vue/test-utils": "^2.2.1",
-    "@vueuse/core": "^9.4.0",
+    "@vueuse/core": "^9.13.0",
     "autoprefixer": "^10.4.13",
     "chart.js": "^3.9.1",
     "chokidar": "^3.5.3",
