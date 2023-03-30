@@ -15,7 +15,7 @@ const browserStorageLocal: StorageLikeAsync = {
 	},
 
 	async setItem(key: string, value: string) {
-		console.log('setItem', key, value);
+		console.debug('setItem', key, value);
 		return (await storage.local.set({ [key]: value }));
 	},
 
