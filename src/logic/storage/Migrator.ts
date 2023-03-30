@@ -35,7 +35,8 @@ export class Migrator {
 			const dateObject = new Date(Number.parseInt(year), Number.parseInt(month) - 1, Number.parseInt(day), Number.parseInt(hours));
 			storage.setTabCount(entry[1], dateObject);
 		}
-		// TODO: BadgeProvider
+
+		await browser.storage.local.set({ BadgeProvider: data.BadgeProvider });
 
 		await browser.storage.local.remove('tabData');
 		await browser.storage.local.set({ version: 2 });
