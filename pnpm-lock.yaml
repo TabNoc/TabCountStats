@@ -14,9 +14,11 @@ specifiers:
   '@vueuse/core': ^9.13.0
   autoprefixer: ^10.4.13
   chart.js: ^3.9.1
+  chartjs-adapter-date-fns: ^3.0.0
   chokidar: ^3.5.3
   cross-env: ^7.0.3
   crx: ^5.0.1
+  date-fns: ^2.29.3
   eslint: ^8.26.0
   esno: ^0.14.1
   flowbite: ^1.6.2
@@ -42,6 +44,10 @@ specifiers:
   web-ext: ^7.3.1
   webext-bridge: ^5.0.5
   webextension-polyfill: ^0.9.0
+
+dependencies:
+  chartjs-adapter-date-fns: 3.0.0_k3zvfw5uh7cxarme672rgnboyi
+  date-fns: 2.29.3
 
 devDependencies:
   '@antfu/eslint-config': 0.20.7_wyqvi574yv7oiwfeinomdzmc3m
@@ -1542,7 +1548,16 @@ packages:
 
   /chart.js/3.9.1:
     resolution: {integrity: sha512-Ro2JbLmvg83gXF5F4sniaQ+lTbSv18E+TIf2cOeiH1Iqd2PGFOtem+DUufMZsCJwFE7ywPOpfXFBwRTGq7dh6w==}
-    dev: true
+
+  /chartjs-adapter-date-fns/3.0.0_k3zvfw5uh7cxarme672rgnboyi:
+    resolution: {integrity: sha512-Rs3iEB3Q5pJ973J93OBTpnP7qoGwvq3nUnoMdtxO+9aoJof7UFcRbWcIDteXuYd1fgAvct/32T9qaLyLuZVwCg==}
+    peerDependencies:
+      chart.js: '>=2.8.0'
+      date-fns: '>=2.0.0'
+    dependencies:
+      chart.js: 3.9.1
+      date-fns: 2.29.3
+    dev: false
 
   /check-error/1.0.2:
     resolution: {integrity: sha512-BrgHpW9NURQgzoNyjfq0Wu6VFO6D7IZEmJNdtgNqpzGG8RuNFHt2jQxWlAs4HMe119chBnv+34syEZtc6IhLtA==}
@@ -1882,6 +1897,11 @@ packages:
       whatwg-mimetype: 3.0.0
       whatwg-url: 11.0.0
     dev: true
+
+  /date-fns/2.29.3:
+    resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
+    engines: {node: '>=0.11'}
+    dev: false
 
   /debounce/1.2.1:
     resolution: {integrity: sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==}
