@@ -1,13 +1,5 @@
 lockfileVersion: '6.0'
 
-dependencies:
-  chartjs-adapter-date-fns:
-    specifier: ^3.0.0
-    version: 3.0.0(chart.js@3.9.1)(date-fns@2.29.3)
-  date-fns:
-    specifier: ^2.29.3
-    version: 2.29.3
-
 devDependencies:
   '@antfu/eslint-config':
     specifier: ^0.20.7
@@ -48,6 +40,9 @@ devDependencies:
   chart.js:
     specifier: ^3.9.1
     version: 3.9.1
+  chartjs-adapter-date-fns:
+    specifier: ^3.0.0
+    version: 3.0.0(chart.js@3.9.1)(date-fns@2.29.3)
   chokidar:
     specifier: ^3.5.3
     version: 3.5.3
@@ -57,6 +52,9 @@ devDependencies:
   crx:
     specifier: ^5.0.1
     version: 5.0.1
+  date-fns:
+    specifier: ^2.29.3
+    version: 2.29.3
   eslint:
     specifier: ^8.26.0
     version: 8.26.0
@@ -1589,6 +1587,7 @@ packages:
 
   /chart.js@3.9.1:
     resolution: {integrity: sha512-Ro2JbLmvg83gXF5F4sniaQ+lTbSv18E+TIf2cOeiH1Iqd2PGFOtem+DUufMZsCJwFE7ywPOpfXFBwRTGq7dh6w==}
+    dev: true
 
   /chartjs-adapter-date-fns@3.0.0(chart.js@3.9.1)(date-fns@2.29.3):
     resolution: {integrity: sha512-Rs3iEB3Q5pJ973J93OBTpnP7qoGwvq3nUnoMdtxO+9aoJof7UFcRbWcIDteXuYd1fgAvct/32T9qaLyLuZVwCg==}
@@ -1598,7 +1597,7 @@ packages:
     dependencies:
       chart.js: 3.9.1
       date-fns: 2.29.3
-    dev: false
+    dev: true
 
   /check-error@1.0.2:
     resolution: {integrity: sha512-BrgHpW9NURQgzoNyjfq0Wu6VFO6D7IZEmJNdtgNqpzGG8RuNFHt2jQxWlAs4HMe119chBnv+34syEZtc6IhLtA==}
@@ -1942,7 +1941,7 @@ packages:
   /date-fns@2.29.3:
     resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
     engines: {node: '>=0.11'}
-    dev: false
+    dev: true
 
   /debounce@1.2.1:
     resolution: {integrity: sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==}
