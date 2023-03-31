@@ -11,6 +11,8 @@ export default class TabCountHandler {
 		});
 		browser.tabs.onCreated.addListener((tab) => {
 			this.updateCount(tab.id!, false);
+			if (browser.sessions.getTabValue(tab.id!, 'oldestLastAccessed') === undefined)
+				browser.sessions.setTabValue(tab.id!, 'oldestLastAccessed', tab.lastAccessed);
 		});
 
 		this.updateCount(null, false);

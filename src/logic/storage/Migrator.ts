@@ -34,6 +34,11 @@ export class Migrator {
 
 		await browser.storage.local.set({ BadgeProvider: data.BadgeProvider });
 
+		for await (const tab of await browser.tabs.query({})) {
+			if (await browser.sessions.getTabValue(tab.id!, 'oldestLastAccessed') === undefined)
+				await browser.sessions.setTabValue(tab.id!, 'oldestLastAccessed', tab.lastAccessed);
+		}
+
 		await browser.storage.local.remove('tabData');
 		await browser.storage.local.set({ version: 2 });
 	}
