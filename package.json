@@ -39,9 +39,11 @@
     "@vueuse/core": "^9.13.0",
     "autoprefixer": "^10.4.13",
     "chart.js": "^3.9.1",
+    "chartjs-adapter-date-fns": "^3.0.0",
     "chokidar": "^3.5.3",
     "cross-env": "^7.0.3",
     "crx": "^5.0.1",
+    "date-fns": "^2.29.3",
     "eslint": "^8.26.0",
     "esno": "^0.14.1",
     "flowbite": "^1.6.2",
@@ -66,8 +68,6 @@
     "vue-router": "^4.1.6",
     "web-ext": "^7.3.1",
     "webext-bridge": "^5.0.5",
-    "webextension-polyfill": "^0.9.0",
-    "chartjs-adapter-date-fns": "^3.0.0",
-    "date-fns": "^2.29.3"
+    "webextension-polyfill": "^0.9.0"
   }
 }

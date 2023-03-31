@@ -45,20 +45,20 @@ export class BadgeProvider {
 	}
 
 	private checkStorage(currentTabCount: number) {
-		if (this.StorageVersion == 0) {
+		if (this.StorageVersion === 0) {
 			this.initStorage(currentTabCount);
 		}
-		else if (this.StorageVersion == this.getCurrentStorageVersion()) {
+		else if (this.StorageVersion === this.getCurrentStorageVersion()) {
 
 		}
 		else {
-			throw 'BadgeProvider: Current Storageversion not Supported';
+			throw new Error('BadgeProvider: Current Storageversion not Supported');
 		}
 	}
 
 	private CheckAndThrowStorage() {
-		if (this.StorageVersion != this.getCurrentStorageVersion())
-			throw 'BadgeProvider: Storage not ready!';
+		if (this.StorageVersion !== this.getCurrentStorageVersion())
+			throw new Error('BadgeProvider: Storage not ready!');
 	}
 
 	private initStorage(currentTabCount: number) {
