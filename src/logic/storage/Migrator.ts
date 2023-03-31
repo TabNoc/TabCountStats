@@ -1,13 +1,9 @@
 import TabCountStorage from './TabCountStorage';
-import { /* defaultData, */ exampleData } from '~/old/ts/background/worker/exampleData';
+import { defaultData } from '~/old/ts/background/worker/exampleData';
 
 export class Migrator {
 	private CurrentVersion = 1;
 	public async checkAndApplyMigrations() {
-		await browser.storage.local.clear();
-		// TODO: Remove
-		console.warn('checkAndApplyMigrations');
-		// TODO: Remove
 		if (await this.getBaseStorageVersion(-1) === -1)
 			await this.seedData();
 		if (await this.getBaseStorageVersion(this.CurrentVersion) === 0)
@@ -46,7 +42,7 @@ export class Migrator {
 		console.warn('Initializing local storage to version 1');
 		if ((await browser.storage.sync.get('tabData') as any).tabData !== undefined)
 			throw new Error('Data Present!');
-		await browser.storage.local.set(exampleData);
+		await browser.storage.local.set(defaultData);
 		await browser.storage.local.set({ version: 1 });
 	}
 
