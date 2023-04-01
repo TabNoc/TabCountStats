@@ -16,7 +16,7 @@ export async function getManifest() {
 		applications: {
 			gecko: {
 				strict_min_version: '79.0a1',
-				id: 'TabStats_dev@tabnoc.com',
+				id: true ? 'TabStats_dev@tabnoc.com' : 'TabStats@tabnoc.com',
 			},
 		},
 		browser_action: {
