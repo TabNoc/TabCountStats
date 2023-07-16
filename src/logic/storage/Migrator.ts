@@ -40,6 +40,7 @@ export class Migrator {
 		}
 
 		await browser.storage.local.remove('tabData');
+		await browser.storage.local.set({ backup1To2: { tabData: data } });
 		await browser.storage.local.set({ version: 2 });
 	}
 

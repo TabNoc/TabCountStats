@@ -4,10 +4,15 @@ import { Migrator } from '~/logic/storage/Migrator';
 import TabCountStorage from '~/logic/storage/TabCountStorage';
 import TabCountHandler from '~/old/ts/background/TabCountHandler';
 
-const tabCountHandler = new TabCountHandler(new TabCountStorage());
+let tabCountHandler: TabCountHandler;
+
+async function preStartAddonBackground() {
+	await new Migrator().checkAndApplyMigrations();
+	tabCountHandler = new TabCountHandler(new TabCountStorage());
+}
 
 async function startAddonBackgroundAsync() {
-	await new Migrator().checkAndApplyMigrations();
+	return Promise.resolve();
 }
 function startAddonBackgroundSync() {
 	tabCountHandler.registerListeners();
@@ -16,7 +21,8 @@ function startAddonBackgroundSync() {
 function main() {
 	codeFromVueAddonDemo();
 
-	startAddonBackgroundAsync()
+	preStartAddonBackground()
+		.then(startAddonBackgroundAsync)
 		.then(startAddonBackgroundSync);
 }
 

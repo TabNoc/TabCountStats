@@ -45,15 +45,13 @@ export class BadgeProvider {
 	}
 
 	private checkStorage(currentTabCount: number) {
-		if (this.StorageVersion === 0) {
+		if (this.StorageVersion === 0)
 			this.initStorage(currentTabCount);
-		}
-		else if (this.StorageVersion === this.getCurrentStorageVersion()) {
 
-		}
-		else {
+		else if (this.StorageVersion === this.getCurrentStorageVersion())
+			console.log('should be fine ?!? There wa an empty Block left over here !');
+		else
 			throw new Error('BadgeProvider: Current Storageversion not Supported');
-		}
 	}
 
 	private CheckAndThrowStorage() {

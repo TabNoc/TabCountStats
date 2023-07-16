@@ -118,15 +118,15 @@ function OpenRandomTabFromQuery(tabs: Tabs.Tab[]) {
 }
 
 function openLinkInNewTab(a: MouseEvent) {
-	browser.tabs.create({ url: (a.target as any).href, active: true });
+	browser.tabs.create({ url: browser.runtime.getURL((a.target as any).href), active: true });
 }
 
 </script>
 
 <template>
   <div id="header">
-    <a class="external" href="/dist/options/index.html/?href=AdditionalWindows" @click="openLinkInNewTab">Windows</a>
-    <a class="external" href="/dist/options/index.html/?href=AdditionalTabs" @click="openLinkInNewTab">Tabs</a>
+    <a class="external" href="/dist/options/index.html?href=AdditionalWindows" @click="openLinkInNewTab">Windows</a>
+    <a class="external" href="/dist/options/index.html?href=AdditionalTabs" @click="openLinkInNewTab">Tabs</a>
   </div>
   <div class="panel">
     <windows-list @switch-to-window="switchToWindow" />
