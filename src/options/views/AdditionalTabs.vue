@@ -7,7 +7,9 @@ import { TabSearchService } from '~/logic/options/TabSearchService';
 const displayTabs: Ref<Tabs.Tab[]> = ref([]);
 const onlyCurrentWindow = ref(false);
 const randomizeResult = ref(true);
+const hideEmpty = ref(true);
 const tabFilter = ref('');
+const tabSorting = ref('');
 const tabCount = ref(0);
 
 const filterText = computed(() => {
@@ -19,8 +21,8 @@ browser.windows.getAll().then((windows) => {
 	windowsList.value = new Map(windows.map(w => [w.id!, w]));
 });
 
-const tabSearchService = new TabSearchService(displayTabs, onlyCurrentWindow, tabFilter, tabCount, randomizeResult, windowsList);
-watch([onlyCurrentWindow, tabFilter, randomizeResult], () => {
+const tabSearchService = new TabSearchService(displayTabs, onlyCurrentWindow, tabFilter, tabCount, randomizeResult, windowsList, tabSorting, hideEmpty);
+watch([onlyCurrentWindow, tabFilter, randomizeResult, tabSorting, hideEmpty], () => {
 	tabSearchService.updateFilteredTabs();
 }, { immediate: true });
 
@@ -30,7 +32,8 @@ watch([onlyCurrentWindow, tabFilter, randomizeResult], () => {
 <template>
   <h1>Additional - Tabs</h1>
 
-  <div class="m-auto">
+  <div class="m-auto grid grid-cols-3">
+    <div />
     <div class="w-124">
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div class="mb-6">
@@ -39,7 +42,7 @@ watch([onlyCurrentWindow, tabFilter, randomizeResult], () => {
           <input
             id="tabFilter" v-model="tabFilter" type="text"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="search for tab title"
+            placeholder="best to start with title:"
           >
         </div>
         <div class="flex items-start mb-1">
@@ -52,7 +55,7 @@ watch([onlyCurrentWindow, tabFilter, randomizeResult], () => {
           <label for="onlyCurrentWindow" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Only
             tabs from current window</label>
         </div>
-        <div class="flex items-start mb-6">
+        <div class="flex items-start">
           <div class="flex items-center h-5">
             <input
               id="randomizeResult" v-model="randomizeResult" type="checkbox"
@@ -62,6 +65,25 @@ watch([onlyCurrentWindow, tabFilter, randomizeResult], () => {
           <label for="randomizeResult" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Randomize
             result order</label>
         </div>
+        <div class="flex items-center h-5 mt-1">
+          <input
+            id="hideEmpty" v-model="hideEmpty" type="checkbox"
+            class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
+          >
+          <label for="hideEmpty" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Hide empty Tabs</label>
+        </div>
+      </form>
+    </div>
+    <div v-show="!randomizeResult" class="pl-5">
+      <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <label for="tabSorting" class="block mb-2 text-sm text-gray-900 dark:text-white">sort by</label>
+        <select id="tabSorting" v-model="tabSorting" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <option selected>
+            none
+          </option>
+          <option>last accessed date asc</option>
+          <option>last accessed date desc</option>
+        </select>
       </form>
     </div>
   </div>

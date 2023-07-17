@@ -11,21 +11,27 @@ export class TabSearchService {
 	displayTabs: Ref<Tabs.Tab[]>;
 	onlyCurrentWindow: Ref<boolean>;
 	tabFilter: Ref<string>;
+	tabSorting: Ref<string>;
 	tabCount: Ref<number>;
 	randomizeResult: Ref<boolean>;
+	hideEmpty: Ref<boolean>;
 	windowsList: Ref<Map<number, Windows.Window>>;
 	constructor(displayTabs: Ref<Tabs.Tab[]>,
 		onlyCurrentWindow: Ref<boolean>,
 		tabFilter: Ref<string>,
 		tabCount: Ref<number>,
 		randomizeResult: Ref<boolean>,
-		windowsList: Ref<Map<number, Windows.Window>>) {
+		windowsList: Ref<Map<number, Windows.Window>>,
+		tabSorting: Ref<string>,
+		hideEmpty: Ref<boolean>) {
 		this.displayTabs = displayTabs;
 		this.onlyCurrentWindow = onlyCurrentWindow;
 		this.tabFilter = tabFilter;
 		this.tabCount = tabCount;
 		this.randomizeResult = randomizeResult;
 		this.windowsList = windowsList;
+		this.tabSorting = tabSorting;
+		this.hideEmpty = hideEmpty;
 	}
 
 	public async updateFilteredTabs() {
@@ -33,12 +39,23 @@ export class TabSearchService {
 
 		if (this.tabFilter.value.length !== 0)
 			searchResult = [...filter(parse(this.tabFilter.value), searchResult)];
+		if (this.hideEmpty)
+			searchResult = searchResult.filter(tso => tso.url !== 'about:newtab' && tso.url !== 'about:home' && tso.url !== 'about:blank');
 
 		if (this.randomizeResult.value === true)
 			this.shuffleArray(searchResult);
+		else
+			this.sortArray(searchResult);
 
 		this.tabCount.value = searchResult.length;
 		this.displayTabs.value = searchResult.slice(0, Math.min(searchResult.length, 25)).map(tso => tso.tab);
+	}
+
+	private sortArray(searchResult: TabSearchObject[]) {
+		if (this.tabSorting.value === 'last accessed date asc')
+			searchResult.sort((a, b) => (a.date ?? '').localeCompare(b.date ?? ''));
+		else if (this.tabSorting.value === 'last accessed date desc')
+			searchResult.sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''));
 	}
 
 	private async getTabs(): Promise<TabSearchObject[]> {
