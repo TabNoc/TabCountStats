@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
-import { storageDemo } from '~/logic/storage/storage'; </script>
+import { storageDemo } from '~/logic/storage/storage';
+</script>
 
 <template>
   <div>
     <img src="/assets/icon.svg" class="icon-btn mx-2 text-2xl" alt="extension icon">
     <div>Options</div>
-    <p class="mt-2 opacity-50">
-      This is the options page
-    </p>
+    <SharedSubtitle />
 
     <input v-model="storageDemo" class="border border-gray-400 rounded px-2 py-1 mt-2">
 
     <div class="mt-4">
       Powered by Vite
-      <pixelarticons-zap class="align-middle" />
+      <pixelarticons-zap class="align-middle inline-block" />
     </div>
   </div>
 
@@ -23,21 +22,21 @@ import { storageDemo } from '~/logic/storage/storage'; </script>
     <div class="flexbox">
       <ul>
         <li>
-          <router-link class="btn mt-1" to="Chart">
+          <RouterLink class="btn mt-1" to="Chart">
             Switch to Chart
-          </router-link>
+          </RouterLink>
         </li>
 
         <li>
-          <router-link class="btn mt-1" to="AdditionalTabs">
+          <RouterLink class="btn mt-1" to="AdditionalTabs">
             Switch to AdditionalTabs
-          </router-link>
+          </RouterLink>
         </li>
 
         <li>
-          <router-link class="btn mt-1" to="AdditionalWindows">
+          <RouterLink class="btn mt-1" to="AdditionalWindows">
             Switch to AdditionalWindows
-          </router-link>
+          </RouterLink>
         </li>
       </ul>
     </div>

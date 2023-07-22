@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
 
-import { dirname, relative } from 'path';
+import { dirname, relative } from 'node:path';
 import type { UserConfig } from 'vite';
 import { defineConfig } from 'vite';
 import Vue from '@vitejs/plugin-vue';
@@ -8,9 +8,9 @@ import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import Components from 'unplugin-vue-components/vite';
 import AutoImport from 'unplugin-auto-import/vite';
-import WindiCSS from 'vite-plugin-windicss';
-import windiConfig from './windi.config';
+import UnoCSS from 'unocss/vite';
 import { isDev, port, r } from './scripts/utils';
+import packageJson from './package.json';
 
 export const sharedConfig: UserConfig = {
 	root: r('src'),
@@ -21,6 +21,7 @@ export const sharedConfig: UserConfig = {
 	},
 	define: {
 		__DEV__: isDev,
+		__NAME__: JSON.stringify(packageJson.name),
 	},
 	plugins: [
 		Vue(),
@@ -51,7 +52,10 @@ export const sharedConfig: UserConfig = {
 		}),
 
 		// https://github.com/antfu/unplugin-icons
-		Icons({ compiler: 'vue3' }),
+		Icons(),
+
+		// https://github.com/unocss/unocss
+		UnoCSS(),
 
 		// rewrite assets to use relative path
 		{
@@ -85,6 +89,9 @@ export default defineConfig(({ command }) => ({
 		},
 	},
 	build: {
+		watch: isDev
+			? {}
+			: undefined,
 		outDir: r('extension/dist'),
 		emptyOutDir: false,
 		sourcemap: isDev ? 'inline' : false,
@@ -94,20 +101,11 @@ export default defineConfig(({ command }) => ({
 		},
 		rollupOptions: {
 			input: {
-				background: r('src/background/index.html'),
 				options: r('src/options/index.html'),
 				popup: r('src/popup/index.html'),
 			},
 		},
 	},
-	plugins: [
-		...sharedConfig.plugins!,
-
-		// https://github.com/antfu/vite-plugin-windicss
-		WindiCSS({
-			config: windiConfig,
-		}),
-	],
 	test: {
 		globals: true,
 		environment: 'jsdom',
