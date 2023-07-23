@@ -1,36 +1,36 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "command": "pnpm dev",
-            "name": "Run pnpm dev",
-            "request": "launch",
-            "type": "node-terminal",
-            "autoAttachChildProcesses": false
-        },
-        {
-            "command": "pnpm start:firefox --devtools --verbose",
-            "name": "Run pnpm start:firefox",
-            "request": "launch",
-            "type": "node-terminal",
-            "autoAttachChildProcesses": false
-        },
-        {
-            "name": "Attach Firefox",
-            "port": 50254,
-            "type": "firefox",
-            "request": "attach",
-            "addonPath": "${workspaceFolder}/extension"
-        },
-        {
-            "command": "pnpm build",
-            "name": "Build PROD",
-            "request": "launch",
-            "type": "node-terminal",
-            "autoAttachChildProcesses": false
-        },
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "command": "pnpm dev-firefox",
+      "name": "Run pnpm dev",
+      "request": "launch",
+      "type": "node-terminal",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "command": "pnpm start:firefox --devtools --verbose",
+      "name": "Run pnpm start:firefox",
+      "request": "launch",
+      "type": "node-terminal",
+      "autoAttachChildProcesses": false
+    },
+    {
+      "name": "Attach Firefox",
+      "port": 50254,
+      "type": "firefox",
+      "request": "attach",
+      "addonPath": "${workspaceFolder}/extension"
+    },
+    {
+      "command": "pnpm build",
+      "name": "Build PROD",
+      "request": "launch",
+      "type": "node-terminal",
+      "autoAttachChildProcesses": false
+    }
+  ]
 }
