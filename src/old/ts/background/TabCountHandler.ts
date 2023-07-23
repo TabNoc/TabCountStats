@@ -1,7 +1,8 @@
 import type TabCountStorage from '~/logic/storage/TabCountStorage';
+import type { TabSessionRepositoryV1 } from '~/logic/storage/TabSessionRepositoryV1';
 
 export default class TabCountHandler {
-	constructor(private storage: TabCountStorage) {
+	constructor(private storage: TabCountStorage, private tabSessionRepository: TabSessionRepositoryV1) {
 
 	}
 
@@ -11,8 +12,7 @@ export default class TabCountHandler {
 		});
 		browser.tabs.onCreated.addListener((tab) => {
 			this.updateCount(tab.id!, false);
-			if (browser.sessions.getTabValue(tab.id!, 'oldestLastAccessed') === undefined)
-				browser.sessions.setTabValue(tab.id!, 'oldestLastAccessed', tab.lastAccessed);
+			this.tabSessionRepository.updateOldestLastAccessed(tab);
 		});
 
 		this.updateCount(null, false);

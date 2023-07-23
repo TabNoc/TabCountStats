@@ -9,7 +9,7 @@ export default class TabCountStorage {
 		this.storage.set(key, tabCount);
 	}
 
-	public getTabCount(date: Date | null): number|undefined {
+	public getTabCount(date: Date | null): number | undefined {
 		const key: string = this.getDate(date || new Date());
 
 		return this.storage.get(key);

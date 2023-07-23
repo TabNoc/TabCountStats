@@ -2,13 +2,14 @@ import { onMessage, sendMessage } from 'webext-bridge/background';
 import type { Tabs } from 'webextension-polyfill';
 import { Migrator } from '~/logic/storage/Migrator';
 import TabCountStorage from '~/logic/storage/TabCountStorage';
+import { TabSessionRepositoryV1 } from '~/logic/storage/TabSessionRepositoryV1';
 import TabCountHandler from '~/old/ts/background/TabCountHandler';
 
 let tabCountHandler: TabCountHandler;
 
 async function preStartAddonBackground() {
 	await new Migrator().checkAndApplyMigrations();
-	tabCountHandler = new TabCountHandler(new TabCountStorage());
+	tabCountHandler = new TabCountHandler(new TabCountStorage(), new TabSessionRepositoryV1());
 }
 
 async function startAddonBackgroundAsync() {

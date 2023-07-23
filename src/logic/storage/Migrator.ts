@@ -1,21 +1,29 @@
 import TabCountStorage from './TabCountStorage';
+import { TabSessionRepositoryV1 } from './TabSessionRepositoryV1';
 import { defaultData } from '~/old/ts/background/worker/exampleData';
 
 export class Migrator {
-	private CurrentVersion = 1;
+	private CurrentVersion = 3;
 	public async checkAndApplyMigrations() {
 		if (await this.getBaseStorageVersion(-1) === -1)
 			await this.seedData();
-		if (await this.getBaseStorageVersion(this.CurrentVersion) === 0)
+		if (await this.getBaseStorageVersion(-1) === 0)
 			await this.migrateStorageV0ToV1();
-		if (await this.getBaseStorageVersion(this.CurrentVersion) === 1)
+		if (await this.getBaseStorageVersion(-1) === 1)
 			await this.migrateStorageV1ToV2();
+		if (await this.getBaseStorageVersion(-1) === 2)
+			await this.migrateStorageV2ToV3();
+
+		if (await this.getBaseStorageVersion(-1) === this.CurrentVersion)
+			throw new Error('Migration failed!');
 	}
 
 	private async migrateStorageV1ToV2(): Promise<void> {
 		console.warn('Migrating local storage from version 1 to 2');
 
 		const storage = new TabCountStorage();
+		const tabSessionRepository = new TabSessionRepositoryV1();
+
 		const data = (await browser.storage.local.get('tabData') as any).tabData;
 
 		if (data === undefined)
@@ -34,14 +42,23 @@ export class Migrator {
 
 		await browser.storage.local.set({ BadgeProvider: data.BadgeProvider });
 
-		for await (const tab of await browser.tabs.query({})) {
-			if (await browser.sessions.getTabValue(tab.id!, 'oldestLastAccessed') === undefined)
-				await browser.sessions.setTabValue(tab.id!, 'oldestLastAccessed', tab.lastAccessed);
-		}
+		for await (const tab of await browser.tabs.query({}))
+			await tabSessionRepository.updateOldestLastAccessed(tab);
 
 		await browser.storage.local.remove('tabData');
 		await browser.storage.local.set({ backup1To2: { tabData: data } });
 		await browser.storage.local.set({ version: 2 });
+	}
+
+	private async migrateStorageV2ToV3(): Promise<void> {
+		console.warn('Migrating local storage from version 2 to 3');
+
+		const tabSessionRepository = new TabSessionRepositoryV1();
+
+		for await (const tab of await browser.tabs.query({}))
+			await tabSessionRepository.updateOldestLastAccessed(tab);
+
+		await browser.storage.local.set({ version: 3 });
 	}
 
 	async seedData(): Promise<void> {

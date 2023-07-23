@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Tabs, Windows } from 'webextension-polyfill';
+import { TabSessionRepositoryV1 } from '~/logic/storage/TabSessionRepositoryV1';
 import { adjustTitle, switchToTab } from '~/logic/WindowsHelper';
 
 const props = defineProps<{
@@ -11,11 +12,14 @@ function formatDate(date: number): string {
 	return new Date(date).toLocaleString();
 }
 
-const dateString = props.tab.lastAccessed !== await browser.sessions.getTabValue(props.tab.id!, 'oldestLastAccessed')
-	? `first seen: ${formatDate(await browser.sessions.getTabValue(props.tab.id!, 'oldestLastAccessed'))}`
-	: '';
+const tabSessionRepository = new TabSessionRepositoryV1();
 
+const dateString = props.tab.lastAccessed !== await tabSessionRepository.getOldestLastAccessed(props.tab)
+	? `first seen: ${formatDate(await tabSessionRepository.getOldestLastAccessed(props.tab))}`
+	: '';
+console.log(await tabSessionRepository.getOldestLastAccessed(props.tab));
 </script>
+
 <template>
   <div class=" m-1 flex flex-col rounded-3xl border-gray-500 border-2 border-dotted">
     <div class="m-1">
