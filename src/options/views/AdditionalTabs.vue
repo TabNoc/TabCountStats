@@ -11,6 +11,7 @@ const hideEmpty = ref(true);
 const tabFilter = ref('');
 const tabSorting = ref('');
 const tabCount = ref(0);
+const showUsageHelp = ref(false);
 
 const filterText = computed(() => {
 	return ` (${displayTabs.value.length}/${tabCount.value})`;
@@ -36,7 +37,7 @@ watch([onlyCurrentWindow, tabFilter, randomizeResult, tabSorting, hideEmpty], ()
     <div />
     <div class="w-124">
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <div class="mb-6">
+        <div class="relative mb-6">
           <label for="tabFilter" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Tab filter{{
             filterText }}</label>
           <input
@@ -44,6 +45,60 @@ watch([onlyCurrentWindow, tabFilter, randomizeResult, tabSorting, hideEmpty], ()
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="best to start with title:"
           >
+          <span class="absolute right-3 top-12 -translate-y-1/2 text-gray-600 cursor-pointer" title="show usage" @click="showUsageHelp = !showUsageHelp">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 6v2m0 4h.01m0 4v.01M12 3a9 9 0 110 18 9 9 0 010-18zm0 5a4 4 0 100 8 4 4 0 000-8z"
+              />
+            </svg>
+          </span>
+          <div
+            v-if="showUsageHelp"
+            class="absolute bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white px-4 py-2 rounded-lg shadow-lg text-left"
+            style="top: calc(100% + 10px); right: 20px;"
+          >
+            This search box uses <a href="https://github.com/gajus/liqe#query-syntax" class="text-blue-600">liqe (usage)</a> as a search engine and their query syntax.
+            <br>
+            To improve search capabilities there are some additional data mapped into every entry to search for.
+            <br>
+            <b>If you just want to search for the title only, prefix the search term with 'title:'</b>
+            <br>
+            <br>
+            <br>
+            Following Datapoints are mounted and can be searched for.
+            <ul>
+              <li class="ml-2">
+                tab: <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs/Tab" class="text-blue-600">Tab</a>
+              </li>
+              <li class="ml-2">
+                title: tab.title
+              </li>
+              <li class="ml-2">
+                window: <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/windows/Window" class="text-blue-600">Window</a>
+              </li>
+              <li class="ml-2">
+                windowName: window.title
+              </li>
+              <li class="ml-2">
+                url: tab.url
+              </li>
+              <li class="ml-2">
+                date: tab.lastAccessed?.toString()
+              </li>
+              <li class="ml-2">
+                year: tab.lastAccessed ? getYear(tab.lastAccessed) : 0
+              </li>
+            </ul>
+          </div>
         </div>
         <div class="flex items-start mb-1">
           <div class="flex items-center h-5">
