@@ -18,7 +18,7 @@ const filteredWindows = computed((): WindowWrapper[] => {
 		.value
 		?.filter(_ =>
 			searchString.value == null || _.title.toLowerCase().includes(searchString.value.toLocaleLowerCase()))
-		.sort((a, b) => a.isCurrentWindow ? -1 : 1) ?? [];
+		.sort((a, _b) => a.isCurrentWindow ? -1 : 1) ?? [];
 });
 
 onMounted(async () => {

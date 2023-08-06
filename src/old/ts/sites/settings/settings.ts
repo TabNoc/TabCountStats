@@ -1,5 +1,6 @@
 function saveOptions(e: any) {
 	e.preventDefault();
+	// eslint-disable-next-line no-alert
 	alert('Save stopped because only testContent availible!');
 	return;
 	browser.storage.sync.set({

@@ -1,7 +1,7 @@
 {
   "name": "tabstats",
   "displayName": "TabStats",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "private": true,
   "packageManager": "pnpm@8.3.1",
   "description": "Collects simple stats from the opend tabs, currently without any usage. Adds ability to open random Tab and hints the user to reduce Tab count.",

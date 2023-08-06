@@ -52,6 +52,7 @@ document.addEventListener('click', (e: MouseEvent) => {
 			for (const item in tab)
 				props += `${item} = ${tab[item]} \n`;
 
+			// eslint-disable-next-line no-alert
 			alert(props);
 		});
 	}
