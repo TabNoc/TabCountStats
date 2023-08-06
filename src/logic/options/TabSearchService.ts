@@ -39,7 +39,7 @@ export class TabSearchService {
 
 		if (this.tabFilter.value.length !== 0)
 			searchResult = [...filter(parse(this.tabFilter.value), searchResult)];
-		if (this.hideEmpty)
+		if (this.hideEmpty.value === true)
 			searchResult = searchResult.filter(tso => tso.url !== 'about:newtab' && tso.url !== 'about:home' && tso.url !== 'about:blank');
 
 		if (this.randomizeResult.value === true)

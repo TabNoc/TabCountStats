@@ -14,8 +14,8 @@ export class Migrator {
 		if (await this.getBaseStorageVersion(-1) === 2)
 			await this.migrateStorageV2ToV3();
 
-		if (await this.getBaseStorageVersion(-1) === this.CurrentVersion)
-			throw new Error('Migration failed!');
+		if (await this.getBaseStorageVersion(-1) !== this.CurrentVersion)
+			throw new Error(`Migration failed!\r\n CurrentrVersion: ${await this.getBaseStorageVersion(-1)}, expected Version: ${this.CurrentVersion}`);
 	}
 
 	private async migrateStorageV1ToV2(): Promise<void> {
