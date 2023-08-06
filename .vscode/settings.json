@@ -5,10 +5,10 @@
   "volar.tsPluginStatus": false,
   "vite.autoStart": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
+    "source.fixAll.eslint": true
   },
   "files.associations": {
-    "*.css": "postcss",
+    "*.css": "postcss"
   },
-  "prettier.enable": false,
+  "prettier.enable": false
 }

@@ -46,7 +46,7 @@ browser.windows.getAll().then((windows) => {
       >
     </div>
   </div>
-  <seperator />
+  <Seperator />
   <div class="flex justify-around mt-1">
     <div>
       <div>

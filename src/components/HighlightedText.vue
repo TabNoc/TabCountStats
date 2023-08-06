@@ -31,4 +31,5 @@ const textResult = computed(() =>
 <style scoped>
 .highlighted {
 	background-color: orange
-}</style>
+}
+</style>

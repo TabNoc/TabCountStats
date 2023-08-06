@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { Line } from 'vue-chartjs';
 import 'chart.js/auto';
 import { de } from 'date-fns/locale';

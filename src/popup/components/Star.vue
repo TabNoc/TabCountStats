@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const props = defineProps<{
 	priority?: number
 }>();
@@ -33,6 +32,7 @@ function setNewPriority() {
 	}
 }
 </script>
+
 <template>
   <div class="starWrap">
     <span
@@ -130,5 +130,4 @@ function setNewPriority() {
 	display: inline-block;
 	color: #006080;
 }
-
 </style>

@@ -17,7 +17,6 @@ const tabSessionRepository = new TabSessionRepositoryV1();
 const dateString = props.tab.lastAccessed !== await tabSessionRepository.getOldestLastAccessed(props.tab)
 	? `first seen: ${formatDate(await tabSessionRepository.getOldestLastAccessed(props.tab))}`
 	: '';
-console.log(await tabSessionRepository.getOldestLastAccessed(props.tab));
 </script>
 
 <template>

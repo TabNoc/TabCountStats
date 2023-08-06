@@ -21,7 +21,7 @@ const filteredWindows = computed((): WindowWrapper[] => {
 		.sort((a, b) => a.isCurrentWindow ? -1 : 1) ?? [];
 });
 
-onMounted(async() => {
+onMounted(async () => {
 	await update();
 });
 
@@ -53,7 +53,7 @@ function selectFirstWindow() {
 </script>
 
 <template>
-  <search-header v-model="searchString" @select-first-window="selectFirstWindow" />
+  <SearchHeader v-model="searchString" @select-first-window="selectFirstWindow" />
 
   <div id="tabs-windowContainer" />
   <WindowEntry

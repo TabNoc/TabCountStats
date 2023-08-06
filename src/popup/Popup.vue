@@ -120,7 +120,6 @@ function OpenRandomTabFromQuery(tabs: Tabs.Tab[]) {
 function openLinkInNewTab(a: MouseEvent) {
 	browser.tabs.create({ url: browser.runtime.getURL((a.target as any).href), active: true });
 }
-
 </script>
 
 <template>
@@ -129,7 +128,7 @@ function openLinkInNewTab(a: MouseEvent) {
     <a class="external" href="/dist/options/index.html?href=AdditionalTabs" @click="openLinkInNewTab">Tabs</a>
   </div>
   <div class="panel">
-    <windows-list @switch-to-window="switchToWindow" />
+    <WindowsList @switch-to-window="switchToWindow" />
 
     <Seperator />
 
@@ -140,7 +139,7 @@ function openLinkInNewTab(a: MouseEvent) {
     <a id="tabs-activate-least-tabs" href="#">Activate the window with the least amount of Tabs</a><br>
 
     <Seperator />
-    <!--<a href="#" id="tabs-cleardata">ClearData</a><br>-->
+    <!-- <a href="#" id="tabs-cleardata">ClearData</a><br> -->
     <Seperator />
     <a id="tabs-readdata" href="#">ReadData</a><br>
 
@@ -150,6 +149,7 @@ function openLinkInNewTab(a: MouseEvent) {
     <a id="tabs-alertinfo" href="#">Alert active tab info</a><br>
   </div>
 </template>
+
 <style>
 /*
 implicit usage of https://github.com/FirefoxUX/StyleGuide/tree/master/src/styles
