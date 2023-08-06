@@ -16,8 +16,8 @@ export async function getManifest() {
 		applications: {
 			gecko: {
 				strict_min_version: '79.0a1',
+				// eslint-disable-next-line no-constant-condition
 				id: true ? 'TabStats_dev@tabnoc.com' : 'TabStats@tabnoc.com',
-
 			},
 		},
 		browser_action: {
