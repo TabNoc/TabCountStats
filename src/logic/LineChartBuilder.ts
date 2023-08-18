@@ -1,8 +1,7 @@
-import type { TChartData } from 'vue-chartjs/dist/types';
-import type { ChartDataset, ScatterDataPoint } from 'chart.js';
+import type { ChartData, ChartDataset, ScatterDataPoint } from 'chart.js';
 
 export default class LineChartBuilder {
-	private result: TChartData<'line', (number | ScatterDataPoint | null)[], unknown>;
+	private result: ChartData<'line', (number | ScatterDataPoint | null)[], unknown>;
 	constructor() {
 		this.result = {
 			datasets: [],
@@ -32,7 +31,7 @@ export default class LineChartBuilder {
 		return this;
 	}
 
-	public getChartData(): TChartData<'line', (number | ScatterDataPoint | null)[], unknown> {
+	public getChartData(): ChartData<'line', (number | ScatterDataPoint | null)[], unknown> {
 		return this.result;
 	}
 }
