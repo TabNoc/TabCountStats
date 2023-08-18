@@ -45,10 +45,10 @@ export async function getManifest() {
 			'sessions',
 			'storage',
 		],
-		content_scripts: [{
-			matches: ['http://*/*', 'https://*/*'],
-			js: ['./dist/contentScripts/index.global.js'],
-		}],
+		// content_scripts: [{
+		// 	matches: ['http://*/*', 'https://*/*'],
+		// 	js: ['./dist/contentScripts/index.global.js'],
+		// }],
 		web_accessible_resources: [
 			'dist/contentScripts/style.css',
 		],
