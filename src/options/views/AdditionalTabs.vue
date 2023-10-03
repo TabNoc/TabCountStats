@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue';
-import type { Tabs, Windows } from 'webextension-polyfill';
+import type { Tabs } from 'webextension-polyfill';
 import TabEntry from './TabEntry.vue';
 import { TabSearchService } from '~/logic/options/TabSearchService';
 
@@ -17,12 +17,7 @@ const filterText = computed(() => {
 	return ` (${displayTabs.value.length}/${tabCount.value})`;
 });
 
-const windowsList: Ref<Map<number, Windows.Window>> = ref(new Map());
-browser.windows.getAll().then((windows) => {
-	windowsList.value = new Map(windows.map(w => [w.id!, w]));
-});
-
-const tabSearchService = new TabSearchService(displayTabs, onlyCurrentWindow, tabFilter, tabCount, randomizeResult, windowsList, tabSorting, hideEmpty);
+const tabSearchService = new TabSearchService(displayTabs, onlyCurrentWindow, tabFilter, tabCount, randomizeResult, tabSorting, hideEmpty);
 watch([onlyCurrentWindow, tabFilter, randomizeResult, tabSorting, hideEmpty], () => {
 	tabSearchService.updateFilteredTabs();
 }, { immediate: true });
@@ -145,7 +140,7 @@ watch([onlyCurrentWindow, tabFilter, randomizeResult, tabSorting, hideEmpty], ()
 
   <div v-for="tab in displayTabs" :key="tab.id">
     <Suspense>
-      <TabEntry :tab="tab" :windows-list="windowsList" />
+      <TabEntry :tab="tab" :windows-list="tabSearchService.windowsList.value" />
     </Suspense>
   </div>
 </template>

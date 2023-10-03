@@ -7,6 +7,8 @@ import type { TabSearchObject } from './TabSearchObject';
 export class TabSearchService {
 	tabCache: TabSearchObject[] | null = null;
 	tabCacheDate = new Date();
+	windowCache: Map<number, Windows.Window> | null = null;
+	windowCacheDate = new Date();
 
 	displayTabs: Ref<Tabs.Tab[]>;
 	onlyCurrentWindow: Ref<boolean>;
@@ -21,7 +23,6 @@ export class TabSearchService {
 		tabFilter: Ref<string>,
 		tabCount: Ref<number>,
 		randomizeResult: Ref<boolean>,
-		windowsList: Ref<Map<number, Windows.Window>>,
 		tabSorting: Ref<string>,
 		hideEmpty: Ref<boolean>) {
 		this.displayTabs = displayTabs;
@@ -29,9 +30,9 @@ export class TabSearchService {
 		this.tabFilter = tabFilter;
 		this.tabCount = tabCount;
 		this.randomizeResult = randomizeResult;
-		this.windowsList = windowsList;
 		this.tabSorting = tabSorting;
 		this.hideEmpty = hideEmpty;
+		this.windowsList = ref(new Map<number, Windows.Window>());
 	}
 
 	public async updateFilteredTabs() {
@@ -59,7 +60,25 @@ export class TabSearchService {
 	}
 
 	private async getTabs(): Promise<TabSearchObject[]> {
-		return (await browser.tabs.query({ currentWindow: this.onlyCurrentWindow.value ? true : undefined })).map(tab => this.mapTabToTso(tab));
+		return await Promise.all(
+			(await browser.tabs.query({ currentWindow: this.onlyCurrentWindow.value ? true : undefined }))
+				.map(async tab => await this.mapTabToTso(tab)),
+		);
+	}
+
+	private async queryWindows(): Promise<Map<number, Windows.Window>> {
+		return (await browser.windows.getAll().then((windows) => {
+			this.windowsList.value = new Map(windows.map(w => [w.id!, w]));
+			return this.windowsList.value;
+		}));
+	}
+
+	private async getWindows(): Promise<Map<number, Windows.Window>> {
+		if (this.windowCache == null || addSeconds(this.windowCacheDate, 15) < new Date()) {
+			this.windowCache = await this.queryWindows();
+			this.windowCacheDate = new Date();
+		}
+		return this.windowCache;
 	}
 
 	private async getData(): Promise<TabSearchObject[]> {
@@ -75,13 +94,13 @@ export class TabSearchService {
 		}
 	}
 
-	private mapTabToTso(tab: Tabs.Tab): TabSearchObject {
+	private async mapTabToTso(tab: Tabs.Tab): Promise<TabSearchObject> {
 		try {
 			return {
 				tab,
 				title: tab.title,
-				window: this.windowsList.value.get(tab.windowId!),
-				windowName: this.windowsList.value.get(tab.windowId!)!.title,
+				window: (await this.getWindows()).get(tab.windowId!),
+				windowName: (await this.getWindows()).get(tab.windowId!)!.title,
 				url: tab.url,
 				date: tab.lastAccessed?.toString(),
 				year: tab.lastAccessed ? getYear(tab.lastAccessed) : 0,
