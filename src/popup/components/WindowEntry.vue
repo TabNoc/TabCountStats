@@ -14,6 +14,7 @@ const emit = defineEmits<{
 	(e: 'switchToWindow', id?: number): void
 	(e: 'setPriority', windowId: number, newPriority: number): void
 	(e: 'removePriority', windowId: number): void
+	(e: 'moveTabToWindow', windowId?: number): void
 }>();
 
 function setPriority(newPriority: number) {
@@ -40,7 +41,8 @@ function removePriority() {
       class="windowLink"
       :tabs-windowId="props.windowId"
       href="#"
-      @click="emit('switchToWindow', props.windowId)"
+      @click.exact="emit('switchToWindow', props.windowId)"
+      @click.shift.ctrl="emit('moveTabToWindow', props.windowId)"
     >
       <HighlightedText
         :base-text="props.title"

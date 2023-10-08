@@ -8,6 +8,7 @@ const props = defineProps<{
 const emit = defineEmits<{
 	(e: 'update:modelValue', modelValue: string): void
 	(e: 'selectFirstWindow'): void
+	(e: 'moveTabToFirstWindow'): void
 }>();
 
 const writableComputedValue = computed({
@@ -21,6 +22,9 @@ const writableComputedValue = computed({
 
 function onInputEnterPressed() {
 	emit('selectFirstWindow');
+}
+function onInputShiftCtrlEnterPressed() {
+	emit('moveTabToFirstWindow');
 }
 
 const currentWindowTabCount = ref('');
@@ -42,7 +46,8 @@ browser.windows.getAll().then((windows) => {
       <input
         id="tab-searchWindowInput" v-model="writableComputedValue" type="text" placeholder="search for window title"
         autofocus
-        @keydown.enter="onInputEnterPressed"
+        @keydown.enter.exact="onInputEnterPressed"
+        @keydown.enter.shift.ctrl.exact="onInputShiftCtrlEnterPressed"
       >
     </div>
   </div>

@@ -13,6 +13,8 @@ const tabSorting = ref('');
 const tabCount = ref(0);
 const showUsageHelp = ref(false);
 
+// todo: move variables to object
+// todo: add favorite function to save, load and apply saved variableObject
 const filterText = computed(() => {
 	return ` (${displayTabs.value.length}/${tabCount.value})`;
 });

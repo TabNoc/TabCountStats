@@ -8,6 +8,7 @@ import { WindowFavoritePriorityRepositoryV1 } from '~/logic/storage/WindowFavori
 
 const emit = defineEmits<{
 	(e: 'switchToWindow', id?: number): void
+	(e: 'moveTabToWindow', windowId?: number, tabId?: number): void
 }>();
 
 const searchString = ref('');
@@ -45,15 +46,29 @@ function switchToWindow(windowId?: number) {
 	emit('switchToWindow', windowId);
 }
 
+async function moveTabToWindow(windowId?: number) {
+	emit('moveTabToWindow', windowId, (await browser.tabs.query({ active: true, currentWindow: true }))[0].id);
+}
+
 function selectFirstWindow() {
 	const id = filteredWindows.value.at(0)?.window.id;
 	if (id != null)
 		switchToWindow(id);
 }
+
+async function moveTabToFirstWindow() {
+	const id = filteredWindows.value.at(0)?.window.id;
+	if (id != null)
+		await moveTabToWindow(id);
+}
 </script>
 
 <template>
-  <SearchHeader v-model="searchString" @select-first-window="selectFirstWindow" />
+  <SearchHeader
+    v-model="searchString"
+    @select-first-window="selectFirstWindow"
+    @move-tab-to-first-window="moveTabToFirstWindow"
+  />
 
   <div id="tabs-windowContainer" />
   <WindowEntry
@@ -67,5 +82,6 @@ function selectFirstWindow() {
     @set-priority="setPriority"
     @remove-priority="removePriority"
     @switch-to-window="switchToWindow"
+    @move-tab-to-window="moveTabToWindow"
   />
 </template>

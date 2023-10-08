@@ -3,6 +3,8 @@ import type { Manifest } from 'webextension-polyfill';
 import type PkgType from '../package.json';
 import { isDev, port, r } from '../scripts/utils';
 
+const isDevName = true;
+
 export async function getManifest() {
 	const pkg = await fs.readJSON(r('package.json')) as typeof PkgType;
 
@@ -16,8 +18,7 @@ export async function getManifest() {
 		applications: {
 			gecko: {
 				strict_min_version: '79.0a1',
-				// eslint-disable-next-line no-constant-condition
-				id: true ? 'TabStats_dev@tabnoc.com' : 'TabStats@tabnoc.com',
+				id: (isDevName) ? 'TabStats_dev@tabnoc.com' : 'TabStats@tabnoc.com',
 			},
 		},
 		browser_action: {

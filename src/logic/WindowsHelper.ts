@@ -94,6 +94,15 @@ export function switchToWindow(windowId?: number) {
 	}
 }
 
+export function moveTabToWindow(windowId?: number, tabId?: number) {
+	if (windowId !== undefined && tabId !== undefined) {
+		browser.tabs.move(tabId, {
+			windowId,
+			index: -1,
+		});
+	}
+}
+
 export function switchToTab(choosenTab: Tabs.Tab): void {
 	if (choosenTab.windowId !== undefined) {
 		browser.tabs.update(choosenTab.id, {
