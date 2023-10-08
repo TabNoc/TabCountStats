@@ -13,12 +13,8 @@ const lineChartBuilder = computed(() => new LineChartBuilder().addDataset('Histo
 </script>
 
 <template>
-  <div>
-    Test: {{ lineChartBuilder.getChartData() }}
-  </div>
-
   <Line
-    :data="lineChartBuilder.getChartData()" :width="400" :height="400"
+    :data="lineChartBuilder.getChartData()"
     :chart-options="{ scales: { x: { type: 'time', adapters: { date: { locale: de } }, time: { tooltipFormat: 'd LLL. yyyy, kk:mm' } } } }"
   />
 </template>
