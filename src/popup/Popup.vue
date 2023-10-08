@@ -127,6 +127,7 @@ function openLinkInNewTab(a: MouseEvent) {
   <div id="header">
     <a class="external" href="/dist/options/index.html?href=AdditionalWindows" @click="openLinkInNewTab">Windows</a>
     <a class="external" href="/dist/options/index.html?href=AdditionalTabs" @click="openLinkInNewTab">Tabs</a>
+    <a class="external" href="/dist/options/index.html?href=TabCountChart" @click="openLinkInNewTab">TabCount Chart</a>
   </div>
   <div class="panel">
     <WindowsList @switch-to-window="switchToWindow" @move-tab-to-window="moveTabToWindow" />

@@ -4,7 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import AdditionalTabs from './views/AdditionalTabs.vue';
 import AdditionalWindows from './views/AdditionalWindows.vue';
 import Options from './views/Options.vue';
-import Chart from './views/Chart.vue';
+import TabCountChart from './views/TabCountChart.vue';
 const routes: Array<RouteRecordRaw> = [
 	{
 		path: '/?href=:href',
@@ -28,9 +28,9 @@ const routes: Array<RouteRecordRaw> = [
 		component: AdditionalWindows,
 	},
 	{
-		path: '/chart',
-		name: 'Chart',
-		component: Chart,
+		path: '/TabCountChart',
+		name: 'TabCountChart',
+		component: TabCountChart,
 	},
 ];
 
