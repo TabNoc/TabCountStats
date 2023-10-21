@@ -133,8 +133,10 @@ watch([onlyCurrentWindow, tabFilter, randomizeResult, tabSorting, hideEmpty], ()
           <option selected>
             none
           </option>
-          <option>last accessed date asc</option>
-          <option>last accessed date desc</option>
+          <option>lastUsedDate asc</option>
+          <option>lastUsedDate desc</option>
+          <!-- <option>firstSeenDate asc</option>
+          <option>firstSeenDate desc</option> -->
         </select>
       </form>
     </div>

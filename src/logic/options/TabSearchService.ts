@@ -7,7 +7,7 @@ import type { TabSearchObject } from './TabSearchObject';
 export class TabSearchService {
 	tabCache: TabSearchObject[] | null = null;
 	tabCacheDate = new Date();
-	windowCache: Map<number, Windows.Window> | null = null;
+	windowCache: Promise<Map<number, Windows.Window>> | null = null;
 	windowCacheDate = new Date();
 
 	displayTabs: Ref<Tabs.Tab[]>;
@@ -39,7 +39,7 @@ export class TabSearchService {
 		let searchResult = await this.getData();
 
 		if (this.tabFilter.value.length !== 0)
-			searchResult = [...filter(parse(this.tabFilter.value), searchResult)];
+			searchResult = [...filter(this.tryParse(this.tabFilter.value), searchResult)];
 		if (this.hideEmpty.value === true)
 			searchResult = searchResult.filter(tso => tso.url !== 'about:newtab' && tso.url !== 'about:home' && tso.url !== 'about:blank');
 
@@ -48,15 +48,37 @@ export class TabSearchService {
 		else
 			this.sortArray(searchResult);
 
+		this.updateModel(searchResult);
+	}
+
+	private updateModel(searchResult: TabSearchObject[]) {
 		this.tabCount.value = searchResult.length;
 		this.displayTabs.value = searchResult.slice(0, Math.min(searchResult.length, 25)).map(tso => tso.tab);
 	}
 
+	private tryParse(value: string): import('liqe').LiqeQuery {
+		try {
+			return parse(value);
+		}
+		catch (error) {
+			try {
+				return parse(`"${value}"`);
+			}
+			catch (error) {
+				this.updateModel([]);
+				throw error;
+			}
+		}
+	}
+
 	private sortArray(searchResult: TabSearchObject[]) {
-		if (this.tabSorting.value === 'last accessed date asc')
+		if (this.tabSorting.value === 'lastUsedDate asc')
 			searchResult.sort((a, b) => (a.date ?? '').localeCompare(b.date ?? ''));
-		else if (this.tabSorting.value === 'last accessed date desc')
+		else if (this.tabSorting.value === 'lastUsedDate desc')
 			searchResult.sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''));
+		// currently no way to load all tabs first seen dates, comes from TabSessionRepositoryV1
+		/* else if (this.tabSorting.value === 'firstSeenDate asc')
+			searchResult.sort((a, b) => (b.?!? ?? '').localeCompare(a.date ?? '')); */
 	}
 
 	private async getTabs(): Promise<TabSearchObject[]> {
@@ -75,10 +97,10 @@ export class TabSearchService {
 
 	private async getWindows(): Promise<Map<number, Windows.Window>> {
 		if (this.windowCache == null || addSeconds(this.windowCacheDate, 15) < new Date()) {
-			this.windowCache = await this.queryWindows();
+			this.windowCache = this.queryWindows();
 			this.windowCacheDate = new Date();
 		}
-		return this.windowCache;
+		return await this.windowCache;
 	}
 
 	private async getData(): Promise<TabSearchObject[]> {
