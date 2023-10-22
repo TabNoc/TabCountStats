@@ -3,7 +3,7 @@ import { TabSessionRepositoryV1 } from './TabSessionRepositoryV1';
 import { defaultData } from '~/old/ts/background/worker/exampleData';
 
 export class Migrator {
-	private CurrentVersion = 3;
+	private CurrentVersion = 4;
 	public async checkAndApplyMigrations() {
 		if (await this.getBaseStorageVersion(-1) === -1)
 			await this.seedData();
@@ -11,8 +11,8 @@ export class Migrator {
 			await this.migrateStorageV0ToV1();
 		if (await this.getBaseStorageVersion(-1) === 1)
 			await this.migrateStorageV1ToV2();
-		if (await this.getBaseStorageVersion(-1) === 2)
-			await this.migrateStorageV2ToV3();
+		if (await this.getBaseStorageVersion(-1) === 2 || await this.getBaseStorageVersion(-1) === 3)
+			await this.migrateStorageV2ToV4();
 
 		if (await this.getBaseStorageVersion(-1) !== this.CurrentVersion)
 			throw new Error(`Migration failed!\r\n CurrentrVersion: ${await this.getBaseStorageVersion(-1)}, expected Version: ${this.CurrentVersion}`);
@@ -50,15 +50,15 @@ export class Migrator {
 		await browser.storage.local.set({ version: 2 });
 	}
 
-	private async migrateStorageV2ToV3(): Promise<void> {
-		console.warn('Migrating local storage from version 2 to 3');
+	private async migrateStorageV2ToV4(): Promise<void> {
+		console.warn('Migrating local storage from version 2 to 4');
 
 		const tabSessionRepository = new TabSessionRepositoryV1();
 
 		for await (const tab of await browser.tabs.query({}))
 			await tabSessionRepository.updateOldestLastAccessed(tab);
 
-		await browser.storage.local.set({ version: 3 });
+		await browser.storage.local.set({ version: 4 });
 	}
 
 	async seedData(): Promise<void> {
