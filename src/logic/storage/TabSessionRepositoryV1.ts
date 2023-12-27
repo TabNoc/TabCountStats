@@ -6,7 +6,17 @@ export class TabSessionRepositoryV1 {
 		if (tab.id == undefined)
 			throw new Error('tab.id is undefined!');
 
-		return await browser.sessions.getTabValue(tab.id, 'oldestLastAccessed');
+		const result = await browser.sessions.getTabValue(tab.id, 'oldestLastAccessed');
+		// this should not be needed anymore, but its still occasionally happening
+		// eslint-disable-next-line eqeqeq
+		if (result == undefined) {
+			await this.setOldestLastAccessed(tab, tab.lastAccessed ?? Date.now());
+			const result2 = await browser.sessions.getTabValue(tab.id, 'oldestLastAccessed');
+			console.log('getOldestLastAccessed', tab.id, result, result2);
+			return result2;
+		}
+
+		return result;
 	}
 
 	public async setOldestLastAccessed(tab: Tabs.Tab, value: number): Promise<void> {
