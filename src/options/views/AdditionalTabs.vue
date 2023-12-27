@@ -3,6 +3,7 @@ import type { Ref } from 'vue';
 import type { Tabs } from 'webextension-polyfill';
 import TabEntry from './TabEntry.vue';
 import { TabSearchService } from '~/logic/options/TabSearchService';
+import SearchLineStorage from '~/logic/storage/SearchLineRepositoryV1';
 
 const displayTabs: Ref<Tabs.Tab[]> = ref([]);
 const onlyCurrentWindow = ref(false);
@@ -24,6 +25,8 @@ watch([onlyCurrentWindow, tabFilter, randomizeResult, tabSorting, hideEmpty], ()
 	tabSearchService.updateFilteredTabs();
 }, { immediate: true });
 
+const searchLineStorage = new SearchLineStorage();
+
 // using https://flowbite.com/docs/components/forms/
 </script>
 
@@ -41,22 +44,16 @@ watch([onlyCurrentWindow, tabFilter, randomizeResult, tabSorting, hideEmpty], ()
             id="tabFilter" v-model="tabFilter" type="text"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="best to start with title:"
+            list="searchLines"
           >
+          <datalist id="searchLines">
+            <option v-for="searchLine in searchLineStorage.getSearchLines()" :key="searchLine" :value="searchLine" />
+          </datalist>
           <span class="absolute right-3 top-12 -translate-y-1/2 text-gray-600 cursor-pointer" title="show usage" @click="showUsageHelp = !showUsageHelp">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 6v2m0 4h.01m0 4v.01M12 3a9 9 0 110 18 9 9 0 010-18zm0 5a4 4 0 100 8 4 4 0 000-8z"
-              />
-            </svg>
+            <img class="h-6 w-6" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABj0lEQVR4nN2VTUoDQRCFPxITF5obRHcimNzBeAGJIrlCMIjGS0gQPYUmCwkIgi7dujaKP1FP4A8YXZhNRhreQDNOT09c5kFBeK+6qqe6qgKTjjxQAzrAA/AtM7/b0ozPv7AOvACBx56BtXECZ4B9K8A1sA0sATOyErAD9Cy/ls56EQb/AeqeQ0bblG+YxFuWMPiyxc8BXWAgOwUWLb1iJam6guetmtcjwd9jav8hLURD/BOQi0tQs2pul6Ur/hwoyi7EnVh+WeBG/EZcgo5E86A2BuKLka8y3GfEtyn+OC7Bo0TTLT7My/c1wpfEmzn5g/CmBU/waZXL+B5EtIL4wX8TTAFn8ruMmeLEBGlKdCifK8dFykklaks0E+rCm3wWHPqu9KOkNu2lHfkITJveJrVpXosr0PjHIZDFYUta3zVoaCuGq6IyRoIVYAiMgFU8aFlJGvp0F7K6+VBn9kiBjJUk0Pg3NUSzsrIeNKz5SMHHeruqFpfvD6efpiwu5NQRZrfcA1+yO7Wi0ZwPOhn4BT6dkYKwNK6qAAAAAElFTkSuQmCC">
+          </span>
+          <span v-if="tabFilter !== '' && searchLineStorage.includes(tabFilter) === false" class="absolute right-9 top-12 -translate-y-1/2 text-gray-600 cursor-pointer" title="save search line" @click="searchLineStorage.save(tabFilter)">
+            <img class="h-6 w-6" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAjElEQVR4nO2VvQ2AIBBG3ySyjgOYuI6lK/kzDW6gdhYYE0wMhXIC0YKXXAff444EICOkBCbACKvxFegX4UYiORdLqIDN7mtTCEQSV2Ae6krtc8AQAb8USPmvQAEjsAIDUMQWjM7s+9iCxRHMsQVD6g6UDT066VLcgS/fC3TAc21sHRm3H06IRNuMDN7sXt6jtyL4+kMAAAAASUVORK5CYII=">
           </span>
           <div
             v-if="showUsageHelp"

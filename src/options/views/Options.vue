@@ -52,6 +52,12 @@ import { storageDemo } from '~/logic/storage/storage';
         <li>
           <a href="https://www.flaticon.com/free-icons/new-tab" title="new tab icons">New tab icons created by Pixel perfect - Flaticon</a>
         </li>
+        <li>
+          <a href="https://icons8.com/icon/83244/hilfe">Hilfe</a> icon by <a href="https://icons8.com">Icons8</a>
+        </li>
+        <li>
+          <a href="https://icons8.com/icon/82736/speichern">Speichern</a> icon by <a href="https://icons8.com">Icons8</a>
+        </li>
       </ul>
     </div>
   </div>
