@@ -94,9 +94,15 @@ export function switchToWindow(windowId?: number) {
 	}
 }
 
-export function moveTabToWindow(windowId?: number, tabId?: number) {
+export async function moveTabToWindow(windowId?: number, tabId?: number) {
 	if (windowId !== undefined && tabId !== undefined) {
-		browser.tabs.move(tabId, {
+		const additionalHighlightedTabOfSameWindow = (await browser.tabs.query(
+			{ highlighted: true, active: false, windowId: (await browser.tabs.get(tabId)).windowId },
+		))
+			.map(window => window.id!)
+			.filter(id => id !== null && id !== undefined);
+
+		await browser.tabs.move([tabId, ...additionalHighlightedTabOfSameWindow], {
 			windowId,
 			index: -1,
 		});
