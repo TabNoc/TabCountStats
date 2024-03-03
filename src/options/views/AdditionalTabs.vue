@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { Ref } from 'vue';
 import type { Tabs } from 'webextension-polyfill';
+import Paginator from 'primevue/paginator';
 import TabEntry from './TabEntry.vue';
 import { TabSearchService } from '~/logic/options/TabSearchService';
 import SearchLineStorage from '~/logic/storage/SearchLineRepositoryV1';
-
 const displayTabs: Ref<Tabs.Tab[]> = ref([]);
 const onlyCurrentWindow = ref(false);
 const randomizeResult = ref(true);
@@ -12,12 +12,14 @@ const hideEmpty = ref(true);
 const tabFilter = ref('');
 const tabSorting = ref('');
 const tabCount = ref(0);
+const pageTabCount = ref(0);
+const firstPaginatorIndex = ref(0);
 const showUsageHelp = ref(false);
 
 // todo: move variables to object
 // todo: add favorite function to save, load and apply saved variableObject
 const filterText = computed(() => {
-	return ` (${displayTabs.value.length}/${tabCount.value})`;
+	return ` (${pageTabCount.value}/${tabCount.value})`;
 });
 
 const tabSearchService = new TabSearchService(displayTabs, onlyCurrentWindow, tabFilter, tabCount, randomizeResult, tabSorting, hideEmpty);
@@ -139,11 +141,12 @@ const searchLineStorage = new SearchLineStorage();
     </div>
   </div>
 
-  <div v-for="tab in displayTabs" :key="tab.id">
+  <div v-for="tab in displayTabs.slice(firstPaginatorIndex, Math.min(displayTabs.length, firstPaginatorIndex + pageTabCount))" :key="tab.id">
     <Suspense>
       <TabEntry :tab="tab" :windows-list="tabSearchService.windowsList.value" />
     </Suspense>
   </div>
+  <Paginator v-model:first="firstPaginatorIndex" v-model:rows="pageTabCount" :total-records="displayTabs.length" :rows-per-page-options="[10, 20, 30]" />
 </template>
 
 <style>

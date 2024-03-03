@@ -53,7 +53,7 @@ export class TabSearchService {
 
 	private updateModel(searchResult: TabSearchObject[]) {
 		this.tabCount.value = searchResult.length;
-		this.displayTabs.value = searchResult.slice(0, Math.min(searchResult.length, 25)).map(tso => tso.tab);
+		this.displayTabs.value = searchResult.map(tso => tso.tab);
 	}
 
 	private tryParse(value: string): import('liqe').LiqeQuery {
