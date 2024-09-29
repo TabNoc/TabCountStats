@@ -10,16 +10,16 @@ import {
 } from '@vueuse/core/index';
 
 const browserStorageLocal: StorageLikeAsync = {
-	removeItem(key: string) {
+	removeItem(key: string): Promise<void> {
 		return storage.local.remove(key);
 	},
 
-	async setItem(key: string, value: string) {
+	async setItem(key: string, value: string): Promise<void> {
 		console.debug('setItem', key, value);
 		return (await storage.local.set({ [key]: value }));
 	},
 
-	async getItem(key: string) {
+	async getItem(key: string): Promise<string | null> {
 		return (await storage.local.get(key))[key];
 	},
 };

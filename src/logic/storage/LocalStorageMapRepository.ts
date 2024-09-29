@@ -1,6 +1,8 @@
 import type { ComputedRef } from 'vue';
 import { useBrowserStorageLocal } from '~/composables/useBrowserStorageLocal';
 
+// !!!!!!!!!!!!!!! DO NOT USE THIS CLASS FOR NEW CODE !!!!!!!!!!!!!!!
+// it looks like this is just a bad usecase, the value will get overwritten
 export abstract class LocalStorageMapRepository<T> {
 	private storage;
 	constructor(key: string) {

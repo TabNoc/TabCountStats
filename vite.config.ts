@@ -90,7 +90,15 @@ export default defineConfig(({ command }) => ({
 	},
 	build: {
 		watch: isDev
-			? {}
+			? {
+				chokidar: {
+					ignorePermissionErrors: true,
+					ignored: (a: any, b: any) => {
+						console.log(a, b);
+						return false;
+					},
+				},
+			}
 			: undefined,
 		outDir: r('extension/dist'),
 		emptyOutDir: false,
