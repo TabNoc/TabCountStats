@@ -1,22 +1,29 @@
 <script setup lang="ts">
+import type { DropdownChangeEvent } from 'primevue/dropdown';
+import Dropdown from 'primevue/dropdown';
 import type { Tabs, Windows } from 'webextension-polyfill';
 import { TabSessionRepositoryV1 } from '~/logic/storage/TabSessionRepositoryV1';
-import { adjustTitle, switchToTab } from '~/logic/WindowsHelper';
+import { adjustTitle, moveTabToWindow, switchToTab } from '~/logic/WindowsHelper';
 
 const props = defineProps<{
 	tab: Tabs.Tab
 	windowsList: Map<number, Windows.Window>
 }>();
+const tabSessionRepository = new TabSessionRepositoryV1();
+const dateString = props.tab.lastAccessed !== await tabSessionRepository.getOldestLastAccessed(props.tab)
+	? `first seen: ${formatDate(await tabSessionRepository.getOldestLastAccessed(props.tab))}`
+	: '';
+const expandWindow = ref(false);
 
 function formatDate(date: number): string {
 	return new Date(date).toLocaleString();
 }
 
-const tabSessionRepository = new TabSessionRepositoryV1();
-
-const dateString = props.tab.lastAccessed !== await tabSessionRepository.getOldestLastAccessed(props.tab)
-	? `first seen: ${formatDate(await tabSessionRepository.getOldestLastAccessed(props.tab))}`
-	: '';
+function moveToWindow(event: DropdownChangeEvent): void {
+	// eslint-disable-next-line vue/no-mutating-props
+	props.tab.windowId = event.value;
+	moveTabToWindow(event.value, props.tab.id);
+}
 </script>
 
 <template>
@@ -35,7 +42,23 @@ const dateString = props.tab.lastAccessed !== await tabSessionRepository.getOlde
         <div>{{ dateString }}</div>
       </div>
       |
-      <div>{{ adjustTitle(windowsList.get(tab.windowId!)?.title) }}</div>
+      <div @click="expandWindow = true">
+        <div v-if="expandWindow">
+          <Dropdown
+            filter
+            auto-filter-focus
+            placeholder="Select a window"
+            option-label="label"
+            option-value="value"
+            :model-value="tab.windowId"
+            :options="Array.from(windowsList.values()).map((window) => ({ label: adjustTitle(window.title), value: window.id }))"
+            @change="moveToWindow"
+          />
+        </div>
+        <div v-else class="cursor-pointer">
+          {{ adjustTitle(windowsList.get(tab.windowId!)?.title) }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
