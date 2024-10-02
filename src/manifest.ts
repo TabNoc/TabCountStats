@@ -45,6 +45,7 @@ export async function getManifest() {
 			'tabs',
 			'sessions',
 			'storage',
+			'<all_urls>',
 		],
 		// content_scripts: [{
 		// 	matches: ['http://*/*', 'https://*/*'],

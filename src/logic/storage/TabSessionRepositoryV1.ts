@@ -30,6 +30,24 @@ export class TabSessionRepositoryV1 {
 		await browser.sessions.setTabValue(tab.id, 'oldestLastAccessed', value);
 	}
 
+	public async setSkipUntil(tab: Tabs.Tab, value: Date): Promise<void> {
+		// eslint-disable-next-line eqeqeq
+		if (tab.id == undefined)
+			throw new Error('tab.id is undefined!');
+		// eslint-disable-next-line eqeqeq
+		if (value == undefined)
+			throw new Error('value is undefined!');
+
+		await browser.sessions.setTabValue(tab.id, 'skipUntil', value.valueOf());
+	}
+
+	public async getSkipUntil(tab: Tabs.Tab): Promise<Date | undefined> {
+		// eslint-disable-next-line eqeqeq
+		if (tab.id == undefined)
+			throw new Error('tab.id is undefined!');
+		return new Date(await browser.sessions.getTabValue(tab.id, 'skipUntil'));
+	}
+
 	public async removeOldestLastAccessed(tab: Tabs.Tab): Promise<void> {
 		// eslint-disable-next-line eqeqeq
 		if (tab.id == undefined)

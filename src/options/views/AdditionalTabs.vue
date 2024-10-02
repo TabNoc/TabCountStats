@@ -2,12 +2,13 @@
 import type { Ref } from 'vue';
 import type { Tabs } from 'webextension-polyfill';
 import Paginator from 'primevue/paginator';
-import TabEntry from './TabEntry.vue';
+import TabEntry from '../../components/TabEntry.vue';
 import { TabSearchService } from '~/logic/options/TabSearchService';
 import SearchStorage from '~/logic/storage/SearchRepositoryV1';
 const displayTabs: Ref<Tabs.Tab[]> = ref([]);
 const onlyCurrentWindow = ref(false);
 const randomizeResult = ref(true);
+const showAsList = ref(true);
 const hideEmpty = ref(true);
 const tabFilter = ref('');
 const tabSorting = ref('');
@@ -38,8 +39,8 @@ watch([onlyCurrentWindow, tabFilter, randomizeResult, tabSorting, hideEmpty], ()
   <div class="m-auto grid grid-cols-3">
     <div />
     <div class="w-124">
-      <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <div class="relative mb-6">
+      <form class="bg-white shadow-md rounded px-8 pt-6 pb-6 mb-4">
+        <div class="relative mb-4">
           <label for="tabFilter" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Tab filter{{
             filterText }}</label>
           <input
@@ -116,12 +117,23 @@ watch([onlyCurrentWindow, tabFilter, randomizeResult, tabSorting, hideEmpty], ()
           <label for="randomizeResult" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Randomize
             result order</label>
         </div>
-        <div class="flex items-center h-5 mt-1">
-          <input
-            id="hideEmpty" v-model="hideEmpty" type="checkbox"
-            class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-          >
-          <label for="hideEmpty" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Hide empty Tabs</label>
+        <div class="h-5 mt-1">
+          <div class="grid grid-cols-2 grid-rows-1">
+            <div class="flex items-center">
+              <input
+                id="hideEmpty" v-model="hideEmpty" type="checkbox"
+                class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
+              >
+              <label for="hideEmpty" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Hide empty Tabs</label>
+            </div>
+            <div class="flex items-center">
+              <input
+                id="showAsList" v-model="showAsList" type="checkbox"
+                class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
+              >
+              <label for="showAsList" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Show as list</label>
+            </div>
+          </div>
         </div>
       </form>
     </div>
@@ -141,12 +153,17 @@ watch([onlyCurrentWindow, tabFilter, randomizeResult, tabSorting, hideEmpty], ()
     </div>
   </div>
 
-  <div v-for="tab in displayTabs.slice(firstPaginatorIndex, Math.min(displayTabs.length, firstPaginatorIndex + pageTabCount))" :key="tab.id">
-    <Suspense>
-      <TabEntry :tab="tab" :windows-list="tabSearchService.windowsList.value" />
-    </Suspense>
+  <div v-if="showAsList" class="grid grid-cols-1">
+    <div v-for="tab in displayTabs.slice(firstPaginatorIndex, Math.min(displayTabs.length, firstPaginatorIndex + pageTabCount))" :key="tab.id">
+      <Suspense>
+        <TabEntry :tab="tab" :windows-list="tabSearchService.windowsList.value" />
+      </Suspense>
+    </div>
+    <Paginator v-model:first="firstPaginatorIndex" v-model:rows="pageTabCount" :total-records="displayTabs.length" :rows-per-page-options="[11, 22, 33]" />
   </div>
-  <Paginator v-model:first="firstPaginatorIndex" v-model:rows="pageTabCount" :total-records="displayTabs.length" :rows-per-page-options="[11, 22, 33]" />
+  <div v-else>
+    <TabDecider :tabs="displayTabs" :windows-list="tabSearchService.windowsList.value" />
+  </div>
 </template>
 
 <style>

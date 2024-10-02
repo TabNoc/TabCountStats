@@ -13,6 +13,15 @@ async function preStartAddonBackground() {
 }
 
 async function startAddonBackgroundAsync() {
+	onMessage('get-capture-tab', async (title) => {
+		const tabId = Number.parseInt(title.data?.valueOf().toString() ?? '0');
+
+		const blub = browser.tabs.captureTab(tabId, { format: 'jpeg' });
+		// return sendMessage('get-capture-tab', tab.id);
+
+		return blub;
+	});
+
 	return Promise.resolve();
 }
 function startAddonBackgroundSync() {

@@ -10,7 +10,7 @@ router.isReady().then(() => {
 </script>
 
 <template>
-  <main class="px-4 py-10 text-center text-gray-700 dark:text-gray-200 flex flex-col justify-between">
+  <main class="px-4 py-4 text-center text-gray-700 dark:text-gray-200 flex flex-col justify-between">
     <RouterView />
   </main>
 </template>

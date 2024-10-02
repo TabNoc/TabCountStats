@@ -16,5 +16,8 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SharedSubtitle: typeof import('./components/SharedSubtitle.vue')['default']
+    TabDecider: typeof import('./components/TabDecider.vue')['default']
+    TabEntry: typeof import('./components/TabEntry.vue')['default']
+    TabInfo: typeof import('./components/TabInfo.vue')['default']
   }
 }
