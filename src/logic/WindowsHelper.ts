@@ -86,9 +86,9 @@ function sortWindows(
 	return 1;
 }
 
-export function switchToWindow(windowId?: number) {
+export async function switchToWindow(windowId?: number) {
 	if (windowId !== undefined) {
-		browser.windows.update(windowId, {
+		await browser.windows.update(windowId, {
 			focused: true,
 		});
 	}
@@ -109,11 +109,15 @@ export async function moveTabToWindow(windowId?: number, tabId?: number) {
 	}
 }
 
-export function switchToTab(choosenTab: Tabs.Tab): void {
+export async function switchToTab(choosenTab: Tabs.Tab): Promise<void> {
 	if (choosenTab.windowId !== undefined) {
-		browser.tabs.update(choosenTab.id, {
+		await browser.tabs.update(choosenTab.id, {
 			active: true,
 		});
-		switchToWindow(choosenTab.windowId);
+		await switchToWindow(choosenTab.windowId);
 	}
+}
+
+export async function closeTab(tabId: number): Promise<void> {
+	await browser.tabs.remove(tabId);
 }

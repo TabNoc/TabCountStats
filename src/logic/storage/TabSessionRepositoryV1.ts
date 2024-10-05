@@ -23,6 +23,7 @@ export class TabSessionRepositoryV1 {
 		// eslint-disable-next-line eqeqeq
 		if (tab.id == undefined)
 			throw new Error('tab.id is undefined!');
+
 		// eslint-disable-next-line eqeqeq
 		if (value == undefined)
 			throw new Error('value is undefined!');
@@ -34,6 +35,7 @@ export class TabSessionRepositoryV1 {
 		// eslint-disable-next-line eqeqeq
 		if (tab.id == undefined)
 			throw new Error('tab.id is undefined!');
+
 		// eslint-disable-next-line eqeqeq
 		if (value == undefined)
 			throw new Error('value is undefined!');
@@ -45,6 +47,7 @@ export class TabSessionRepositoryV1 {
 		// eslint-disable-next-line eqeqeq
 		if (tab.id == undefined)
 			throw new Error('tab.id is undefined!');
+
 		return new Date(await browser.sessions.getTabValue(tab.id, 'skipUntil'));
 	}
 

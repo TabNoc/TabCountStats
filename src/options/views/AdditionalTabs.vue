@@ -3,8 +3,11 @@ import type { Ref } from 'vue';
 import type { Tabs } from 'webextension-polyfill';
 import Paginator from 'primevue/paginator';
 import TabEntry from '../../components/TabEntry.vue';
+import TabDecider from '../../components/TabDecider.vue';
 import { TabSearchService } from '~/logic/options/TabSearchService';
 import SearchStorage from '~/logic/storage/SearchRepositoryV1';
+import { closeTab, moveTabToWindow, switchToTab } from '~/logic/WindowsHelper';
+
 const displayTabs: Ref<Tabs.Tab[]> = ref([]);
 const onlyCurrentWindow = ref(false);
 const randomizeResult = ref(true);
@@ -29,6 +32,13 @@ const tabSearchService = new TabSearchService(displayTabs, onlyCurrentWindow, ta
 watch([onlyCurrentWindow, tabFilter, randomizeResult, tabSorting, hideEmpty], () => {
 	tabSearchService.updateFilteredTabs();
 }, { immediate: true });
+
+function onCloseTab(tab: Tabs.Tab): void {
+	// eslint-disable-next-line eqeqeq
+	if (tab.id == undefined)
+		throw new Error('tab.id is undefined!');
+	closeTab(tab.id);
+}
 
 // using https://flowbite.com/docs/components/forms/
 </script>
@@ -156,13 +166,22 @@ watch([onlyCurrentWindow, tabFilter, randomizeResult, tabSorting, hideEmpty], ()
   <div v-if="showAsList" class="grid grid-cols-1">
     <div v-for="tab in displayTabs.slice(firstPaginatorIndex, Math.min(displayTabs.length, firstPaginatorIndex + pageTabCount))" :key="tab.id">
       <Suspense>
-        <TabEntry :tab="tab" :windows-list="tabSearchService.windowsList.value" />
+        <TabEntry
+          :tab="tab"
+          :windows-list="tabSearchService.windowsList.value"
+        />
       </Suspense>
     </div>
     <Paginator v-model:first="firstPaginatorIndex" v-model:rows="pageTabCount" :total-records="displayTabs.length" :rows-per-page-options="[11, 22, 33]" />
   </div>
   <div v-else>
-    <TabDecider :tabs="displayTabs" :windows-list="tabSearchService.windowsList.value" />
+    <TabDecider
+      :tabs="displayTabs"
+      :windows-list="tabSearchService.windowsList.value"
+      @switch="switchToTab"
+      @move="(tab, windowId) => moveTabToWindow(windowId, tab.id)"
+      @close="onCloseTab"
+    />
   </div>
 </template>
 

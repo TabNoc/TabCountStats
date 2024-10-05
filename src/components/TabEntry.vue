@@ -3,11 +3,16 @@ import type { DropdownChangeEvent } from 'primevue/dropdown';
 import Dropdown from 'primevue/dropdown';
 import type { Tabs, Windows } from 'webextension-polyfill';
 import { TabSessionRepositoryV1 } from '~/logic/storage/TabSessionRepositoryV1';
-import { adjustTitle, moveTabToWindow, switchToTab } from '~/logic/WindowsHelper';
+import { adjustTitle } from '~/logic/WindowsHelper';
 
 const props = defineProps<{
 	tab: Tabs.Tab
 	windowsList: Map<number, Windows.Window>
+}>();
+
+const emit = defineEmits<{
+	(e: 'move', tab: Tabs.Tab, windowId: number): void
+	(e: 'switch', tab: Tabs.Tab): void
 }>();
 const tabSessionRepository = new TabSessionRepositoryV1();
 const dateString = props.tab.lastAccessed !== await tabSessionRepository.getOldestLastAccessed(props.tab)
@@ -22,7 +27,7 @@ function formatDate(date: number): string {
 function moveToWindow(event: DropdownChangeEvent): void {
 	// eslint-disable-next-line vue/no-mutating-props
 	props.tab.windowId = event.value;
-	moveTabToWindow(event.value, props.tab.id);
+	emit('move', props.tab, event.value);
 }
 </script>
 
@@ -31,7 +36,7 @@ function moveToWindow(event: DropdownChangeEvent): void {
     <div class="m-1">
       <a
         href="#" class="p-1 currentWindowEntryWrapper inline-block" :title="tab.url"
-        @click.prevent="switchToTab(tab)"
+        @click.prevent="emit('switch', tab)"
       ><img :src="tab.favIconUrl" class="inline-block w-4 mb-1 mx-1">{{
         adjustTitle(tab.title) }}</a>
     </div>
