@@ -2,7 +2,7 @@
 import type { Tabs, Windows } from 'webextension-polyfill';
 import WindowsList from './components/WindowsList.vue';
 import Seperator from './components/Seperator.vue';
-import { moveTabToWindow, switchToTab, switchToWindow } from '~/logic/WindowsHelper';
+import { moveTabAndSelectedTabsFromSameWindowToWindow, switchToTab, switchToWindow } from '~/logic/WindowsHelper';
 
 function getCurrentWindowTabs() {
 	return browser.tabs.query({ currentWindow: true });
@@ -130,7 +130,7 @@ function openLinkInNewTab(a: MouseEvent) {
     <a class="external" href="/dist/options/index.html?href=TabCountChart" @click="openLinkInNewTab">TabCount Chart</a>
   </div>
   <div class="panel">
-    <WindowsList @switch-to-window="switchToWindow" @move-tab-to-window="moveTabToWindow" />
+    <WindowsList @switch-to-window="switchToWindow" @move-tab-to-window="moveTabAndSelectedTabsFromSameWindowToWindow" />
 
     <Seperator />
 

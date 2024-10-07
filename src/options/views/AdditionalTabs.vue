@@ -6,7 +6,7 @@ import TabEntry from '../../components/TabEntry.vue';
 import TabDecider from '../../components/TabDecider.vue';
 import { TabSearchService } from '~/logic/options/TabSearchService';
 import SearchStorage from '~/logic/storage/SearchRepositoryV1';
-import { closeTab, moveTabToWindow, switchToTab } from '~/logic/WindowsHelper';
+import { closeTab, moveTabAndSelectedTabsFromSameWindowToWindow, switchToTab } from '~/logic/WindowsHelper';
 
 const displayTabs: Ref<Tabs.Tab[]> = ref([]);
 const onlyCurrentWindow = ref(false);
@@ -25,7 +25,7 @@ const pageTabCount = searchStorage.getPageTabCount();
 // todo: move variables to object
 // todo: add favorite function to save, load and apply saved variableObject
 const filterText = computed(() => {
-	return ` (${pageTabCount.value}/${tabCount.value})`;
+	return ` (${Math.min(pageTabCount.value, tabCount.value)}/${tabCount.value})`;
 });
 
 const tabSearchService = new TabSearchService(displayTabs, onlyCurrentWindow, tabFilter, tabCount, randomizeResult, tabSorting, hideEmpty);
@@ -44,12 +44,10 @@ function onCloseTab(tab: Tabs.Tab): void {
 </script>
 
 <template>
-  <h1>Additional - Tabs</h1>
-
   <div class="m-auto grid grid-cols-3">
     <div />
     <div class="w-124">
-      <form class="bg-white shadow-md rounded px-8 pt-6 pb-6 mb-4">
+      <form class="bg-white shadow-md rounded px-8 pt-2 pb-6 mb-4">
         <div class="relative mb-4">
           <label for="tabFilter" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Tab filter{{
             filterText }}</label>
@@ -179,7 +177,7 @@ function onCloseTab(tab: Tabs.Tab): void {
       :tabs="displayTabs"
       :windows-list="tabSearchService.windowsList.value"
       @switch="switchToTab"
-      @move="(tab, windowId) => moveTabToWindow(windowId, tab.id)"
+      @move="(tab, windowId) => moveTabAndSelectedTabsFromSameWindowToWindow(windowId, tab.id)"
       @close="onCloseTab"
     />
   </div>

@@ -1,4 +1,5 @@
 import type { Tabs } from 'webextension-polyfill';
+import type { TabSessionRepositoryV1 } from './storage/TabSessionRepositoryV1';
 
 export function getCaptureTabUrl(tab: Tabs.Tab): Promise<string> {
 	if (!tab.id)
@@ -9,4 +10,18 @@ export function getCaptureTabUrl(tab: Tabs.Tab): Promise<string> {
 	// return sendMessage('get-capture-tab', tab.id);
 
 	return blub;
+}
+
+const formatDate = (date: number): string => {
+	return new Date(date).toLocaleString();
+};
+
+export async function getFirstSeenDateString(tabSessionRepository: TabSessionRepositoryV1, tab: Tabs.Tab): Promise<string> {
+	const date = await 	tabSessionRepository.getOldestLastAccessed(tab);
+
+	return date !== tab.lastAccessed ? formatDate(date) : '';
+}
+
+export function getLastUsedDateString(tab: Tabs.Tab): string {
+	return formatDate(tab.lastAccessed ?? 0);
 }

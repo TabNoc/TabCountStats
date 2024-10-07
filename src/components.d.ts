@@ -9,6 +9,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    BoldedDescriptor: typeof import('./components/BoldedDescriptor.vue')['default']
     HighlightedText: typeof import('./components/HighlightedText.vue')['default']
     Logo: typeof import('./components/Logo.vue')['default']
     PixelarticonsPower: typeof import('~icons/pixelarticons/power')['default']

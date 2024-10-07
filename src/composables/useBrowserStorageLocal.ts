@@ -8,6 +8,7 @@ import type {
 import {
 	useStorageAsync,
 } from '@vueuse/core/index';
+import { blue, yellow } from 'kolorist';
 
 const browserStorageLocal: StorageLikeAsync = {
 	removeItem(key: string): Promise<void> {
@@ -15,7 +16,7 @@ const browserStorageLocal: StorageLikeAsync = {
 	},
 
 	async setItem(key: string, value: string): Promise<void> {
-		console.debug('setItem', key, value);
+		console.debug('setItem', yellow(key), blue(value));
 		return (await storage.local.set({ [key]: value }));
 	},
 

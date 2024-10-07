@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import type { Tabs, Windows } from 'webextension-polyfill';
 import Dropdown from 'primevue/dropdown';
+import BoldedDescriptor from './BoldedDescriptor.vue';
 import { TabSessionRepositoryV1 } from '~/logic/storage/TabSessionRepositoryV1';
 import { adjustTitle } from '~/logic/WindowsHelper';
+import { getFirstSeenDateString, getLastUsedDateString } from '~/logic/TabsHelper';
 
 const props = defineProps<{
 	tab: Tabs.Tab
@@ -12,70 +14,73 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(e: 'skip', tab: Tabs.Tab, until: Date): void
-	(e: 'move', tab: Tabs.Tab, windowId: number): void
+	(e: 'skip', tab: Tabs.Tab, amountInMs: number): void
+	(e: 'move', tab: Tabs.Tab, windowId: number | undefined): void
 	(e: 'close', tab: Tabs.Tab): void
 	(e: 'switch', tab: Tabs.Tab): void
 }>();
 
 const tabSessionRepository = new TabSessionRepositoryV1();
 const skipDurations = [
-	{ text: '1 day', value: new Date(0, 0, 1 + 1, 0, 0, 0, 0) },
-	{ text: '1 week', value: new Date(0, 0, 1 + 7, 0, 0, 0, 0) },
-	{ text: '1 month', value: new Date(0, 1, 1, 0, 0, 0, 0) },
+	{ label: 'Just Now', value: 0 * 1000 },
+	{ label: '1 day', value: 1 * 24 * 60 * 60 * 1000 },
+	{ label: '1 week', value: 7 * 24 * 60 * 60 * 1000 },
+	{ label: '1 month', value: 30 * 24 * 60 * 60 * 1000 },
 ];
-const selectedDuration = ref(skipDurations[0]);
-const selectedWindow = ref(props.tab.windowId!);
-const firstSeenDate = ref('');
-
-const formatDate = (date: number): string => {
-	return new Date(date).toLocaleString();
-};
-
-watch([props.tab], async () => {
-	const date = await tabSessionRepository.getOldestLastAccessed(props.tab);
-	firstSeenDate.value = date !== props.tab.lastAccessed ? formatDate(date) : '';
-}, { immediate: true });
+const windowsOptionsList = Array.from(props.windowsList.values()).map(window => ({ label: `${window.id!}: ${adjustTitle(window.title)}`, value: window.id }));
+const selectedDuration = ref(skipDurations[0].value);
+const selectedWindow = ref(props.tab.windowId);
 </script>
 
 <template>
   <div class="border p-4 rounded bg-gray-100">
     <div class="flex items-center justify-center mb-2">
+      <h2 class="text-xl font-italic mr-2 text-gray-400 ">
+        [{{ tab.id }}]
+      </h2>
       <img :src="tab.favIconUrl" alt="Tab Icon" class="w-8 h-8 mr-2">
       <h2 class="text-xl font-bold">
         {{ tab.title }}
       </h2>
     </div>
-    <p class="text-sm text-gray-600">
+    <p class="text-sm text-gray-600 text-truncate">
       {{ tab.url }}
     </p>
-    <img :src="captureUrl" alt="Tab Screenshot" class="w-full h-auto rounded mb-2 max-h-[calc(100vh-545px)] object-contain">
-    <div class="my-2">
-      <div>
-        <b>Window:</b>
-        <Dropdown
-          filter
-          auto-filter-focus
-          placeholder="Select a window"
-          option-label="label"
-          option-value="value"
-          :model-value="selectedWindow"
-          :options="Array.from(windowsList.values()).map((window) => ({ label: `${window.id!}: ${adjustTitle(window.title)}`, value: window.id }))"
-        />
-      </div>
-      <div><b>last used:</b> {{ formatDate(tab.lastAccessed ?? 0) }}</div>
-      <div v-if="firstSeenDate.length > 0">
-        <b>first seen:</b> {{ firstSeenDate }}
-      </div>
+    <img
+      :src="captureUrl"
+      alt="Tab Screenshot is loading ..."
+      class="w-full rounded mb-2 h-[calc(100vh-31rem)] object-contain"
+      :class="captureUrl.length > 0 ? 'cursor-pointer' : ''"
+      @click="emit('switch', $props.tab)"
+    >
+    <BoldedDescriptor text="first seen:" :content="getFirstSeenDateString(tabSessionRepository, tab)" />
+    <BoldedDescriptor text="last used:" :content="getLastUsedDateString(tab)" />
+    <div class="my-1">
+      <b>Window:</b>
+      <Dropdown
+        filter
+        auto-filter-focus
+        placeholder="Select a window"
+        option-label="label"
+        option-value="value"
+        :model-value="selectedWindow"
+        :options="windowsOptionsList"
+        @change="selectedWindow = $event.value"
+      />
     </div>
-    <div class="my-2">
-      <label for="skip-duration" class="mr-2"><b>Skip for:</b></label>
-      <select id="skip-duration" v-model="selectedDuration" class="border p-1 rounded">
-        <option v-for="duration in skipDurations" :key="duration.text" :value="duration.value">
-          {{ duration.text }}
-        </option>
-      </select>
-      <button class="ml-2 bg-blue-500 text-white p-2 rounded" @click="emit('skip', $props.tab, selectedDuration.value)">
+    <div class="my-1">
+      <b>Skip for:</b>
+      <Dropdown
+        filter
+        auto-filter-focus
+        placeholder="Select a skip amount"
+        option-label="label"
+        option-value="value"
+        :model-value="selectedDuration"
+        :options="skipDurations"
+        @change="selectedDuration = $event.value"
+      />
+      <button class="ml-2 bg-blue-500 text-white p-2 rounded" @click="emit('skip', $props.tab, selectedDuration)">
         Skip
       </button>
     </div>

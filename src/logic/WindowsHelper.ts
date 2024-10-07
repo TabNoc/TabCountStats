@@ -86,7 +86,7 @@ function sortWindows(
 	return 1;
 }
 
-export async function switchToWindow(windowId?: number) {
+export async function switchToWindow(windowId?: number): Promise<void> {
 	if (windowId !== undefined) {
 		await browser.windows.update(windowId, {
 			focused: true,
@@ -94,7 +94,7 @@ export async function switchToWindow(windowId?: number) {
 	}
 }
 
-export async function moveTabToWindow(windowId?: number, tabId?: number) {
+export async function moveTabAndSelectedTabsFromSameWindowToWindow(windowId?: number, tabId?: number): Promise<void> {
 	if (windowId !== undefined && tabId !== undefined) {
 		const additionalHighlightedTabOfSameWindow = (await browser.tabs.query(
 			{ highlighted: true, active: false, windowId: (await browser.tabs.get(tabId)).windowId },

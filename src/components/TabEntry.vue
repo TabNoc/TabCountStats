@@ -2,8 +2,10 @@
 import type { DropdownChangeEvent } from 'primevue/dropdown';
 import Dropdown from 'primevue/dropdown';
 import type { Tabs, Windows } from 'webextension-polyfill';
+import BoldedDescriptor from './BoldedDescriptor.vue';
 import { TabSessionRepositoryV1 } from '~/logic/storage/TabSessionRepositoryV1';
 import { adjustTitle } from '~/logic/WindowsHelper';
+import { getFirstSeenDateString, getLastUsedDateString } from '~/logic/TabsHelper';
 
 const props = defineProps<{
 	tab: Tabs.Tab
@@ -15,16 +17,9 @@ const emit = defineEmits<{
 	(e: 'switch', tab: Tabs.Tab): void
 }>();
 const tabSessionRepository = new TabSessionRepositoryV1();
-const dateString = props.tab.lastAccessed !== await tabSessionRepository.getOldestLastAccessed(props.tab)
-	? `first seen: ${formatDate(await tabSessionRepository.getOldestLastAccessed(props.tab))}`
-	: '';
 const expandWindow = ref(false);
 
-function formatDate(date: number): string {
-	return new Date(date).toLocaleString();
-}
-
-function moveToWindow(event: DropdownChangeEvent): void {
+function onDropDownChange(event: DropdownChangeEvent): void {
 	// eslint-disable-next-line vue/no-mutating-props
 	props.tab.windowId = event.value;
 	emit('move', props.tab, event.value);
@@ -41,10 +36,10 @@ function moveToWindow(event: DropdownChangeEvent): void {
         adjustTitle(tab.title) }}</a>
     </div>
 
-    <div class="grid grid-rows-1 grid-cols-3 justify-center m-auto w-1/2 items-center">
+    <div class="grid grid-rows-1 grid-cols-3 justify-center m-auto w-1/2 items-center text-nowrap">
       <div>
-        <div>last used: {{ formatDate(tab.lastAccessed ?? 0) }}</div>
-        <div>{{ dateString }}</div>
+        <BoldedDescriptor text="last used:" :content="getLastUsedDateString(tab)" />
+        <BoldedDescriptor text="first seen:" :content="getFirstSeenDateString(tabSessionRepository, tab)" />
       </div>
       |
       <div @click="expandWindow = true">
@@ -57,11 +52,11 @@ function moveToWindow(event: DropdownChangeEvent): void {
             option-value="value"
             :model-value="tab.windowId"
             :options="Array.from(windowsList.values()).map((window) => ({ label: adjustTitle(window.title), value: window.id }))"
-            @change="moveToWindow"
+            @change="onDropDownChange"
           />
         </div>
         <div v-else class="cursor-pointer">
-          {{ adjustTitle(windowsList.get(tab.windowId!)?.title) }}
+          <BoldedDescriptor text="Window:" :content="adjustTitle(windowsList.get(tab.windowId!)?.title)" />
         </div>
       </div>
     </div>
