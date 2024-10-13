@@ -167,6 +167,8 @@ function onCloseTab(tab: Tabs.Tab): void {
         <TabEntry
           :tab="tab"
           :windows-list="tabSearchService.windowsList.value"
+          @switch="switchToTab"
+          @move="(tab, windowId) => moveTabAndSelectedTabsFromSameWindowToWindow(windowId, tab.id)"
         />
       </Suspense>
     </div>

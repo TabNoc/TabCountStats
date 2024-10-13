@@ -1,13 +1,13 @@
 {
   "name": "tabstats",
   "displayName": "TabStats",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "private": true,
   "packageManager": "pnpm@8.3.1",
   "description": "Collects simple stats from the opend tabs, currently without any usage. Adds ability to open random Tab and hints the user to reduce Tab count.",
   "scripts": {
-    "dev": "npm run clear && cross-env NODE_ENV=development run-p dev:*",
-    "dev-firefox": "npm run clear && cross-env NODE_ENV=development EXTENSION=firefox run-p dev:*",
+    "dev": "npm run lint && npm run clear && cross-env NODE_ENV=development run-p dev:*",
+    "dev-firefox": "npm run lint && npm run clear && cross-env NODE_ENV=development EXTENSION=firefox run-p dev:*",
     "dev:prepare": "esno scripts/prepare.ts",
     "dev:background": "npm run build:background -- --mode development",
     "dev:web": "vite",

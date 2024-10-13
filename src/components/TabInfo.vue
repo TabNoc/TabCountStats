@@ -30,6 +30,16 @@ const skipDurations = [
 const windowsOptionsList = Array.from(props.windowsList.values()).map(window => ({ label: `${window.id!}: ${adjustTitle(window.title)}`, value: window.id }));
 const selectedDuration = ref(skipDurations[0].value);
 const selectedWindow = ref(props.tab.windowId);
+
+async function onClickImg() {
+	if (props.captureUrl && props.captureUrl.length > 0) {
+		emit('switch', props.tab);
+	}
+	else {
+		const id = (await browser.tabs.getCurrent()).id;
+		browser.tabs.update(props.tab.id, { active: true }).then(() => browser.tabs.update(id, { active: true }));
+	}
+}
 </script>
 
 <template>
@@ -49,9 +59,8 @@ const selectedWindow = ref(props.tab.windowId);
     <img
       :src="captureUrl"
       alt="Tab Screenshot is loading ..."
-      class="w-full rounded mb-2 h-[calc(100vh-31rem)] object-contain"
-      :class="captureUrl.length > 0 ? 'cursor-pointer' : ''"
-      @click="emit('switch', $props.tab)"
+      class="w-full rounded mb-2 h-[calc(100vh-31rem)] object-contain cursor-pointer"
+      @click="onClickImg"
     >
     <BoldedDescriptor text="first seen:" :content="getFirstSeenDateString(tabSessionRepository, tab)" />
     <BoldedDescriptor text="last used:" :content="getLastUsedDateString(tab)" />
